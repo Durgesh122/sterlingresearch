@@ -1,5 +1,6 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
+import StockTicker from "./components/layout/StockTicker";
 import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -12,6 +13,9 @@ function App() {
     <Router>
       <div className="flex flex-col min-h-screen font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
         <Navbar />
+        <div className="pt-16">
+           <StockTicker />
+        </div>
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
