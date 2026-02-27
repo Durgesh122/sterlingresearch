@@ -37,17 +37,17 @@ const Contact = () => {
             </div>
 
             {/* Contact Form */}
-            <div className="p-12 md:w-2/3 bg-gray-50">
-               <h2 className="text-3xl font-bold text-gray-800 mb-8">Send us a Message</h2>
-               <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 md:p-12 w-full md:w-2/3 bg-gray-50 dark:bg-gray-800">
+               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-6 md:mb-8">Send us a Message</h2>
+               <form className="space-y-4 md:space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                        <input type="text" id="name" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow outline-none" placeholder="John Doe" />
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 md:mb-2">Full Name</label>
+                        <input type="text" id="name" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="John Doe" />
                      </div>
                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" id="email" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow outline-none" placeholder="john@example.com" />
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 md:mb-2">Email Address</label>
+                        <input type="email" id="email" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="john@example.com" />
                      </div>
                   </div>
                   <div>

@@ -58,18 +58,20 @@ const Navbar = () => {
             transition={{ duration: 0.3 }}
             className="md:hidden absolute top-16 left-0 w-full bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-800"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <div className="px-4 pt-4 pb-6 space-y-3 sm:px-6 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-xl">
               <MobileNavLink to="/" onClick={toggleMenu}>Home</MobileNavLink>
               <MobileNavLink to="/about" onClick={toggleMenu}>About Us</MobileNavLink>
               <MobileNavLink to="/services" onClick={toggleMenu}>Services</MobileNavLink>
               <MobileNavLink to="/contact" onClick={toggleMenu}>Contact</MobileNavLink>
-              <Link
-                 to="/contact"
-                 onClick={toggleMenu}
-                 className="block w-full text-center bg-blue-600 text-white px-3 py-2 rounded-md text-base font-medium mt-4 hover:bg-blue-700"
-              >
-                Get Started
-              </Link>
+              <div className="pt-4">
+                <Link
+                   to="/contact"
+                   onClick={toggleMenu}
+                   className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg text-lg font-bold transition-all shadow-md active:scale-95"
+                >
+                  Get Started
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
@@ -77,6 +79,7 @@ const Navbar = () => {
     </nav>
   );
 };
+
 
 const NavLink = ({ to, children }) => (
   <Link
@@ -91,7 +94,7 @@ const MobileNavLink = ({ to, children, onClick }) => (
   <Link
     to={to}
     onClick={onClick}
-    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 block px-3 py-2 rounded-md text-base font-medium"
+    className="text-gray-800 dark:text-gray-100 font-semibold text-lg block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all border-b border-gray-100 dark:border-gray-800 last:border-0"
   >
     {children}
   </Link>
