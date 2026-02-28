@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #0f172a;
   --color-secondary: #0ea5e9;
@@ -15,6 +17,27 @@ body {
   width: 100%;
   min-height: 100vh;
   display: block; /* Remove flex centering from default template */
+}
+
+
+/* Remove focus outline for inputs and buttons globally */
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Remove tap highlight color on mobile */
+* {
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Scrollbar Utilities */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 #root {
