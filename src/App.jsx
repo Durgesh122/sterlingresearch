@@ -1,5 +1,6 @@
-import React from 'react';
-import { HashRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import FloatingButtons from './components/common/FloatingButtons';
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 // import StockTicker from "./components/layout/StockTicker";
 import Footer from "./components/layout/Footer";
@@ -7,6 +8,27 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
+// Company Pages
+import VisionMission from "./pages/VisionMission";
+import RefundPolicy from "./pages/RefundPolicy";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Disclaimer from "./pages/Disclaimer";
+import TermsConditions from "./pages/TermsConditions";
+import Disclosure from "./pages/Disclosure";
+// Insights Pages
+import Blogs from "./pages/Blogs";
+import MarketNews from "./pages/MarketNews";
+import ComplaintBoard from "./pages/ComplaintBoard";
+import GrievanceRedressal from "./pages/GrievanceRedressal";
+// Accessibility Pages
+import AccessibilityStatement from "./pages/AccessibilityStatement";
+import AccessibilityFeedback from "./pages/AccessibilityFeedback";
+import AccessibilityMedia from "./pages/AccessibilityMedia";
+// Dashboard Pages
+import InvestorHandbook from "./pages/InvestorHandbook";
+import AntiMoneyLaundering from "./pages/AntiMoneyLaundering";
+import Job from "./pages/Job";
+
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import UnderConstruction from "./components/common/UnderConstruction";
@@ -14,7 +36,6 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 
 // Dummy Page Components
 const Company = () => <UnderConstruction title="Company Profile" />;
-const Job = () => <UnderConstruction title="Careers at Sterling" />;
 const Insights = () => <UnderConstruction title="Market Insights" />;
 const Accessibility = () => <UnderConstruction title="Accessibility Statement" />;
 const Dashboard = () => <UnderConstruction title="Client Dashboard" />;
@@ -28,11 +49,32 @@ const FAQs = () => <UnderConstruction title="Frequently Asked Questions" />;
 import './App.css';
 
 function App() {
+  const [animationsEnabled, setAnimationsEnabled] = useState(true);
+
+  useEffect(() => {
+    const checkSettings = () => {
+      try {
+        const saved = localStorage.getItem('accessibility-settings');
+        if (saved) {
+          const settings = JSON.parse(saved);
+          setAnimationsEnabled(!settings.stopAnimations);
+        } else {
+            setAnimationsEnabled(true);
+        }
+      } catch (e) {
+        setAnimationsEnabled(true);
+      }
+    };
+    checkSettings();
+    window.addEventListener('accessibility-settings-changed', checkSettings);
+    return () => window.removeEventListener('accessibility-settings-changed', checkSettings);
+  }, []);
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
         <Navbar />
-        <div className="pt-16">
+        <div className="pt-20 md:pt-32">
            {/* <StockTicker /> */}
         </div>
         <main className="flex-grow">
@@ -43,10 +85,32 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/contact-us" element={<Contact />} />
             
+            {/* Company Pages */}
+            <Route path="/vision-mission" element={<VisionMission />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
+            <Route path="/terms-conditions" element={<TermsConditions />} />
+            <Route path="/disclosure" element={<Disclosure />} />
+            
+            {/* Insights Pages */}
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/market-news" element={<MarketNews />} />
+            <Route path="/complaint-board" element={<ComplaintBoard />} />
+            <Route path="/grievance-redressal" element={<GrievanceRedressal />} />
+            
+            {/* Accessibility Pages */}
+            <Route path="/accessibility-statement" element={<AccessibilityStatement />} />
+            <Route path="/accessibility-feedback" element={<AccessibilityFeedback />} />
+            <Route path="/accessibility-media" element={<AccessibilityMedia />} />
+
+            {/* Dashboard Pages */}
+            <Route path="/investor-handbook" element={<InvestorHandbook />} />
+            <Route path="/anti-money-laundering" element={<AntiMoneyLaundering />} />
+
             {/* New Routes */}
             <Route path="/company" element={<Company />} />
             <Route path="/job" element={<Job />} />
-            <Route path="/insights" element={<Insights />} />
             <Route path="/accessibility" element={<Accessibility />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/payment" element={<Payment />} />
@@ -65,7 +129,10 @@ function App() {
             />
           </Routes>
         </main>
+        
         <Footer />
+
+        <FloatingButtons />
       </div>
     </Router>
   );

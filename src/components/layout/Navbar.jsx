@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Lightbulb, LightbulbOff } from "lucide-react";
+import { 
+  Menu, X, ChevronDown, Lightbulb, LightbulbOff, 
+  Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube 
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   FaHome, FaServicestack, FaBuilding, FaBriefcase, FaChartLine, 
@@ -78,13 +81,53 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: "/", icon: <FaHome /> },
     { name: "Services", path: "/services", icon: <FaServicestack /> },
-    { name: "Company", path: "/company", icon: <FaBuilding /> },
+    { 
+      name: "Company", 
+      path: "#", 
+      icon: <FaBuilding />,
+      submenu: [
+        { name: "About Us", path: "/about" },
+        { name: "Vision & Mission", path: "/vision-mission" },
+        { name: "Refund Policy", path: "/refund-policy" },
+        { name: "Privacy Policy", path: "/privacy-policy" },
+        { name: "Disclaimer", path: "/disclaimer" },
+        { name: "Terms & Conditions", path: "/terms-conditions" },
+        { name: "Disclosure", path: "/disclosure" },
+      ]
+    },
     { name: "Job", path: "/job", icon: <FaBriefcase /> },
-    { name: "Insights", path: "/insights", icon: <FaChartLine /> },
-    { name: "Accessibility", path: "/accessibility", icon: <FaUniversalAccess /> },
-    { name: "Dashboard", path: "/dashboard", icon: <FaTachometerAlt /> },
+    { 
+      name: "Insights", 
+      path: "#", 
+      icon: <FaChartLine />,
+      submenu: [
+        { name: "Blogs", path: "/blogs" },
+        { name: "Market News", path: "/market-news" },
+        { name: "Complaint Board", path: "/complaint-board" },
+        { name: "Grievance Redressal", path: "/grievance-redressal" },
+      ]
+    },
+    { 
+      name: "Accessibility", 
+      path: "#", 
+      icon: <FaUniversalAccess /> ,
+      submenu: [
+        { name: "Accessibility Statement", path: "/accessibility-statement" },
+        { name: "Accessibility Feedback", path: "/accessibility-feedback" },
+        { name: "Accessibility Media", path: "/accessibility-media" },
+      ]
+    },
+    { 
+      name: "Dashboard", 
+      path: "/dashboard", 
+      icon: <FaTachometerAlt />,
+      submenu: [
+        { name: "Investor Handbook", path: "/investor-handbook" },
+        { name: "Anti-Money Laundering", path: "/anti-money-laundering" },
+      ]
+    },
     { name: "Payment", path: "/payment", icon: <FaCreditCard /> },
-    { name: "Complaint Box", path: "/complaint-box", icon: <FaCommentDots /> },
+    { name: "Complaint Box", path: "/complaint-board", icon: <FaCommentDots /> },
     { name: "Research Reports", path: "/research-reports", icon: <FaFileAlt /> },
     { name: "E-Sign Consent", path: "/esign-consent", icon: <FaFileSignature /> },
     { name: "Contact Us", path: "/contact-us", icon: <FaEnvelope /> },
@@ -93,7 +136,51 @@ const Navbar = () => {
 
   return (
     <>
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md shadow-md border-b border-gray-100 dark:bg-gray-900/95 dark:border-gray-800 transition-all duration-300">
+    <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300 flex flex-col">
+      {/* Top Contact Bar */}
+      <div className="bg-gray-900 text-gray-300 text-xs py-2 px-4 border-b border-gray-800 hidden md:block w-full">
+         <div className="max-w-screen-2xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
+            {/* Contact Info */}
+            <div className="flex items-center gap-6">
+               <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-white transition-colors group">
+                  <div className="p-1 bg-gray-800 rounded-full group-hover:bg-blue-600 transition-colors">
+                    <Phone size={12} className="text-blue-400 group-hover:text-white" /> 
+                  </div>
+                  <span className="font-medium tracking-wide">+91 98765 43210</span>
+               </a>
+               <a href="mailto:info@sterlingresearch.com" className="flex items-center gap-2 hover:text-white transition-colors group">
+                  <div className="p-1 bg-gray-800 rounded-full group-hover:bg-blue-600 transition-colors">
+                    <Mail size={12} className="text-blue-400 group-hover:text-white" /> 
+                  </div>
+                  <span className="font-medium tracking-wide">info@sterlingresearch.com</span>
+               </a>
+            </div>
+            
+            {/* Social Links & Info */}
+             <div className="flex items-center gap-6">
+               <div className="hidden lg:flex items-center gap-4 text-gray-400 border-r border-gray-700 pr-6 mr-2">
+                  <Link to="/market-news" className="flex items-center gap-1 hover:text-blue-400 cursor-pointer transition-colors text-[11px] font-medium tracking-wide">
+                    MARKET NEWS
+                  </Link>
+                  <Link to="/job" className="flex items-center gap-1 hover:text-blue-400 cursor-pointer transition-colors text-[11px] font-medium tracking-wide">
+                    CAREERS
+                  </Link>
+                  <Link to="/contact-us" className="flex items-center gap-1 hover:text-blue-400 cursor-pointer transition-colors text-[11px] font-medium tracking-wide">
+                    CONTACT
+                  </Link>
+               </div>
+               <div className="flex items-center gap-3">
+                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#1877F2] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Facebook size={14} /></a>
+                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#1DA1F2] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Twitter size={14} /></a>
+                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#0A66C2] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Linkedin size={14} /></a>
+                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#E4405F] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Instagram size={14} /></a>
+                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#FF0000] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Youtube size={14} /></a>
+               </div>
+             </div>
+         </div>
+      </div>
+
+    <nav className="bg-white/95 backdrop-blur-md shadow-md border-b border-gray-100 dark:bg-gray-900/95 dark:border-gray-800 w-full relative">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
@@ -108,11 +195,55 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - Scrollable Container */}
-          <div className="hidden xl:flex flex-1 items-center justify-center px-8 overflow-hidden">
-             <div className="flex items-center space-x-1 overflow-x-auto scrollbar-hide py-2 px-2 mask-linear">
+          {/* Desktop Navigation */}
+          <div className="hidden xl:flex flex-1 items-center justify-center px-4 overflow-visible z-50">
+             <div className="flex items-center space-x-1 overflow-visible py-2 px-2">
               {navLinks.map((link) => {
-                const isActive = location.pathname === link.path;
+                const isActive = location.pathname === link.path || (link.submenu && link.submenu.some(sub => sub.path === location.pathname));
+                
+                if (link.submenu) {
+                  return (
+                    <div key={link.name} className="relative group">
+                      <button
+                        className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 whitespace-nowrap gap-1 focus:outline-none focus:ring-0 cursor-default
+                          ${isActive 
+                            ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 shadow-sm transform scale-105' 
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 hover:text-blue-600 dark:hover:bg-gray-800 dark:hover:text-blue-400'
+                          }`}
+                      >
+                        <span className={`text-xl mb-0.5 transition-all duration-300 group-hover:-translate-y-0.5 ${isActive ? 'scale-110' : ''} relative ${theme === 'dark' ? 'text-yellow-300 drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]' : ''}`}>
+                          {link.icon}
+                        </span>
+                        <span className={`flex items-center gap-1 relative transition-all duration-300 ${theme === 'dark' ? 'text-yellow-100 drop-shadow-[0_0_10px_rgba(253,224,71,0.3)]' : ''}`}>
+                          {link.name}
+                          <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" />
+                        </span>
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeTab"
+                            className="absolute bottom-0 w-1/2 h-0.5 bg-blue-600 rounded-full"
+                          />
+                        )}
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      <div className="absolute left-1/2 transform -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 min-w-[200px]">
+                        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+                          {link.submenu.map((subItem) => (
+                            <Link
+                              key={subItem.name}
+                              to={subItem.path}
+                              className="block px-4 py-3 text-sm text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border-b border-gray-50 dark:border-gray-800 last:border-none"
+                            >
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <Link
                     key={link.name}
@@ -212,6 +343,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    </header>
       {/* Mobile Menu Overlay (Full Screen / Side Drawer) - Moved Outside Nav */}
       <AnimatePresence>
         {isOpen && (
@@ -251,7 +383,50 @@ const Navbar = () => {
                 <div className="flex-1 overflow-y-auto py-4 px-3">
                   <div className="space-y-1">
                     {navLinks.map((link, index) => {
-                      const isActive = location.pathname === link.path;
+                      const isActive = location.pathname === link.path || (link.submenu && link.submenu.some(sub => sub.path === location.pathname));
+                      
+                      if (link.submenu) {
+                        return (
+                          <div key={link.name}>
+                            <motion.div
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.05 }}
+                              className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 ${
+                                isActive
+                                  ? "bg-blue-50 dark:bg-blue-900/20 shadow-sm"
+                                  : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                              }`}
+                            >
+                              <span className={`text-xl ${isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-400"}`}>
+                                {link.icon}
+                              </span>
+                              <span className={`text-base font-semibold ${isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-700 dark:text-gray-200"}`}>
+                                {link.name}
+                              </span>
+                            </motion.div>
+                            
+                            {/* Submenu Items */}
+                            <div className="pl-12 pr-2 space-y-1 mt-1 border-l-2 border-gray-100 dark:border-gray-800 ml-6">
+                              {link.submenu.map((subItem) => (
+                                <Link
+                                  key={subItem.name}
+                                  to={subItem.path}
+                                  onClick={toggleMenu}
+                                  className={`block py-2 px-3 rounded-lg text-sm transition-colors ${
+                                    location.pathname === subItem.path
+                                      ? "text-blue-600 dark:text-blue-400 font-medium bg-blue-50/50 dark:bg-blue-900/10"
+                                      : "text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-300"
+                                  }`}
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      }
+
                       return (
                         <motion.div
                           key={link.name}

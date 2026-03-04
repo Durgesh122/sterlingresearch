@@ -104,7 +104,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f172a] relative overflow-hidden font-sans selection:bg-blue-500/30">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#0f172a] relative overflow-hidden font-sans selection:bg-blue-500/30 transition-colors duration-300">
       
       {/* Animated Background Particles */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -154,7 +154,7 @@ const AdminLogin = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, type: "spring" }}
-          className="bg-white/10 dark:bg-gray-900/40 backdrop-blur-xl border border-white/20 dark:border-gray-700/50 p-8 rounded-3xl shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] relative overflow-hidden group"
+          className="bg-white/80 dark:bg-gray-900/40 backdrop-blur-xl border border-gray-200 dark:border-gray-700/50 p-8 rounded-3xl shadow-xl dark:shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] relative overflow-hidden group transition-all duration-300"
         >
           {/* Top Line Gradient Animation */}
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50" />
@@ -163,12 +163,12 @@ const AdminLogin = () => {
           <div className="flex flex-col items-center mb-8 relative">
             <motion.div 
               whileHover={{ scale: 1.1, rotate: 5 }}
-              className="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30 ring-4 ring-white/10"
+              className="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/30 ring-4 ring-white dark:ring-white/10"
             >
               <ShieldCheck className="w-12 h-12 text-white" strokeWidth={1.5} />
             </motion.div>
-            <h2 className="text-3xl font-bold text-white tracking-tight">Admin Portal</h2>
-            <p className="text-gray-400 text-sm mt-2">Restricted Access Area</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Admin Portal</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-2">Restricted Access Area</p>
           </div>
 
           {/* Form Section */}
@@ -193,17 +193,17 @@ const AdminLogin = () => {
 
             {/* Email Input */}
             <div className="space-y-1 group/field">
-              <label className="text-xs font-semibold text-gray-400 ml-1 uppercase tracking-wider group-focus-within/field:text-blue-400 transition-colors">
+              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-1 uppercase tracking-wider group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 transition-colors">
                 Email Address
               </label>
               <div className="relative">
-                <User className="absolute left-4 top-3.5 w-5 h-5 text-gray-500 group-focus-within/field:text-blue-500 transition-colors" />
+                <User className="absolute left-4 top-3.5 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within/field:text-blue-500 transition-colors" />
                 <input
                   type="email"
                   name="email"
                   required
                   placeholder="admin@sterling.com"
-                  className="w-full bg-black/20 border border-gray-700 text-white rounded-xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 focus:bg-black/40 transition-all placeholder:text-gray-600"
+                  className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-black/40 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
                   onChange={handleChange}
                   value={formData.email}
                 />
@@ -212,24 +212,24 @@ const AdminLogin = () => {
 
             {/* Password Input */}
             <div className="space-y-1 group/field">
-              <label className="text-xs font-semibold text-gray-400 ml-1 uppercase tracking-wider group-focus-within/field:text-blue-400 transition-colors">
+              <label className="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-1 uppercase tracking-wider group-focus-within/field:text-blue-500 dark:group-focus-within/field:text-blue-400 transition-colors">
                 Secure Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-3.5 w-5 h-5 text-gray-500 group-focus-within/field:text-blue-500 transition-colors" />
+                <Lock className="absolute left-4 top-3.5 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within/field:text-blue-500 transition-colors" />
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   required
                   placeholder="••••••••••••"
-                  className="w-full bg-black/20 border border-gray-700 text-white rounded-xl py-3 pl-12 pr-12 outline-none focus:border-blue-500 focus:bg-black/40 transition-all placeholder:text-gray-600 tracking-widest"
+                  className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl py-3 pl-12 pr-12 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-black/40 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600 tracking-widest"
                   onChange={handleChange}
                   value={formData.password}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-3.5 text-gray-500 hover:text-white transition-colors focus:outline-none"
+                  className="absolute right-4 top-3.5 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-white transition-colors focus:outline-none"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -281,7 +281,7 @@ const AdminLogin = () => {
 
           {/* Footer Text */}
           <div className="mt-8 text-center">
-            <p className="text-gray-500 text-xs flex items-center justify-center gap-1.5">
+            <p className="text-gray-400 dark:text-gray-500 text-xs flex items-center justify-center gap-1.5">
               <Lock className="w-3 h-3" />
               <span>End-to-End Encrypted Session</span>
             </p>

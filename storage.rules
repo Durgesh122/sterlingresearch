@@ -1,0 +1,13 @@
+// Allow read/write access to all users under any path
+// In production, you should tighten these rules to allow access only to authenticated users
+// or specific paths.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      // Allow public read access (for blogs, images, assets)
+      allow read: if true;
+      // Allow write access only to authenticated users (admins)
+      allow write: if request.auth != null;
+    }
+  }
+}

@@ -15,6 +15,10 @@
         ".validate": "newData.hasChildren(['name','mobile','message','submittedAt']) && newData.child('name').isString() && newData.child('mobile').isString() && newData.child('message').isString() && newData.child('submittedAt').isString()"
       }
     },
+    "messages": {
+      ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'",
+      ".write": true
+    },
     "contact_inquiries": {
       ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'",
       ".write": true
@@ -26,12 +30,14 @@
         ".validate": "newData.hasChildren(['clientName','fatherName','mobile','email','dob','pan','address','createdAt']) && newData.child('clientName').isString() && newData.child('fatherName').isString() && newData.child('mobile').isString() && newData.child('email').isString() && newData.child('dob').isString() && newData.child('pan').isString() && newData.child('address').isString() && newData.child('createdAt').isString()"
       },
       ".indexOn": ["ownerId"]
+      
     },
     "complaints": {
       ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'",
       ".write": true,
+      ".indexOn": ["ticketId", "email"],
       "$complaintId": {
-        ".validate": "newData.hasChildren(['name', 'mobile', 'complaintType', 'description', 'timestamp'])"
+        ".validate": "newData.hasChildren(['name', 'email', 'mobile', 'complaintType', 'description', 'timestamp', 'status'])"
       }
     },
     "complaintsDataCurrentMonth": {
@@ -57,6 +63,15 @@
     "jobs": {
       ".read": true,
       ".write": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'"
+    },
+    "blogs": {
+      ".read": true,
+      ".write": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'"
+    },
+    "applications": {
+      ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'",
+      ".write": true,
+      ".indexOn": ["appliedAt"]
     },
     "job_applications": {
       ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'",
