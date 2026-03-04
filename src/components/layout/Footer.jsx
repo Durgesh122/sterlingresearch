@@ -6,7 +6,7 @@ import SterlingLogo from "../../assets/Starlinglogo4.png";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white pt-20 pb-10 overflow-hidden font-sans">
+    <footer className="relative bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white pt-12 md:pt-20 pb-10 overflow-hidden font-sans">
       
       {/* Animated Background Shapes */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -50,11 +50,11 @@ const Footer = () => {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-pulse"></div>
               
               {/* Logo Container */}
-              <div className="relative bg-white px-8 py-4 rounded-2xl shadow-2xl flex items-center justify-center">
+              <div className="relative bg-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl shadow-2xl flex items-center justify-center">
                 <motion.img 
                   src={SterlingLogo} 
                   alt="Sterling Research Logo" 
-                  className="h-28 md:h-36 w-auto object-contain"
+                  className="h-20 md:h-36 w-auto object-contain"
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 />

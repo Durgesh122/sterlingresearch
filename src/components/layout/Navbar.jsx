@@ -459,6 +459,25 @@ const Navbar = () => {
 
                 {/* Drawer Footer */}
                 <div className="p-5 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
+                  
+                  {/* Mobile Contact Quick Actions */}
+                  <div className="grid grid-cols-2 gap-3">
+                     <a href="tel:+919876543210" className="flex items-center justify-center gap-2 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl font-semibold text-sm hover:bg-green-100 transition-colors">
+                        <Phone size={16} /> Call
+                     </a>
+                     <a href="mailto:info@sterlingresearch.com" className="flex items-center justify-center gap-2 py-2.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold text-sm hover:bg-blue-100 transition-colors">
+                        <Mail size={16} /> Email
+                     </a>
+                  </div>
+
+                  {/* Mobile Social Links */}
+                  <div className="flex justify-center gap-4 py-2">
+                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-blue-600 hover:scale-110 transition-transform"><Facebook size={20} /></a>
+                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sky-500 hover:scale-110 transition-transform"><Twitter size={20} /></a>
+                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-blue-700 hover:scale-110 transition-transform"><Linkedin size={20} /></a>
+                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-pink-600 hover:scale-110 transition-transform"><Instagram size={20} /></a>
+                  </div>
+
                   <Link
                     to="/admin/login"
                     onClick={toggleMenu}
