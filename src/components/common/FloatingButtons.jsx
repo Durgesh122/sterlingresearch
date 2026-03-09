@@ -131,17 +131,6 @@ const FloatingButtons = () => {
                 {isAutoSpeak ? <FaVolumeMute className="text-sm md:text-base" /> : <FaVolumeUp className="text-sm md:text-base" />}
               </button>
               
-              {/* WhatsApp */}
-              <a 
-                href="https://wa.me/6232678136" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={`${buttonClass} bg-green-500 text-white hover:bg-green-600 focus:ring-green-500`}
-                title="Chat on WhatsApp"
-              >
-                <FaWhatsapp className="text-lg md:text-xl" />
-              </a>
-              
               {/* Phone */}
               <a 
                 href="tel:+916232678136" 
@@ -153,6 +142,24 @@ const FloatingButtons = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* WhatsApp Button (Premium Ripple Animation) */}
+        <motion.a
+          href="https://wa.me/6232678136?text=Hello%20Sterling%20Research,%20I%20am%20interested%20in%20your%20services.%20Please%20guide%20me."
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ x: 100, opacity: 0 }} 
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.5 }}
+          whileHover={{ scale: 1.1 }}
+          className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#25D366] text-white shadow-[0_4px_14px_rgba(37,211,102,0.5)] border-2 border-white mb-3 hover:bg-[#20bd5a] transition-all z-50"
+          title="Chat on WhatsApp"
+        >
+          {/* Continuous Ripple/Ping Animation */}
+          <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping duration-[2000ms]"></span>
+          
+          <FaWhatsapp className="relative z-10 text-2xl md:text-3xl drop-shadow-sm" />
+        </motion.a>
 
         {/* Accessibility Button (Always Visible) */}
         <button

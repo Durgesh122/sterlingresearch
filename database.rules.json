@@ -19,6 +19,10 @@
       ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'",
       ".write": true
     },
+    "leads": {
+      ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'", 
+      ".write": true
+    },
     "contact_inquiries": {
       ".read": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'",
       ".write": true
@@ -87,6 +91,12 @@
     "reports": {
       ".read": true,
       ".write": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'"
+    },
+    "admin": {
+      "offerPopup": {
+         ".read": true,
+         ".write": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'"
+      }
     }
   }
 }

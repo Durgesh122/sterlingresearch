@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import FloatingButtons from './components/common/FloatingButtons';
+import FloatingChatBot from './components/common/FloatingChatBot';
+import PopupDisclaimer from './components/common/PopupDisclaimer';
+import PopupForm from './components/common/PopupForm';
+import OfferPopup from './components/common/OfferPopup';
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 // import StockTicker from "./components/layout/StockTicker";
@@ -50,6 +54,8 @@ import './App.css';
 
 function App() {
   const [animationsEnabled, setAnimationsEnabled] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [showOffer, setShowOffer] = useState(false);
 
   useEffect(() => {
     const checkSettings = () => {
@@ -132,7 +138,11 @@ function App() {
         
         <Footer />
 
+        <OfferPopup triggerOpen={showOffer} onClose={() => setShowOffer(false)} />
+        <PopupDisclaimer onAccept={() => setShowForm(true)} />
+        <PopupForm isOpen={showForm} onClose={() => { setShowForm(false); setShowOffer(true); }} />
         <FloatingButtons />
+        <FloatingChatBot />
       </div>
     </Router>
   );

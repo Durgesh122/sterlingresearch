@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signOut } from 'firebase/auth';
 import { ref, push, onValue, remove, set } from "firebase/database";
-import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
-import { auth, database, storage } from '../firebase';
+import { auth, database } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Users, FileText, Briefcase, Plus, Trash2, 
-  LogOut, Activity, Search, X, CheckCircle, Clock, Image as ImageIcon, MessageSquare, Shield, AlertTriangle
+  Users, FileText, Briefcase, Plus, Trash2, Phone as PhoneIcon,
+  LogOut, Activity, Search, X, CheckCircle, Clock, Image as ImageIcon, MessageSquare, Shield, AlertTriangle, Star, Megaphone
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -18,10 +17,21 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
   const [messages, setMessages] = useState([]);
   const [complaints, setComplaints] = useState([]);
+  const [leads, setLeads] = useState([]);
+  const [chatLeads, setChatLeads] = useState([]); // New state for Chat Leads
   const [showJobModal, setShowJobModal] = useState(false);
   const [showBlogModal, setShowBlogModal] = useState(false);
   const [loading, setLoading] = useState(true);
   
+  // Offer Popup State
+  const [offerSettings, setOfferSettings] = useState({
+    isVisible: false,
+    imageUrl: '',
+    linkUrl: ''
+  });
+  const [offerImageFile, setOfferImageFile] = useState(null);
+  const [offerSaving, setOfferSaving] = useState(false);
+
   // Delete Confirmation State
   const [deleteData, setDeleteData] = useState({ open: false, id: null, type: null, title: '' });
 
@@ -101,6 +111,37 @@ const AdminDashboard = () => {
       setComplaints(complaintList);
     });
 
+    // Fetch Leads (From Popup Form)
+    const leadsRef = ref(database, 'leads');
+    const unsubscribeLeads = onValue(leadsRef, (snapshot) => {
+        const data = snapshot.val();
+        const leadsList = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+        leadsList.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+        setLeads(leadsList);
+    });
+
+    // Fetch Chat Leads
+    const chatLeadsRef = ref(database, 'chat_leads');
+    const unsubscribeChatLeads = onValue(chatLeadsRef, (snapshot) => {
+        const data = snapshot.val();
+        const chatLeadsList = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+        chatLeadsList.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+        setChatLeads(chatLeadsList);
+    });
+
+    // Fetch Offer Popup Settings
+    const offerRef = ref(database, 'admin/offerPopup');
+    const unsubscribeOffer = onValue(offerRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            setOfferSettings({
+                imageUrl: data.imageUrl || '',
+                linkUrl: data.linkUrl || '',
+                isVisible: data.isVisible || false
+            });
+        }
+    });
+
     return () => {
       unsubscribeAuth();
       unsubscribeJobs();
@@ -108,6 +149,9 @@ const AdminDashboard = () => {
       unsubscribeApps();
       unsubscribeMessages();
       unsubscribeComplaints();
+      unsubscribeLeads();
+      unsubscribeChatLeads();
+      unsubscribeOffer();
     };
   }, [navigate]);
 
@@ -176,6 +220,14 @@ const AdminDashboard = () => {
     setDeleteData({ open: true, id, type: 'complaint', title: 'Delete Complaint' });
   };
 
+  const handleDeleteLead = (id) => {
+    setDeleteData({ open: true, id, type: 'lead', title: 'Delete Lead' });
+  };
+
+  const handleDeleteChatLead = (id) => {
+    setDeleteData({ open: true, id, type: 'chat_lead', title: 'Delete AI Chat Lead' });
+  };
+
   const handleDeleteApplication = (id) => {
     setDeleteData({ open: true, id, type: 'application', title: 'Delete Application' });
   };
@@ -192,6 +244,8 @@ const AdminDashboard = () => {
         case 'message': path = `messages/${id}`; break;
         case 'complaint': path = `complaints/${id}`; break;
         case 'application': path = `applications/${id}`; break;
+        case 'lead': path = `leads/${id}`; break;
+        case 'chat_lead': path = `chat_leads/${id}`; break;
         default: return;
       }
       
@@ -203,11 +257,51 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleSaveOffer = async (e) => {
+    e.preventDefault();
+    setOfferSaving(true);
+    try {
+        let finalImageUrl = offerSettings.imageUrl;
+
+        // If a file is selected, convert it to Base64 and save to DB
+        if (offerImageFile) {
+            const reader = new FileReader();
+            reader.readAsDataURL(offerImageFile);
+            await new Promise((resolve) => {
+                reader.onload = () => {
+                    finalImageUrl = reader.result;
+                    resolve();
+                };
+            });
+        }
+
+        const offerRef = ref(database, 'admin/offerPopup');
+        await set(offerRef, {
+            ...offerSettings,
+            imageUrl: finalImageUrl
+        });
+        
+        // Update local state to reflect the new image URL immediately
+        setOfferSettings(prev => ({ ...prev, imageUrl: finalImageUrl }));
+        setOfferImageFile(null); // Clear file selection
+        
+        alert("Offer Settings Updated Successfully!");
+    } catch (error) {
+        console.error("Error updating offer:", error);
+        alert("Failed to update offer settings.");
+    } finally {
+        setOfferSaving(false);
+    }
+  };
+
   const activeTabClass = "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400";
   const inactiveTabClass = "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50";
 
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: Activity },
+    { id: 'offer-popup', label: 'Offers & Promos', icon: Megaphone },
+    { id: 'leads', label: 'Popup Leads', icon: Star },
+    { id: 'chat_leads', label: 'AI Chat Leads', icon: CheckCircle }, // New Menu Item
     { id: 'messages', label: 'Messages', icon: MessageSquare },
     { id: 'complaints', label: 'Complaints', icon: Shield },
     { id: 'jobs', label: 'Manage Jobs', icon: Briefcase },
@@ -331,6 +425,132 @@ const AdminDashboard = () => {
                       <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{complaints.length}</h3>
                     </div>
                   </div>
+                </div>
+             </div>
+          )}
+
+          {/* OFFER POPUP TAB */}
+          {activeTab === 'offer-popup' && (
+             <div className="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 max-w-2xl mx-auto transition-all">
+                <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-gray-700">
+                    <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 rounded-xl">
+                        <Megaphone size={28} />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">Offer & Promotion Popup</h3>
+                        <p className="text-sm text-gray-500">Manage the promotional popup shown on the homepage.</p>
+                    </div>
+                </div>
+
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800 mb-6 flex items-start gap-3">
+                    <div className="p-1 bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 rounded-full mt-0.5">
+                        <CheckCircle size={16} />
+                    </div>
+                    <div className="text-sm text-blue-800 dark:text-blue-200">
+                        <p className="font-semibold mb-1">How it works</p>
+                        <p>When enabled, this popup will appear once per session on the homepage. Use it for limited-time offers, announcements, or lead magnets.</p>
+                    </div>
+                </div>
+
+                <div className="space-y-6">
+                    {/* Toggle Switch */}
+                    <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
+                        <div className="flex items-center gap-3">
+                            <div className={`w-3 h-3 rounded-full ${offerSettings.isVisible ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-400'}`}></div>
+                            <span className="font-medium text-gray-900 dark:text-white">Enable Popup Visibility</span>
+                        </div>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input 
+                                type="checkbox" 
+                                checked={offerSettings.isVisible} 
+                                onChange={(e) => setOfferSettings({...offerSettings, isVisible: e.target.checked})} 
+                                className="sr-only peer" 
+                            />
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+
+                    {/* Image Upload Area */}
+                    <div className="space-y-3">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Offer Image</label>
+                        <div className="relative group w-full aspect-video bg-gray-100 dark:bg-gray-900 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center overflow-hidden hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-gray-800/50 transition-all cursor-pointer">
+                            
+                            {(offerSettings.imageUrl || offerImageFile) ? (
+                                <>
+                                    <img 
+                                        src={offerImageFile ? URL.createObjectURL(offerImageFile) : offerSettings.imageUrl} 
+                                        alt="Preview" 
+                                        className="w-full h-full object-contain p-2"
+                                    />
+                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                        <p className="text-white font-medium flex items-center gap-2">
+                                            <ImageIcon size={20} /> Click to change image
+                                        </p>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="text-center text-gray-500 p-6 pointer-events-none">
+                                    <ImageIcon size={48} className="mx-auto mb-3 opacity-40" />
+                                    <p className="font-medium text-gray-700 dark:text-gray-300">Click to upload image</p>
+                                    <p className="text-xs text-gray-400 mt-1">SVG, PNG, JPG or GIF (max. 5MB)</p>
+                                </div>
+                            )}
+                            
+                            <input 
+                                type="file" 
+                                accept="image/*" 
+                                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" 
+                                onChange={(e) => {
+                                    if (e.target.files[0]) {
+                                        // Optional: Check file size here
+                                        if (e.target.files[0].size > 5 * 1024 * 1024) {
+                                            alert("File is too large! Please select an image under 5MB.");
+                                            return;
+                                        }
+                                        setOfferImageFile(e.target.files[0]);
+                                    }
+                                }}
+                            />
+                        </div>
+                        <p className="text-xs text-gray-500 pl-1">Image will be saved directly to the database.</p>
+                    </div>
+
+                    {/* Link URL Input */}
+                    <div className="space-y-3">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Redirect Link (Optional)</label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-500 transition-colors">
+                                <Activity size={18} /> 
+                            </div>
+                            <input 
+                                type="url" 
+                                value={offerSettings.linkUrl}
+                                onChange={(e) => setOfferSettings({...offerSettings, linkUrl: e.target.value})}
+                                placeholder="https://example.com/special-offer"
+                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm"
+                            />
+                        </div>
+                        <p className="text-xs text-gray-500 pl-1">Users will be taken to this URL when they click the popup image.</p>
+                    </div>
+
+                    {/* Save Button */}
+                    <div className="pt-6 border-t border-gray-100 dark:border-gray-700">
+                        <button 
+                            onClick={handleSaveOffer}
+                            disabled={offerSaving}
+                            className="w-full py-3.5 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transform active:scale-[0.98] transition-all flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+                        >
+                            {offerSaving ? (
+                                <>
+                                    <Clock className="animate-spin" size={20} /> Saving Changes...
+                                </>
+                            ) : (
+                                <>
+                                    <CheckCircle size={20} /> Save Settings
+                                </>
+                            )}
+                        </button>
+                    </div>
                 </div>
              </div>
           )}
@@ -563,6 +783,144 @@ const AdminDashboard = () => {
                     )}
                   </tbody>
                 </table>
+              </div>
+            </div>
+          )}
+
+
+          {/* LEADS TAB */}
+           {activeTab === 'leads' && (
+            <div>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50 dark:bg-gray-700/50 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold border-b border-gray-100 dark:border-gray-700">
+                        <th className="px-6 py-4">Name & Contact</th>
+                        <th className="px-6 py-4">Location</th>
+                        <th className="px-6 py-4">Segment</th>
+                        <th className="px-6 py-4">Investment</th>
+                        <th className="px-6 py-4">Captured At</th>
+                        <th className="px-6 py-4">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                      {leads.length > 0 ? (
+                        leads.map((lead) => (
+                          <tr key={lead.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                            <td className="px-6 py-4">
+                              <div className="flex flex-col">
+                                <span className="font-bold text-gray-900 dark:text-white">{lead.name}</span>
+                                <a href={`tel:${lead.mobile}`} className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                                    <PhoneIcon size={12} /> {lead.mobile}
+                                </a>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                              {lead.address || "N/A"}
+                            </td>
+                             <td className="px-6 py-4 text-sm font-medium text-green-600 dark:text-green-400">
+                              {lead.segment}
+                            </td>
+                             <td className="px-6 py-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                              {lead.investment}
+                            </td>
+                            <td className="px-6 py-4 text-xs text-gray-500">
+                              {new Date(lead.submittedAt).toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4">
+                               <button 
+                                 onClick={() => handleDeleteLead(lead.id)}
+                                 className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                 title="Delete Lead"
+                               >
+                                 <Trash2 size={18} />
+                               </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="6" className="px-6 py-12 text-center text-gray-400">
+                            <Star size={48} className="mx-auto mb-4 opacity-50 text-indigo-300" />
+                            <p>No new leads generated yet.</p>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* CHAT LEADS TAB */}
+           {activeTab === 'chat_leads' && (
+            <div>
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-gray-50 dark:bg-gray-700/50 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold border-b border-gray-100 dark:border-gray-700">
+                        <th className="px-6 py-4">User Details</th>
+                        <th className="px-6 py-4">City</th>
+                        <th className="px-6 py-4">Risk Profile</th>
+                        <th className="px-6 py-4">Experience & Goal</th>
+                        <th className="px-6 py-4">Captured At</th>
+                        <th className="px-6 py-4">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+                      {chatLeads.length > 0 ? (
+                        chatLeads.map((lead) => (
+                          <tr key={lead.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                            <td className="px-6 py-4">
+                              <div className="flex flex-col">
+                                <span className="font-bold text-gray-900 dark:text-white">{lead.name}</span>
+                                <a href={`tel:${lead.mobile}`} className="text-sm text-blue-600 hover:underline flex items-center gap-1">
+                                    <PhoneIcon size={12} /> {lead.mobile}
+                                </a>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                              {lead.city || "N/A"}
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className={`px-2 py-1 rounded text-xs font-semibold ${lead.risk?.includes('High') ? 'bg-red-100 text-red-700' : lead.risk?.includes('Medium') ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}`}>
+                                {lead.risk || "Unknown"}
+                              </span>
+                            </td>
+                             <td className="px-6 py-4 text-sm">
+                                <div className="flex flex-col text-xs space-y-1">
+                                    <span className="font-semibold text-gray-700 dark:text-gray-300">Exp: {lead.experience || "N/A"}</span>
+                                    <span className="text-gray-500">Goal: {lead.goal || "N/A"}</span>
+                                </div>
+                            </td>
+                            <td className="px-6 py-4 text-xs text-gray-500">
+                              {new Date(lead.submittedAt).toLocaleString()}
+                            </td>
+                            <td className="px-6 py-4">
+                               <button 
+                                 onClick={() => handleDeleteChatLead(lead.id)}
+                                 className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                                 title="Delete AI Chat Lead"
+                               >
+                                 <Trash2 size={18} />
+                               </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="6" className="px-6 py-12 text-center text-gray-400">
+                            <Bot size={48} className="mx-auto mb-4 opacity-50 text-blue-300" />
+                            <p>No chatbot leads captured yet.</p>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}
