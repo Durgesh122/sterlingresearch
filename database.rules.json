@@ -44,7 +44,7 @@
         ".validate": "newData.hasChildren(['name', 'email', 'mobile', 'complaintType', 'description', 'timestamp', 'status'])"
       }
     },
-    "complaintsDataCurrentMonth": {
+    "complaintTableData": {
       ".read": true,
       ".write": "root.child('admins').child(auth.uid).exists() || auth.token.email === 'durgeshrathor05@gmail.com' || auth.uid === '77PWZkMHSOaEsWL3xlS0lfbiFvm1'"
     },

@@ -279,6 +279,17 @@ const AdminLogin = () => {
             </motion.button>
           </form>
 
+          {/* Back to Home Button */}
+          <div className="mt-6 text-center">
+             <button 
+               type="button" 
+               onClick={() => navigate('/')} 
+               className="text-sm font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors flex items-center justify-center gap-2 mx-auto"
+             >
+               <ArrowRight size={16} className="rotate-180" /> Back to Website
+             </button>
+          </div>
+
           {/* Footer Text */}
           <div className="mt-8 text-center">
             <p className="text-gray-400 dark:text-gray-500 text-xs flex items-center justify-center gap-1.5">

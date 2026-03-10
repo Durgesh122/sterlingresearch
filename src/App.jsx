@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import FloatingButtons from './components/common/FloatingButtons';
-import FloatingChatBot from './components/common/FloatingChatBot';
-import PopupDisclaimer from './components/common/PopupDisclaimer';
-import PopupForm from './components/common/PopupForm';
-import OfferPopup from './components/common/OfferPopup';
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/layout/Navbar";
-// import StockTicker from "./components/layout/StockTicker";
-import Footer from "./components/layout/Footer";
+
+// Layout
+import PublicLayout from './components/layout/PublicLayout';
+
+// Pages
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -23,15 +22,17 @@ import Disclosure from "./pages/Disclosure";
 import Blogs from "./pages/Blogs";
 import MarketNews from "./pages/MarketNews";
 import ComplaintBoard from "./pages/ComplaintBoard";
+import ComplaintData from "./pages/ComplaintData";
 import GrievanceRedressal from "./pages/GrievanceRedressal";
 // Accessibility Pages
 import AccessibilityStatement from "./pages/AccessibilityStatement";
 import AccessibilityFeedback from "./pages/AccessibilityFeedback";
 import AccessibilityMedia from "./pages/AccessibilityMedia";
 // Dashboard Pages
-import InvestorHandbook from "./pages/InvestorHandbook";
+import InvestorCharter from "./pages/InvestorCharter";
 import AntiMoneyLaundering from "./pages/AntiMoneyLaundering";
 import Job from "./pages/Job";
+import ResearchReports from "./pages/ResearchReports";
 
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -45,7 +46,6 @@ const Accessibility = () => <UnderConstruction title="Accessibility Statement" /
 const Dashboard = () => <UnderConstruction title="Client Dashboard" />;
 const Payment = () => <UnderConstruction title="Secure Payment Portal" />;
 const ComplaintBox = () => <UnderConstruction title="Customer Complaint Box" />;
-const ResearchReports = () => <UnderConstruction title="Premium Research Reports" />;
 const EsignConsent = () => <UnderConstruction title="E-Sign Consent Form" />;
 const FAQs = () => <UnderConstruction title="Frequently Asked Questions" />;
 // const AdminLogin = () => <UnderConstruction title="Admin Login Portal" />;
@@ -53,38 +53,24 @@ const FAQs = () => <UnderConstruction title="Frequently Asked Questions" />;
 import './App.css';
 
 function App() {
-  const [animationsEnabled, setAnimationsEnabled] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [showOffer, setShowOffer] = useState(false);
-
-  useEffect(() => {
-    const checkSettings = () => {
-      try {
-        const saved = localStorage.getItem('accessibility-settings');
-        if (saved) {
-          const settings = JSON.parse(saved);
-          setAnimationsEnabled(!settings.stopAnimations);
-        } else {
-            setAnimationsEnabled(true);
-        }
-      } catch (e) {
-        setAnimationsEnabled(true);
-      }
-    };
-    checkSettings();
-    window.addEventListener('accessibility-settings-changed', checkSettings);
-    return () => window.removeEventListener('accessibility-settings-changed', checkSettings);
-  }, []);
-
   return (
     <Router>
-      <div className="flex flex-col min-h-screen font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
-        <Navbar />
-        <div className="pt-20 md:pt-32">
-           {/* <StockTicker /> */}
-        </div>
-        <main className="flex-grow">
-          <Routes>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
+      
+      <Routes>
+        {/* Admin Routes - Standalone (No Layout) */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route 
+          path="/admin/dashboard" 
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Public Routes - Wrapped in PublicLayout */}
+        <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
@@ -103,6 +89,7 @@ function App() {
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/market-news" element={<MarketNews />} />
             <Route path="/complaint-board" element={<ComplaintBoard />} />
+            <Route path="/complaint-data" element={<ComplaintData />} />
             <Route path="/grievance-redressal" element={<GrievanceRedressal />} />
             
             {/* Accessibility Pages */}
@@ -111,7 +98,7 @@ function App() {
             <Route path="/accessibility-media" element={<AccessibilityMedia />} />
 
             {/* Dashboard Pages */}
-            <Route path="/investor-handbook" element={<InvestorHandbook />} />
+            <Route path="/investor-charter" element={<InvestorCharter />} />
             <Route path="/anti-money-laundering" element={<AntiMoneyLaundering />} />
 
             {/* New Routes */}
@@ -124,26 +111,8 @@ function App() {
             <Route path="/research-reports" element={<ResearchReports />} />
             <Route path="/esign-consent" element={<EsignConsent />} />
             <Route path="/faqs" element={<FAQs />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route
-              path="/admin/dashboard"
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </main>
-        
-        <Footer />
-
-        <OfferPopup triggerOpen={showOffer} onClose={() => setShowOffer(false)} />
-        <PopupDisclaimer onAccept={() => setShowForm(true)} />
-        <PopupForm isOpen={showForm} onClose={() => { setShowForm(false); setShowOffer(true); }} />
-        <FloatingButtons />
-        <FloatingChatBot />
-      </div>
+        </Route>
+      </Routes>
     </Router>
   );
 }

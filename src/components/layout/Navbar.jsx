@@ -12,6 +12,8 @@ import {
   FaLightbulb
 } from "react-icons/fa";
 import SterlingLogo from '../../assets/Starlinglogo4.png';
+import { contactDetails } from "../../utils/data";
+import FloatingChatBot from "../common/FloatingChatBot";
 
 
 const LampToggle = ({ theme, toggleTheme }) => {
@@ -103,7 +105,7 @@ const Navbar = () => {
       submenu: [
         { name: "Blogs", path: "/blogs" },
         { name: "Market News", path: "/market-news" },
-        { name: "Complaint Board", path: "/complaint-board" },
+        { name: "Complaint Data", path: "/complaint-data" },
         { name: "Grievance Redressal", path: "/grievance-redressal" },
       ]
     },
@@ -122,7 +124,7 @@ const Navbar = () => {
       path: "/dashboard", 
       icon: <FaTachometerAlt />,
       submenu: [
-        { name: "Investor Handbook", path: "/investor-handbook" },
+        { name: "Investor Charter", path: "/investor-charter" },
         { name: "Anti-Money Laundering", path: "/anti-money-laundering" },
       ]
     },
@@ -142,17 +144,17 @@ const Navbar = () => {
          <div className="max-w-screen-2xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
             {/* Contact Info */}
             <div className="flex items-center gap-6">
-               <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-white transition-colors group">
-                  <div className="p-1 bg-gray-800 rounded-full group-hover:bg-blue-600 transition-colors">
-                    <Phone size={12} className="text-blue-400 group-hover:text-white" /> 
+               <a href={`tel:${contactDetails.phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 hover:text-white transition-colors group">
+                  <div className="p-1 bg-gray-800 rounded-full group-hover:bg-green-600 transition-colors">
+                    <Phone size={12} className="text-green-400 group-hover:text-white" />
                   </div>
-                  <span className="font-medium tracking-wide">+91 98765 43210</span>
+                  <span className="font-medium tracking-wide">{contactDetails.phone}</span>
                </a>
-               <a href="mailto:info@sterlingresearch.com" className="flex items-center gap-2 hover:text-white transition-colors group">
+               <a href={`mailto:${contactDetails.email}`} className="flex items-center gap-2 hover:text-white transition-colors group">
                   <div className="p-1 bg-gray-800 rounded-full group-hover:bg-blue-600 transition-colors">
                     <Mail size={12} className="text-blue-400 group-hover:text-white" /> 
                   </div>
-                  <span className="font-medium tracking-wide">info@sterlingresearch.com</span>
+                  <span className="font-medium tracking-wide">{contactDetails.email}</span>
                </a>
             </div>
             
@@ -274,6 +276,11 @@ const Navbar = () => {
 
           {/* Right Actions: Theme Toggle & Mobile Menu Button */}
           <div className="flex items-center gap-4">
+             {/* Mobile Chat Bot */}
+             <div className="lg:hidden relative mr-2">
+                <FloatingChatBot isMobileNav={true} />
+             </div>
+
              {/* Custom Hanging Lamp Toggle */}
              <div className="relative z-50 -mt-2">
                <motion.button
@@ -462,10 +469,10 @@ const Navbar = () => {
                   
                   {/* Mobile Contact Quick Actions */}
                   <div className="grid grid-cols-2 gap-3">
-                     <a href="tel:+919876543210" className="flex items-center justify-center gap-2 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl font-semibold text-sm hover:bg-green-100 transition-colors">
+                     <a href={`tel:${contactDetails.phone.replace(/\s+/g, '')}`} className="flex items-center justify-center gap-2 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl font-semibold text-sm hover:bg-green-100 transition-colors">
                         <Phone size={16} /> Call
                      </a>
-                     <a href="mailto:info@sterlingresearch.com" className="flex items-center justify-center gap-2 py-2.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold text-sm hover:bg-blue-100 transition-colors">
+                     <a href={`mailto:${contactDetails.email}`} className="flex items-center justify-center gap-2 py-2.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold text-sm hover:bg-blue-100 transition-colors">
                         <Mail size={16} /> Email
                      </a>
                   </div>

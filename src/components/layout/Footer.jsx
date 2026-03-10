@@ -3,6 +3,8 @@ import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, ArrowRight
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import SterlingLogo from "../../assets/Starlinglogo4.png";
+import { contactDetails } from "../../utils/data";
+
 
 const Footer = () => {
   return (
@@ -153,7 +155,7 @@ const Footer = () => {
                  </div>
                  <div className="text-sm">
                    <p className="font-semibold text-white mb-1">Head Office</p>
-                   123 Financial District, Sterling Tower, Mumbai, India
+                   {contactDetails.address}
                  </div>
                </div>
 
@@ -163,7 +165,7 @@ const Footer = () => {
                  </div>
                  <div className="text-sm">
                    <p className="font-semibold text-white mb-1">Phone</p>
-                   <a href="tel:+919876543210" className="hover:text-green-400 transition-colors">+91 98765 43210</a>
+                   <a href={`tel:${contactDetails.phone.replace(/\s+/g, '')}`} className="hover:text-green-400 transition-colors">{contactDetails.phone}</a>
                  </div>
                </div>
 
@@ -173,7 +175,7 @@ const Footer = () => {
                  </div>
                  <div className="text-sm">
                    <p className="font-semibold text-white mb-1">Email</p>
-                   <a href="mailto:info@sterlingresearch.com" className="hover:text-purple-400 transition-colors">info@sterlingresearch.com</a>
+                   <a href={`mailto:${contactDetails.email}`} className="hover:text-purple-400 transition-colors">{contactDetails.email}</a>
                  </div>
                </div>
             </div>
@@ -214,15 +216,15 @@ const Footer = () => {
                        <div className="space-y-2 text-xs text-gray-300">
                           <div className="flex items-center justify-center gap-2 p-1.5 bg-gray-800 rounded-lg">
                              <Phone size={12} className="text-blue-400" />
-                             <span>+91 7879946775</span>
+                             <span>{contactDetails.developer.phones[0]}</span>
                           </div>
                           <div className="flex items-center justify-center gap-2 p-1.5 bg-gray-800 rounded-lg">
                              <Phone size={12} className="text-purple-400" />
-                             <span>+91 7770864395</span>
+                             <span>{contactDetails.developer.phones[1]}</span>
                           </div>
                           <div className="flex items-center justify-center gap-2 p-1.5 bg-gray-800 rounded-lg">
                              <Mail size={12} className="text-pink-400" />
-                             <span className="truncate">Durgeshrathor05@gamil.com</span>
+                             <span className="truncate">{contactDetails.developer.email}</span>
                           </div>
                        </div>
                     </div>

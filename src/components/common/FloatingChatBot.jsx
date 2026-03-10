@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Minus, X, Bot, AlertCircle } from 'lucide-react';
 import { ref, push } from 'firebase/database';
 import { database } from '../../firebase';
 
-const FloatingChatBot = () => {
+const FloatingChatBot = ({ isMobileNav = false }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [language, setLanguage] = useState('en'); // 'en' or 'hi'
     const [step, setStep] = useState('language'); // flow control: language -> name -> mobile -> city -> experience -> goal -> risk -> end
@@ -234,50 +235,49 @@ const FloatingChatBot = () => {
         processStep(currentInput);
     };
 
-  return (
-    <>
-      <div className="fixed bottom-6 left-6 z-[9000] flex flex-col items-start font-sans pointer-events-none">
+    const chatWindowMarkup = (
+    <motion.div
+      key="chat-window"
+      initial={isMobileNav ? { opacity: 0, scale: 0.9, y: 20 } : { opacity: 0, y: 100, scale: 0.8, x: 0 }}
+      animate={isMobileNav ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, y: 0, scale: 1, x: 0 }}
+      exit={isMobileNav ? { opacity: 0, scale: 0.9, y: 20 } : { opacity: 0, y: 100, scale: 0.8, x: 0, transition: { duration: 0.3 } }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      
+      className={`bg-white shadow-2xl overflow-hidden border border-gray-200 flex flex-col pointer-events-auto
+        ${isMobileNav 
+            ? 'fixed bottom-[15%] left-0 right-0 mx-auto z-[10000] w-[90vw] sm:w-[380px] rounded-xl shadow-[0_0_9999px_rgba(0,0,0,0.5)]' 
+            : 'fixed bottom-24 left-6 z-[10000] w-[340px] sm:w-[380px] max-w-[95vw] mb-4 rounded-xl'}`}
+      style={{ 
+          height: isMobileNav ? '500px' : '520px', 
+          maxHeight: '65vh', 
+          transformOrigin: 'bottom'
+      }}
+    >
+      {/* Header - PNB Red */}
+      <div className="bg-[#A20A3C] p-3 flex items-center justify-between shrink-0 shadow-md relative overflow-hidden">
+        {/* Decorative Pattern in Header */}
+        <div className="absolute top-0 right-0 w-20 h-20 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
         
-        <div className="pointer-events-auto">
-        <AnimatePresence mode="wait">
-          {isOpen ? (
-            <motion.div
-              key="chat-window"
-              initial={{ opacity: 0, y: 100, scale: 0.8, transformOrigin: "bottom left" }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 100, scale: 0.8, transition: { duration: 0.3 } }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="w-[350px] sm:w-[380px] max-w-[90vw] bg-white rounded-t-xl rounded-br-xl shadow-2xl overflow-hidden border border-gray-200 flex flex-col mb-4 ml-0 md:ml-2"
-              style={{ maxHeight: '80vh', height: '520px' }}
-            >
-              {/* Header - PNB Red */}
-              <div className="bg-[#A20A3C] p-3 flex items-center justify-between shrink-0 shadow-md relative overflow-hidden">
-                {/* Decorative Pattern in Header */}
-                <div className="absolute top-0 right-0 w-20 h-20 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
-                
-                <div className="flex items-center gap-3 relative z-10">
-                    <div className="bg-white p-1 rounded-full border-2 border-[#FABE2C]">
-                        <img 
-                            src="https://pnbcdn.talkk.ai/media/pihuGif.svg" 
-                            alt="Bot" 
-                            className="w-10 h-10 object-contain"
-                            onError={(e) => {e.target.onerror = null; e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712038.png"}} 
-                        />
-                    </div>
-                    <div>
-                        <h3 className="text-white font-bold text-lg leading-tight">Sterling Assistant</h3>
-                        <p className="text-[#FABE2C] text-xs font-medium">Virtual Help Desk</p>
-                    </div>
-                </div>
-                <div className="flex gap-2 text-white">
-                    <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded transition-colors">
-                        <Minus size={20} />
-                    </button>
-                    {/* <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded transition-colors">
-                        <X size={20} />
-                    </button> */}
-                </div>
-              </div>
+        <div className="flex items-center gap-3 relative z-10">
+            <div className="bg-white p-1 rounded-full border-2 border-[#FABE2C]">
+                <img 
+                    src="https://pnbcdn.talkk.ai/media/pihuGif.svg" 
+                    alt="Bot" 
+                    className="w-10 h-10 object-contain"
+                    onError={(e) => {e.target.onerror = null; e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712038.png"}} 
+                />
+            </div>
+            <div>
+                <h3 className="text-white font-bold text-lg leading-tight">Sterling Assistant</h3>
+                <p className="text-[#FABE2C] text-xs font-medium">Virtual Help Desk</p>
+            </div>
+        </div>
+        <div className="flex gap-2 text-white">
+            <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded transition-colors">
+                <Minus size={20} />
+            </button>
+        </div>
+      </div>
 
               {/* Messages Body */}
               <div className="flex-1 overflow-y-auto p-4 bg-[#f4f4f4] space-y-4" 
@@ -416,23 +416,28 @@ const FloatingChatBot = () => {
                   Powered by <span className="font-bold text-[#A20A3C]">Sterling AI</span>
               </div>
             </motion.div>
-          ) : (
+    );
+
+  return (
+    <>
+      <div className={`z-[9000] flex flex-col font-sans pointer-events-none items-center 
+        ${isMobileNav 
+            ? 'pointer-events-auto relative' 
+            : 'fixed bottom-4 left-1/2 -translate-x-1/2 md:bottom-6 md:left-6 md:translate-x-0 md:items-start'
+        }`}
+      >
+        
+        <div className="pointer-events-auto">
+        <AnimatePresence mode="wait">
+        {!isOpen && (
             <motion.div
                 key="mascot-button"
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ 
-                    y: -600, 
-                    opacity: 0, 
-                    scale: 0.5,
-                    transition: { duration: 0.6, ease: [0.17, 0.67, 0.83, 0.67] } // Bezier for rocket-like acceleration
-                }}
                 whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0], transition: { duration: 0.3 } }}
-                className="relative cursor-pointer group"
+                className="relative cursor-pointer group flex justify-center items-center"
                 onClick={() => setIsOpen(true)}
             >
-                {/* Mascot Image - No Background/Circle */}
-                <div className="w-24 h-24 md:w-32 md:h-32 flex items-end justify-center relative z-50">
+                {/* Mascot Image */}
+                <div className={`${isMobileNav ? 'w-16 h-16 -mt-2' : 'w-24 h-24 md:w-32 md:h-32'} flex items-end justify-center relative z-50`}>
                     <img 
                         src="https://pnbcdn.talkk.ai/media/pihuGif.svg" 
                         alt="Chat Bot" 
@@ -442,12 +447,42 @@ const FloatingChatBot = () => {
                             e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712038.png"
                         }}
                     />
+                     {/* Attention Dot for Mobile */}
+                     {isMobileNav && (
+                        <span className="absolute top-1 right-1 flex h-3 w-3">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                        </span>
+                     )}
                 </div>
             </motion.div>
-          )}
+        )}
         </AnimatePresence>
         </div>
       </div>
+
+       {/* Portal for Chat Window - Always mounted, AnimatePresence inside handles visibility */}
+       {createPortal(
+        <AnimatePresence mode="wait">
+            {isOpen && (
+                <>
+                    {/* Backdrop Overlay for Mobile - Adds focus and dimming effect */}
+                    {isMobileNav && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsOpen(false)}
+                            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[9995]"
+                            style={{ touchAction: 'none' }} // Prevent scrolling background
+                        />
+                    )}
+                    {chatWindowMarkup}
+                </>
+            )}
+        </AnimatePresence>, 
+        document.body
+       )}
     </>
   );
 };

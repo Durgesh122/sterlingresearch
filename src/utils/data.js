@@ -8,3 +8,16 @@ export const stockTickerData = [
   { symbol: "TCS", price: "4,050.20", change: "+75.60", percent: "+1.90%" },
   { symbol: "ICICIBANK", price: "1,120.50", change: "+8.30", percent: "+0.75%" },
 ];
+
+export const contactDetails = {
+  address: "Indore, Madhya Pradesh, India",
+  phone: "+91 74151 52600",
+  email: "support@sterlingresearch.co.in",
+  complianceEmail: "compliance@sterlingresearch.co.in",
+  workingHours: "Mon-Fri 09:30 AM – 05:00 PM",
+  developer: {
+    name: "Durgesh Rathor",
+    phones: ["+91 7879946775", "+91 7770864395"],
+    email: "Durgeshrathor05@gmail.com"
+  }
+};

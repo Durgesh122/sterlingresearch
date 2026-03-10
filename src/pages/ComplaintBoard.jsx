@@ -237,7 +237,7 @@ const ComplaintBoard = () => {
                                                 onChange={handleChange}
                                                 required
                                                 className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
-                                                placeholder="+91 98765 43210"
+                                                placeholder="+91 74151 52600"
                                             />
                                         </div>
                                       </div>

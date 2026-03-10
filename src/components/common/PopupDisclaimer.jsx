@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import SterlingLogo from '../../assets/SterlingLogo2.png';
 import { X, Globe, CheckCircle } from 'lucide-react';
+import { contactDetails } from "../../utils/data";
 
 // Modified for Sterling Research
 const PopupDisclaimer = ({ onAccept }) => {
@@ -164,7 +165,7 @@ const PopupDisclaimer = ({ onAccept }) => {
                   </p>
 
                   <p className="text-gray-500 text-xs mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
-                    <CheckCircle size={12} className="text-green-500"/> Contact: +91-6232678136 | Email: info@sterlingresearch.com
+                    <CheckCircle size={12} className="text-green-500"/> Contact: {contactDetails.phone} | Email: {contactDetails.email}
                   </p>
                 </>
               ) : (
@@ -190,7 +191,7 @@ const PopupDisclaimer = ({ onAccept }) => {
                   </p>
 
                   <p className="text-gray-500 text-xs mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
-                    <CheckCircle size={12} className="text-green-500"/> संपर्क: +91-6232678136 | ईमेल: info@sterlingresearch.com
+                    <CheckCircle size={12} className="text-green-500"/> संपर्क: {contactDetails.phone} | ईमेल: {contactDetails.email}
                   </p>
                 </>
               )}

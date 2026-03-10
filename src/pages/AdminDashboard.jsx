@@ -1,17 +1,30 @@
+// Admin Dashboard Component - Managed by Admin
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signOut } from 'firebase/auth';
 import { ref, push, onValue, remove, set } from "firebase/database";
 import { auth, database } from '../firebase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   Users, FileText, Briefcase, Plus, Trash2, Phone as PhoneIcon,
-  LogOut, Activity, Search, X, CheckCircle, Clock, Image as ImageIcon, MessageSquare, Shield, AlertTriangle, Star, Megaphone
+  LogOut, Activity, Search, X, CheckCircle, Clock, Image as ImageIcon, MessageSquare, Shield, AlertTriangle, Star, Megaphone, Database, Menu, Bot as BotIcon, Home
 } from 'lucide-react';
+import ComplaintDataManager from '../components/admin/ComplaintDataManager';
+import ReportManager from '../components/admin/ReportManager';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('overview');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'overview';
+  
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Helper to change tab
+  const setActiveTab = (tab) => {
+    setSearchParams({ tab });
+    setIsMobileMenuOpen(false); // Close mobile menu on navigate
+  };
+
   const [jobs, setJobs] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [applications, setApplications] = useState([]);
@@ -160,6 +173,11 @@ const AdminDashboard = () => {
     navigate('/admin/login');
   };
 
+  const handleExitToWebsite = async () => {
+    await signOut(auth);
+    navigate('/');
+  };
+
   const handleCreateJob = async (e) => {
     e.preventDefault();
     try {
@@ -301,46 +319,80 @@ const AdminDashboard = () => {
     { id: 'overview', label: 'Overview', icon: Activity },
     { id: 'offer-popup', label: 'Offers & Promos', icon: Megaphone },
     { id: 'leads', label: 'Popup Leads', icon: Star },
-    { id: 'chat_leads', label: 'AI Chat Leads', icon: CheckCircle }, // New Menu Item
+    { id: 'chat_leads', label: 'AI Chat Leads', icon: BotIcon }, // New Menu Item
     { id: 'messages', label: 'Messages', icon: MessageSquare },
     { id: 'complaints', label: 'Complaints', icon: Shield },
     { id: 'jobs', label: 'Manage Jobs', icon: Briefcase },
+    { id: 'report-manager', label: 'Report Manager', icon: FileText },
     { id: 'blogs', label: 'Manage Blogs', icon: FileText },
+    { id: 'complaint-data', label: 'Complaint Data', icon: Database },
     { id: 'applications', label: 'Applications', icon: Users },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-300 flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-sans transition-colors duration-300 flex overflow-hidden">
       
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 hidden lg:flex flex-col">
-        <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+      <aside 
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 
+          transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl lg:shadow-none
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}
+      >
+        <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
           <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
             Admin Panel
           </h1>
+          <button 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="lg:hidden p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+          >
+            <X size={20} />
+          </button>
         </div>
         
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`flex items-center w-full px-4 py-3 rounded-xl gap-3 text-sm font-medium transition-colors ${
+              className={`flex items-center w-full px-4 py-3 rounded-xl gap-3 text-sm font-medium transition-all duration-200 ${
                 activeTab === item.id
-                ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' 
-                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                ? 'bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 shadow-sm border border-blue-100 dark:from-blue-900/20 dark:to-indigo-900/20 dark:text-blue-300 dark:border-blue-800' 
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:pl-5'
               }`}
             >
-              <item.icon size={20} />
+              <item.icon size={20} className={activeTab === item.id ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400'} />
               {item.label}
             </button>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-gray-100 dark:border-gray-700">
+        <div className="p-4 border-t border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 space-y-2">
+          <button 
+            onClick={handleExitToWebsite}
+            className="flex items-center w-full px-4 py-3 rounded-xl gap-3 text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 dark:text-gray-400 dark:hover:text-blue-400 dark:hover:bg-blue-900/10 transition-colors"
+          >
+            <Home size={20} />
+            Back to Website
+          </button>
           <button 
             onClick={handleLogout}
-            className="flex items-center w-full px-4 py-3 rounded-xl gap-3 text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+            className="flex items-center w-full px-4 py-3 rounded-xl gap-3 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors border border-red-100 dark:border-red-900/30"
           >
             <LogOut size={20} />
             Sign Out
@@ -349,82 +401,167 @@ const AdminDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto h-screen p-6 lg:p-8">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden w-full relative">
         
-        {/* Header (Mobile Toggle could go here) */}
-        <div className="mb-8 flex justify-between items-center">
-           <div>
-             <h2 className="text-2xl font-bold text-gray-800 dark:text-white capitalize">
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm z-30 sticky top-0">
+           <div className="flex items-center gap-3">
+             <button 
+               onClick={() => setIsMobileMenuOpen(true)}
+               className="p-2 -ml-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+             >
+               <Menu size={24} />
+             </button>
+             <span className="font-bold text-lg text-gray-800 dark:text-white capitalize">
                {activeTab.replace('-', ' ')}
-             </h2>
-             <p className="text-gray-500 text-sm">Manage your recruitment pipeline</p>
+             </span>
            </div>
+           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500"></div>
         </div>
 
-        {/* Content Area */}
-        <div className="max-w-7xl mx-auto">
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 w-full max-w-[100vw]">
           
+          {/* Default Header (Hidden on Mobile since we have Top Bar) */}
+          <div className="hidden lg:flex mb-8 justify-between items-center">
+             <div>
+               <h2 className="text-3xl font-bold text-gray-900 dark:text-white capitalize tracking-tight">
+                 {activeTab.replace('-', ' ')}
+               </h2>
+               <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Manage your website content and leads efficiently.</p>
+             </div>
+             <div className="flex items-center gap-4">
+                <div className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-300">
+                  {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                </div>
+             </div>
+          </div>
+
+          {/* Content Container */}
+        <div className="max-w-7xl mx-auto space-y-6 pb-20 lg:pb-10">
+          {activeTab === 'complaint-data' && <ComplaintDataManager />}
+          {activeTab === 'report-manager' && <ReportManager />}
+
           {/* OVERVIEW TAB */}
           {activeTab === 'overview' && (
-             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-xl">
-                      <Briefcase size={24} />
+             <div className="space-y-8 animate-in fade-in duration-500">
+                {/* 1. Welcome Banner */}
+                <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 rounded-3xl p-8 text-white shadow-xl shadow-indigo-200 dark:shadow-none relative overflow-hidden">
+                    <div className="relative z-10">
+                        <h2 className="text-3xl font-bold mb-2">Welcome back, Admin! 👋</h2>
+                        <p className="text-indigo-100 max-w-2xl">Here is what is happening with your website today. You have <span className="font-bold text-white">{messages.length + leads.length + chatLeads.length} new interactions</span> to review.</p>
+                        <div className="mt-6 flex gap-3">
+                            <button onClick={() => setActiveTab('messages')} className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-sm font-medium transition-all">
+                                View Messages
+                            </button>
+                            <button onClick={() => setActiveTab('leads')} className="bg-white text-indigo-600 px-4 py-2 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition-all">
+                                Check Leads
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Active Jobs</p>
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{jobs.length}</h3>
-                    </div>
-                  </div>
+                    {/* Decorative Circles */}
+                    <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-48 h-48 bg-purple-500/20 rounded-full blur-2xl"></div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-xl">
-                      <Users size={24} />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Total Applications</p>
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{applications.length}</h3>
-                    </div>
-                  </div>
+                {/* 2. Stats Grid */}
+                <div>
+                   <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                       <Activity className="text-indigo-500" size={20} />
+                       Quick Stats
+                   </h3>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {[
+                            { label: 'Total Messages', value: messages.length, icon: MessageSquare, color: 'indigo', bg: 'bg-indigo-50 dark:bg-indigo-900/20', text: 'text-indigo-600 dark:text-indigo-400' },
+                            { label: 'Popup Leads', value: leads.length, icon: Star, color: 'amber', bg: 'bg-amber-50 dark:bg-amber-900/20', text: 'text-amber-600 dark:text-amber-400' },
+                            { label: 'AI Chat Leads', value: chatLeads.length, icon: BotIcon, color: 'pink', bg: 'bg-pink-50 dark:bg-pink-900/20', text: 'text-pink-600 dark:text-pink-400' },
+                            { label: 'Job Applications', value: applications.length, icon: Users, color: 'blue', bg: 'bg-blue-50 dark:bg-blue-900/20', text: 'text-blue-600 dark:text-blue-400' },
+                            { label: 'Active Jobs', value: jobs.length, icon: Briefcase, color: 'cyan', bg: 'bg-cyan-50 dark:bg-cyan-900/20', text: 'text-cyan-600 dark:text-cyan-400' },
+                            { label: 'Published Blogs', value: blogs.length, icon: FileText, color: 'green', bg: 'bg-green-50 dark:bg-green-900/20', text: 'text-green-600 dark:text-green-400' },
+                            { label: 'Complaints', value: complaints.length, icon: Shield, color: 'red', bg: 'bg-red-50 dark:bg-red-900/20', text: 'text-red-600 dark:text-red-400' },
+                        ].map((stat, idx) => (
+                            <div key={idx} className="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all group">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{stat.label}</p>
+                                        <h4 className="text-2xl font-bold text-gray-900 dark:text-white mt-1 group-hover:scale-105 transition-transform origin-left">{stat.value}</h4>
+                                    </div>
+                                    <div className={`p-3 rounded-xl ${stat.bg} ${stat.text}`}>
+                                        <stat.icon size={20} />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-green-100 dark:bg-green-900/30 text-green-600 rounded-xl">
-                      <FileText size={24} />
+                {/* 3. Recent Activity Split */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Recent Messages */}
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col h-full">
+                        <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+                            <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                                <MessageSquare size={18} className="text-indigo-500"/> Recent Messages
+                            </h3>
+                            <button onClick={() => setActiveTab('messages')} className="text-xs font-semibold text-indigo-600 hover:text-indigo-700">View All</button>
+                        </div>
+                        <div className="p-2 overflow-y-auto max-h-[400px] custom-scrollbar">
+                            {messages.length > 0 ? (
+                                messages.slice(0, 5).map((msg) => (
+                                    <div key={msg.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/30 rounded-2xl transition-colors group cursor-pointer border-b border-gray-50 dark:border-gray-800 last:border-0">
+                                        <div className="flex justify-between items-start mb-1">
+                                            <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{msg.name}</h4>
+                                            <span className="text-[10px] text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+                                                {new Date(msg.submittedAt).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-indigo-500 font-medium mb-1">{msg.subject}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{msg.message}</p>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="text-center py-10 text-gray-400">
+                                    <MessageSquare size={40} className="mx-auto mb-2 opacity-20" />
+                                    <p>No messages yet</p>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Published Blogs</p>
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{blogs.length}</h3>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 rounded-xl">
-                      <MessageSquare size={24} />
+                    {/* Recent Leads */}
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden flex flex-col h-full">
+                        <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+                            <h3 className="font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                                <Star size={18} className="text-amber-500"/> Recent Leads
+                            </h3>
+                            <button onClick={() => setActiveTab('leads')} className="text-xs font-semibold text-amber-600 hover:text-amber-700">View All</button>
+                        </div>
+                        <div className="p-2 overflow-y-auto max-h-[400px] custom-scrollbar">
+                             {leads.length > 0 ? (
+                                leads.slice(0, 5).map((lead) => (
+                                    <div key={lead.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/30 rounded-2xl transition-colors border-b border-gray-50 dark:border-gray-800 last:border-0">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-lg">
+                                                {lead.name.charAt(0)}
+                                            </div>
+                                            <div className="flex-1">
+                                                <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{lead.name}</h4>
+                                                <p className="text-xs text-gray-500">{lead.phone}</p>
+                                            </div>
+                                            <a href={`tel:${lead.phone}`} className="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors">
+                                                <PhoneIcon size={16} />
+                                            </a>
+                                        </div>
+                                    </div>
+                                ))
+                             ) : (
+                                <div className="text-center py-10 text-gray-400">
+                                    <Star size={40} className="mx-auto mb-2 opacity-20" />
+                                    <p>No leads yet</p>
+                                </div>
+                             )}
+                        </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Total Messages</p>
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{messages.length}</h3>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-xl">
-                      <Shield size={24} />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Complaints</p>
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-white">{complaints.length}</h3>
-                    </div>
-                  </div>
                 </div>
              </div>
           )}
@@ -876,17 +1013,24 @@ const AdminDashboard = () => {
                           <tr key={lead.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
                             <td className="px-6 py-4">
                               <div className="flex flex-col">
-                                <span className="font-bold text-gray-900 dark:text-white">{lead.name}</span>
-                                <a href={`tel:${lead.mobile}`} className="text-sm text-blue-600 hover:underline flex items-center gap-1">
-                                    <PhoneIcon size={12} /> {lead.mobile}
-                                </a>
+                                <span className="font-bold text-gray-900 dark:text-white">{lead.name || 'Unknown User'}</span>
+                                {lead.mobile && (
+                                    <a href={`tel:${lead.mobile}`} className="text-sm text-blue-600 hover:underline flex items-center gap-1 mt-0.5">
+                                        <PhoneIcon size={12} /> {lead.mobile}
+                                    </a>
+                                )}
                               </div>
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
                               {lead.city || "N/A"}
                             </td>
                             <td className="px-6 py-4">
-                              <span className={`px-2 py-1 rounded text-xs font-semibold ${lead.risk?.includes('High') ? 'bg-red-100 text-red-700' : lead.risk?.includes('Medium') ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}`}>
+                              <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                                (lead.risk || '').includes('High') ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 
+                                (lead.risk || '').includes('Medium') ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 
+                                (lead.risk || '').includes('Low') ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
+                                'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                              }`}>
                                 {lead.risk || "Unknown"}
                               </span>
                             </td>
@@ -897,7 +1041,7 @@ const AdminDashboard = () => {
                                 </div>
                             </td>
                             <td className="px-6 py-4 text-xs text-gray-500">
-                              {new Date(lead.submittedAt).toLocaleString()}
+                              {lead.submittedAt ? new Date(lead.submittedAt).toLocaleString() : 'N/A'}
                             </td>
                             <td className="px-6 py-4">
                                <button 
@@ -913,7 +1057,7 @@ const AdminDashboard = () => {
                       ) : (
                         <tr>
                           <td colSpan="6" className="px-6 py-12 text-center text-gray-400">
-                            <Bot size={48} className="mx-auto mb-4 opacity-50 text-blue-300" />
+                            <BotIcon size={48} className="mx-auto mb-4 opacity-50 text-blue-300" />
                             <p>No chatbot leads captured yet.</p>
                           </td>
                         </tr>
@@ -988,7 +1132,6 @@ const AdminDashboard = () => {
           )}
 
         </div>
-      </main>
 
       {/* Create Job Modal */}
       <AnimatePresence>
@@ -1281,7 +1424,13 @@ const AdminDashboard = () => {
            </div>
         )}
       </AnimatePresence>
+      
+      <footer className="mt-10 text-center text-sm text-gray-500 dark:text-gray-400 pb-4">
+         <p>&copy; {new Date().getFullYear()} Sterling Research. All rights reserved.</p>
+      </footer>
 
+      </div>
+     </main>
     </div>
   );
 };

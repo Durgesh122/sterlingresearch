@@ -133,7 +133,7 @@ const FloatingButtons = () => {
               
               {/* Phone */}
               <a 
-                href="tel:+916232678136" 
+                href="tel:+917415152600" 
                 className={`${buttonClass} bg-emerald-500 text-white hover:bg-emerald-600 focus:ring-emerald-500`}
                 title="Call Us"
               >
@@ -145,7 +145,7 @@ const FloatingButtons = () => {
 
         {/* WhatsApp Button (Premium Ripple Animation) */}
         <motion.a
-          href="https://wa.me/6232678136?text=Hello%20Sterling%20Research,%20I%20am%20interested%20in%20your%20services.%20Please%20guide%20me."
+          href="https://wa.me/917415152600?text=Hello%20Sterling%20Research,%20I%20am%20interested%20in%20your%20services.%20Please%20guide%20me."
           target="_blank"
           rel="noopener noreferrer"
           initial={{ x: 100, opacity: 0 }} 
