@@ -10,6 +10,8 @@ import PublicLayout from './components/layout/PublicLayout';
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
+import ServicePackPage from "./pages/ServicePackPage";
+import Pricing from "./pages/Pricing";
 import Contact from "./pages/Contact";
 // Company Pages
 import VisionMission from "./pages/VisionMission";
@@ -19,8 +21,6 @@ import Disclaimer from "./pages/Disclaimer";
 import TermsConditions from "./pages/TermsConditions";
 import Disclosure from "./pages/Disclosure";
 // Insights Pages
-import Blogs from "./pages/Blogs";
-import MarketNews from "./pages/MarketNews";
 import ComplaintBoard from "./pages/ComplaintBoard";
 import ComplaintData from "./pages/ComplaintData";
 import GrievanceRedressal from "./pages/GrievanceRedressal";
@@ -31,8 +31,8 @@ import AccessibilityMedia from "./pages/AccessibilityMedia";
 // Dashboard Pages
 import InvestorCharter from "./pages/InvestorCharter";
 import AntiMoneyLaundering from "./pages/AntiMoneyLaundering";
-import Job from "./pages/Job";
 import ResearchReports from "./pages/ResearchReports";
+import EsignConsent from "./pages/EsignConsent";
 
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -46,7 +46,6 @@ const Accessibility = () => <UnderConstruction title="Accessibility Statement" /
 const Dashboard = () => <UnderConstruction title="Client Dashboard" />;
 const Payment = () => <UnderConstruction title="Secure Payment Portal" />;
 const ComplaintBox = () => <UnderConstruction title="Customer Complaint Box" />;
-const EsignConsent = () => <UnderConstruction title="E-Sign Consent Form" />;
 const FAQs = () => <UnderConstruction title="Frequently Asked Questions" />;
 // const AdminLogin = () => <UnderConstruction title="Admin Login Portal" />;
 
@@ -55,7 +54,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" ariaLabel="Global site notifications" />
       
       <Routes>
         {/* Admin Routes - Standalone (No Layout) */}
@@ -74,6 +73,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/services/:slug" element={<ServicePackPage />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/contact-us" element={<Contact />} />
             
@@ -86,8 +87,6 @@ function App() {
             <Route path="/disclosure" element={<Disclosure />} />
             
             {/* Insights Pages */}
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/market-news" element={<MarketNews />} />
             <Route path="/complaint-board" element={<ComplaintBoard />} />
             <Route path="/complaint-data" element={<ComplaintData />} />
             <Route path="/grievance-redressal" element={<GrievanceRedressal />} />
@@ -103,7 +102,6 @@ function App() {
 
             {/* New Routes */}
             <Route path="/company" element={<Company />} />
-            <Route path="/job" element={<Job />} />
             <Route path="/accessibility" element={<Accessibility />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/payment" element={<Payment />} />

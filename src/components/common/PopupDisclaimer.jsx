@@ -1,222 +1,242 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
-import SterlingLogo from '../../assets/SterlingLogo2.png';
-import { X, Globe, CheckCircle } from 'lucide-react';
-import { contactDetails } from "../../utils/data";
+import SterlingLogo from '../../assets/SterlingLogoNew.svg';
+import {
+  ShieldCheck,
+  AlertTriangle,
+  Lock,
+  ArrowRight,
+  X,
+  UserX,
+  MessageSquareText,
+  Landmark,
+  Globe,
+} from 'lucide-react';
+import { contactDetails, complianceDetails } from '../../utils/data';
 
-// Modified for Sterling Research
-const PopupDisclaimer = ({ onAccept }) => {
-  const [visible, setVisible] = useState(false);
-  const [hasShownThisSession, setHasShownThisSession] = useState(false);
-  
-  // Language state: 'en' or 'hi'
+const copy = {
+  en: {
+    badge: 'Official Disclosure',
+    title: 'Important Client Advisory / महत्वपूर्ण ग्राहक सलाह',
+    greeting: 'Dear Client,',
+    subtitle:
+      'Please read the following guidelines carefully to ensure your safety and compliance while availing our services.',
+    items: [
+      {
+        title: 'Do Not Share Demat Details',
+        description:
+          'Do not share your Demat Account details with any employee or executive. Sterling Research will not be responsible for losses arising from such disclosure. Responsibility will remain solely with the client.',
+      },
+      {
+        title: 'Act Only On Official Recommendations',
+        description:
+          'Follow only trading tips and recommendations sent through our official communication channels (including official SMS updates). Please strictly follow the prescribed entry and exit levels in each recommendation.',
+      },
+      {
+        title: 'No Liability For Unofficial Tips',
+        description:
+          'The company will not be responsible for any loss if you act on tips from unofficial sources or fail to follow instructions issued in official recommendations.',
+      },
+      {
+        title: 'Payment Advisory For Minors And Senior Citizens',
+        description:
+          'Minors and senior citizens above 60 years of age are advised not to make payments to the company or its representatives without proper due diligence and family supervision.',
+      },
+      {
+        title: 'Pay Only To Official Company Account',
+        description:
+          'Make payments only to the official company account mentioned on our website. We are not responsible for payments made to personal or third-party accounts.',
+      },
+      {
+        title: 'Review Website Before Payment',
+        description:
+          'Please make payments only after reviewing our official website for service details, terms, and policies.',
+      },
+    ],
+    supportLabel: 'For any queries or support:',
+    regards: 'Warm Regards,',
+    company: 'Sterling Research',
+    cta: 'I Understand & Proceed',
+  },
+  hi: {
+    badge: 'आधिकारिक प्रकटीकरण',
+    title: 'Important Client Advisory / महत्वपूर्ण ग्राहक सलाह',
+    greeting: 'प्रिय ग्राहक,',
+    subtitle:
+      'हमारी सेवाओं का उपयोग करते समय आपकी सुरक्षा और अनुपालन सुनिश्चित करने के लिए कृपया निम्नलिखित दिशानिर्देश ध्यान से पढ़ें।',
+    items: [
+      {
+        title: 'डीमैट विवरण साझा न करें',
+        description:
+          'अपने डीमैट खाते की जानकारी किसी भी कर्मचारी या प्रतिनिधि के साथ साझा न करें। ऐसी जानकारी साझा करने से होने वाले नुकसान के लिए Sterling Research जिम्मेदार नहीं होगा। इसकी जिम्मेदारी पूरी तरह ग्राहक की होगी।',
+      },
+      {
+        title: 'केवल आधिकारिक सुझावों पर कार्य करें',
+        description:
+          'केवल आधिकारिक संचार माध्यमों (आधिकारिक SMS अपडेट सहित) से प्राप्त ट्रेडिंग टिप्स और सिफारिशों पर ही कार्य करें। प्रत्येक सिफारिश में दिए गए एंट्री और एग्जिट स्तरों का सख्ती से पालन करें।',
+      },
+      {
+        title: 'अनौपचारिक टिप्स पर कंपनी जिम्मेदार नहीं',
+        description:
+          'यदि आप अन्य स्रोतों से टिप्स लेकर ट्रेड करते हैं या कंपनी द्वारा दिए गए निर्देशों का पालन नहीं करते हैं, तो होने वाले नुकसान के लिए कंपनी जिम्मेदार नहीं होगी।',
+      },
+      {
+        title: 'नाबालिग और 60+ के लिए भुगतान सलाह',
+        description:
+          'नाबालिग और 60 वर्ष से अधिक आयु के वरिष्ठ नागरिकों को बिना उचित जांच और पारिवारिक निगरानी के कंपनी या उसके प्रतिनिधियों को भुगतान करने से बचना चाहिए।',
+      },
+      {
+        title: 'भुगतान केवल आधिकारिक खाते में करें',
+        description:
+          'भुगतान केवल हमारी वेबसाइट पर दिए गए आधिकारिक कंपनी खाते में करें। किसी व्यक्तिगत या तृतीय-पक्ष खाते में किए गए भुगतान के लिए कंपनी जिम्मेदार नहीं होगी।',
+      },
+      {
+        title: 'भुगतान से पहले वेबसाइट अवश्य देखें',
+        description:
+          'कृपया भुगतान करने से पहले हमारी आधिकारिक वेबसाइट पर सेवा विवरण, नियम और नीतियां अवश्य पढ़ें।',
+      },
+    ],
+    supportLabel: 'किसी भी प्रश्न या सहायता के लिए:',
+    regards: 'सादर,',
+    company: 'Sterling Research',
+    cta: 'मैं समझता हूं और आगे बढ़ता हूं',
+  },
+};
+
+const itemIcons = [ShieldCheck, MessageSquareText, AlertTriangle, UserX, Landmark, Globe];
+const itemAccent = [
+  'text-emerald-600',
+  'text-[#1e5631]',
+  'text-[#d39b17]',
+  'text-rose-500',
+  'text-sky-600',
+  'text-violet-600',
+];
+
+const PopupDisclaimer = ({ isOpen, onClose }) => {
   const [lang, setLang] = useState('en');
-  const location = useLocation();
+  const text = copy[lang];
 
-  // Show on initial mount (refresh) ONLY if on Home page
   useEffect(() => {
-    if (location.pathname === '/') {
-        setVisible(true);
-    }
-  }, [location.pathname]);
-
-  // Show when navigating to home page, if not currently visible
-  /* 
-  useEffect(() => {
-    if (location.pathname === '/' && !visible && hasShownThisSession) {
-        setVisible(true);
-    }
-  }, [location.pathname]);
-  */
-
-
-  // Mark as shown once accepted/closed so we can track session behavior if needed
-  useEffect(() => {
-     if (visible) {
-         setHasShownThisSession(true);
-     }
-  }, [visible]);
-
-  const setEnglish = () => setLang('en');
-  const setHindi = () => setLang('hi');
-
-  // Lock body scroll when popup is open, restore when closed
-  useEffect(() => {
-    if (visible) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = isOpen ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [visible]);
-
-  const handleClose = () => {
-    setVisible(false);
-    if (onAccept) onAccept();
-  };
-
-  if (!visible) return null;
+  }, [isOpen]);
 
   const content = (
     <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 backdrop-blur-md p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-          <motion.div
-          className="relative rounded-2xl shadow-2xl bg-white w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]"
-          initial={{ scale: 0.8, opacity: 0, y: 50, rotateX: -10 }}
-          animate={{ scale: 1, opacity: 1, y: 0, rotateX: 0 }}
-          exit={{ scale: 0.8, opacity: 0, y: 50 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      {isOpen && (
+        <motion.div
+          onClick={onClose}
+          className='fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
         >
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 p-4 sm:p-6 flex items-center justify-between shadow-md relative z-10 shrink-0">
-             <div className="flex items-center gap-4">
-                <motion.div 
-                  initial={{ rotate: -180, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-lg p-1.5 shadow-lg shrink-0 flex items-center justify-center"
-                >
-                   <img src={SterlingLogo} alt="Sterling Research" className="max-w-full max-h-full object-contain" />
-                </motion.div>
-                <div className="overflow-hidden">
-                   <motion.h2 
-                     initial={{ y: 20, opacity: 0 }}
-                     animate={{ y: 0, opacity: 1 }}
-                     transition={{ delay: 0.3 }}
-                     className="text-lg sm:text-2xl font-bold text-white tracking-tight"
-                   >
-                     STERLING RESEARCH
-                   </motion.h2>
-                   <motion.p 
-                     initial={{ y: 20, opacity: 0 }}
-                     animate={{ y: 0, opacity: 1 }}
-                     transition={{ delay: 0.4 }}
-                     className="text-blue-200 text-xs sm:text-sm font-medium"
-                   >
-                     {lang === 'en' ? 'Important Investment Disclosure' : 'महत्वपूर्ण निवेश सूचना'}
-                   </motion.p>
+          <div className='absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity' />
+
+          <motion.div
+            className='relative w-full max-w-3xl overflow-hidden rounded-2xl border border-[#e8dfc6] bg-gradient-to-b from-[#fffdf8] via-white to-[#f9fdf8] shadow-[0_30px_80px_rgba(15,23,42,0.25)] flex flex-col max-h-[90vh]'
+            initial={{ scale: 0.95, opacity: 0, y: 10 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 10 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 24 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className='shrink-0 border-b border-[#ede5d2] bg-gradient-to-r from-[#fff8e8] via-white to-[#f3f9f2] px-6 py-4'>
+              <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
+                <div className='flex items-center'>
+                  <img src={SterlingLogo} alt='Sterling Research' className='h-14 sm:h-16 w-auto object-contain' />
                 </div>
-             </div>
 
-             <button 
-               onClick={handleClose}
-               className="text-white/80 hover:text-white hover:bg-white/10 p-2 rounded-full transition-colors"
-             >
-                <X size={24} />
-             </button>
-          </div>
-          
-          {/* Language Toggle */}
-           <div className="bg-gray-50 border-b border-gray-200 px-6 py-2 flex justify-end shrink-0">
-             <div className="flex bg-gray-200 rounded-lg p-1">
-                <button
-                  onClick={setEnglish}
-                  className={`px-3 py-1 text-sm rounded-md transition-all font-medium flex items-center gap-1 ${lang === 'en' ? 'bg-white text-indigo-700 shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
-                >
-                  <Globe size={14} /> English
-                </button>
-                <button
-                  onClick={setHindi}
-                  className={`px-3 py-1 text-sm rounded-md transition-all font-medium flex items-center gap-1 ${lang === 'hi' ? 'bg-white text-indigo-700 shadow-sm' : 'text-gray-600 hover:text-gray-900'}`}
-                >
-                  हिंदी
-                </button>
-             </div>
-          </div>
-
-
-          {/* Scrollable Content */}
-          <div className="p-6 overflow-y-auto text-gray-700 leading-relaxed text-sm sm:text-base space-y-4 bg-white grow scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-             <motion.div
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               transition={{ delay: 0.5, duration: 0.5 }}
-             >
-            {lang === 'en' ? (
-                <>
-                  <p className="font-semibold text-gray-900 text-lg">
-                    Welcome to Sterling Research. Before proceeding, please read the following disclaimer carefully.
-                  </p>
-                  
-                  <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-md text-sm text-blue-900 my-4 shadow-sm">
-                    <strong>Note:</strong> We are a research-based company providing market analysis. We do not guarantee returns or profit-sharing.
+                <div className='flex items-center gap-2 self-start md:self-center'>
+                  <div className='flex rounded-lg border border-[#e7e0cf] bg-white p-1'>
+                    <button
+                      type='button'
+                      onClick={() => setLang('en')}
+                      className={`rounded-md px-3 py-1 text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-[#1e5631] text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                    >
+                      EN
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => setLang('hi')}
+                      className={`rounded-md px-3 py-1 text-[10px] font-bold transition-all ${lang === 'hi' ? 'bg-[#1e5631] text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                    >
+                      HI
+                    </button>
                   </div>
 
-                  <p>
-                    <strong>Investment Risk:</strong> Trading in the stock market involves a significant risk of loss. The information provided on this website is for educational and informational purposes only and should not be construed as investment advice. Past performance is not indicative of future results.
-                  </p>
+                  <button
+                    type='button'
+                    onClick={onClose}
+                    className='inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#e7e0cf] bg-white text-slate-500 transition-colors hover:text-slate-800'
+                    aria-label='Close disclosure popup'
+                  >
+                    <X className='h-4 w-4' />
+                  </button>
+                </div>
+              </div>
+            </div>
 
-                  <p>
-                    <strong>No Liability:</strong> Sterling Research and its analysts are not liable for any losses incurred as a result of using our research or recommendations. Please consult with a certified financial advisor before making any investment decisions.
-                  </p>
+            <div className='custom-scrollbar flex-1 overflow-y-auto px-6 py-5'>
+              <div className='rounded-xl border border-[#efe5d0] bg-white/85 p-4'>
+                <h3 className='text-base font-bold text-slate-900'>{text.title}</h3>
+                <p className='mt-2 text-sm font-semibold text-slate-700'>{text.greeting}</p>
+                <p className='mt-1 text-sm leading-relaxed text-slate-600'>{text.subtitle}</p>
+              </div>
 
-                  <p className="bg-red-50 p-3 rounded border border-red-100 text-red-800 text-sm">
-                    <strong>Fraud Alert:</strong> We NEVER ask for personal details like your DEMAT account password or OTP. We only accept payments through our official website or official company bank accounts. Beware of fraudulent calls or messages asking for personal payments.
-                  </p>
+              <div className='mt-4 space-y-3'>
+                {text.items.map((item, index) => {
+                  const Icon = itemIcons[index] || Lock;
+                  return (
+                    <div key={item.title} className='rounded-xl border border-[#eee4cf] bg-white px-4 py-3 shadow-sm'>
+                      <div className='flex items-start gap-3'>
+                        <span className='mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#fff4d5]'>
+                          <Icon className={`h-4 w-4 ${itemAccent[index] || 'text-slate-600'}`} />
+                        </span>
+                        <div>
+                          <h4 className='text-xs font-bold uppercase tracking-wide text-slate-800'>{item.title}</h4>
+                          <p className='mt-1 text-xs leading-relaxed text-slate-600'>{item.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-                  <p className="text-gray-500 text-xs mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
-                    <CheckCircle size={12} className="text-green-500"/> Contact: {contactDetails.phone} | Email: {contactDetails.email}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="font-semibold text-gray-900 text-lg">
-                    स्टर्लिंग रिसर्च में आपका स्वागत है। आगे बढ़ने से पहले, कृपया निम्नलिखित अस्वीकरण को ध्यान से पढ़ें।
-                  </p>
+              <div className='mt-4 rounded-xl border border-[#eee3ce] bg-[#fffaf0] p-3 text-xs text-slate-600'>
+                <p className='font-semibold text-slate-800'>{text.supportLabel}</p>
+                <p className='mt-1'>Email: {contactDetails.email}</p>
+                <p>Phone: {contactDetails.phone}</p>
+                <p className='mt-2 text-slate-700'>{text.regards}</p>
+                <p className='font-semibold text-slate-800'>{complianceDetails.registeredName}</p>
+              </div>
+            </div>
 
-                  <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-md text-sm text-blue-900 my-4 shadow-sm">
-                    <strong>नोट:</strong> हम एक शोध-आधारित कंपनी हैं जो बाजार विश्लेषण प्रदान करती है। हम रिटर्न या लाभ-साझाकरण (profit-sharing) की गारंटी नहीं देते हैं।
-                  </div>
-                  
-                  <p>
-                    <strong>निवेश जोखिम:</strong> शेयर बाजार में ट्रेडिंग में नुकसान का महत्वपूर्ण जोखिम शामिल है। इस वेबसाइट पर प्रदान की गई जानकारी केवल शैक्षिक और सूचनात्मक उद्देश्यों के लिए है और इसे निवेश सलाह के रूप में नहीं माना जाना चाहिए। पिछला प्रदर्शन भविष्य के परिणामों का संकेत नहीं है।
-                  </p>
-
-                  <p>
-                    <strong>दायित्व नहीं:</strong> स्टर्लिंग रिसर्च और इसके विश्लेषक हमारे शोध या सिफारिशों का उपयोग करने के परिणामस्वरूप हुए किसी भी नुकसान के लिए उत्तरदायी नहीं हैं। कोई भी निवेश निर्णय लेने से पहले कृपया एक प्रमाणित वित्तीय सलाहकार से परामर्श लें।
-                  </p>
-
-                  <p className="bg-red-50 p-3 rounded border border-red-100 text-red-800 text-sm">
-                    <strong>धोखाधड़ी चेतावनी:</strong> हम कभी भी आपके डीमैट खाते का पासवर्ड या ओटीपी जैसे व्यक्तिगत विवरण नहीं मांगते हैं। हम केवल अपनी आधिकारिक वेबसाइट या आधिकारिक कंपनी बैंक खातों के माध्यम से भुगतान स्वीकार करते हैं। व्यक्तिगत भुगतान मांगने वाले फर्जी कॉल या संदेशों से सावधान रहें।
-                  </p>
-
-                  <p className="text-gray-500 text-xs mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
-                    <CheckCircle size={12} className="text-green-500"/> संपर्क: {contactDetails.phone} | ईमेल: {contactDetails.email}
-                  </p>
-                </>
-              )}
-             </motion.div>
-          </div>
-
-          {/* Footer Actions */}
-          <div className="p-4 sm:p-6 bg-gray-50 border-t border-gray-200 flex justify-end shrink-0">
-             <button
-                onClick={handleClose}
-                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-8 py-3 rounded-lg font-bold shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+            <div className='shrink-0 border-t border-[#ede4d1] bg-white/90 px-4 py-4 backdrop-blur-sm'>
+              <button
+                type='button'
+                onClick={onClose}
+                className='w-full rounded-xl bg-gradient-to-r from-[#1e5631] to-[#25703e] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-900/20 transition-all duration-200 hover:brightness-110 active:scale-[0.99] flex items-center justify-center gap-2'
               >
-                <CheckCircle size={20} />
-                {lang === 'en' ? 'I Have Read & Agree' : 'मैं सहमत हूँ'}
+                {text.cta}
+                <ArrowRight size={16} />
               </button>
-          </div>
-
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      )}
     </AnimatePresence>
   );
 
   if (typeof document !== 'undefined') {
     return createPortal(content, document.body);
   }
+
   return content;
 };
 

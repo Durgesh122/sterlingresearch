@@ -22,8 +22,6 @@ const FloatingButtons = () => {
         '/about': "This is the About Us page. Learn about our company history, our team.",
         '/contact': "This is the Contact Us page. Phone, email, or visit our office.",
         '/services': "This is the Services page. Explore our wide range of trading and investment services.",
-        '/blogs': "This is the Blogs page. Read expert articles.",
-        '/market-news': "This is the Market News page.",
         '/accessibility-statement': "This is the Accessibility Statement page.",
         '/disclaimer': "This is the Disclaimer page. Please read our terms regarding investment risks.",
         '/privacy-policy': "This is the Privacy Policy page.",
@@ -34,8 +32,6 @@ const FloatingButtons = () => {
         '/about': "यह हमारे बारे में (About Us) पेज है।",
         '/contact': "यह संपर्क (Contact Us) पेज है।",
         '/services': "यह सेवाएँ (Services) पेज है।",
-        '/blogs': "यह ब्लॉग पेज है।",
-        '/market-news': "यह मार्केट न्यूज़ पेज है।",
         '/accessibility-statement': "यह एक्सेसिबिलिटी स्टेटमेंट पेज है।",
         '/disclaimer': "यह अस्वीकरण (Disclaimer) पेज है।",
       }
@@ -102,90 +98,104 @@ const FloatingButtons = () => {
     }
   };
 
-  const buttonClass = "w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2";
+  const railButtonClass = "relative w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2";
 
   return (
     <>
     <AccessibilityMenu isOpen={isAccessibilityOpen} onClose={() => setIsAccessibilityOpen(false)} />
     
-    <div className="fixed bottom-6 right-4 z-[9000] flex flex-col items-end gap-2 pointer-events-none">
-      
-      {/* Container for Buttons - Pointer events auto enables clicks */}
-      <div className={`flex flex-col items-center gap-3 transition-all duration-300 pointer-events-auto ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0 pointer-events-none'}`}>
-        
-        {/* Expanded Menu Options */}
+    <div
+      className="floating-buttons-root fixed bottom-6 right-4 z-[9000] flex flex-col items-end gap-2 pointer-events-none"
+      role="complementary"
+      aria-label="Quick accessibility and contact actions"
+    >
+      <motion.div
+        initial={false}
+        animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 16, scale: isVisible ? 1 : 0.96 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        className={`pointer-events-auto ${isVisible ? '' : 'pointer-events-none'}`}
+      >
+        <div className="relative flex flex-col items-end gap-2.5">
+          <motion.a
+            href="https://wa.me/917415152600?text=Hello%20Sterling%20Research,%20I%20am%20interested%20in%20your%20services.%20Please%20guide%20me."
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.06 }}
+            className={`${railButtonClass} bg-gradient-to-br from-[#25D366] to-[#17964b] text-white focus:ring-[#25D366]/40 border-2 border-white`}
+            title="Chat on WhatsApp"
+          >
+            <span className="absolute -inset-1 rounded-full border border-emerald-300/70 animate-pulse"></span>
+            <FaWhatsapp className="relative z-10 text-xl" />
+          </motion.a>
+
+          <button
+            onClick={() => setIsAccessibilityOpen(true)}
+            className={`${railButtonClass} bg-gradient-to-br from-[#1e5631] to-[#103d20] text-white focus:ring-[#1e5631]/40 border-2 border-white`}
+            title="Accessibility Options"
+            aria-label="Open Accessibility Menu"
+          >
+            <FaUniversalAccess className="text-lg" />
+          </button>
+
+          <button
+            onClick={() => setIsOpen((v) => !v)}
+            className={`${railButtonClass} ${isOpen
+              ? 'bg-slate-700 text-white focus:ring-slate-500/40'
+              : 'bg-gradient-to-r from-[#8f1038] to-[#d8a136] text-white focus:ring-[#8f1038]/40'
+            } border-2 border-white`}
+            aria-label={isOpen ? 'Close Menu' : 'Open Actions Menu'}
+            title="More actions"
+          >
+            <motion.span animate={{ rotate: isOpen ? 45 : 0 }} transition={{ duration: 0.2 }}>
+              <FaPlus className="text-base" />
+            </motion.span>
+          </button>
+        </div>
+
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.8 }}
-              className="flex flex-col gap-3 items-center mb-2"
+              initial={{ opacity: 0, x: 14 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ duration: 0.2 }}
+              className="mt-1 mr-14 space-y-2"
             >
-              {/* Auto Speak Toggle */}
-              <button 
-                className={`${buttonClass} ${isAutoSpeak ? 'bg-red-500 hover:bg-red-600 focus:ring-red-500' : 'bg-indigo-500 hover:bg-indigo-600 focus:ring-indigo-500'} text-white`}
-                title={isAutoSpeak ? "Turn Off Auto Speak" : "Turn On Auto Speak"}
+              <button
+                className={`flex items-center gap-2.5 pl-3 pr-3.5 py-2 rounded-full border shadow-md backdrop-blur ${
+                  isAutoSpeak
+                    ? 'bg-emerald-800 border-emerald-900 text-white hover:bg-emerald-900'
+                    : 'bg-amber-800 border-amber-900 text-white hover:bg-amber-900'
+                }`}
+                title={isAutoSpeak ? 'Turn Off Auto Speak' : 'Turn On Auto Speak'}
                 onClick={toggleAutoSpeak}
               >
-                {isAutoSpeak ? <FaVolumeMute className="text-sm md:text-base" /> : <FaVolumeUp className="text-sm md:text-base" />}
+                <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center border border-black/5 text-slate-900">
+                  {isAutoSpeak ? <FaVolumeUp className="text-xs" /> : <FaVolumeMute className="text-xs" />}
+                </span>
+                <span className="text-sm font-semibold whitespace-nowrap">{isAutoSpeak ? 'Voice On' : 'Voice Off'}</span>
               </button>
-              
-              {/* Phone */}
-              <a 
-                href="tel:+917415152600" 
-                className={`${buttonClass} bg-emerald-500 text-white hover:bg-emerald-600 focus:ring-emerald-500`}
+
+              <a
+                href="tel:+917415152600"
+                className="flex items-center gap-2.5 pl-3 pr-3.5 py-2 rounded-full border border-blue-900 bg-blue-800 text-white hover:bg-blue-900 shadow-md backdrop-blur"
                 title="Call Us"
               >
-                <FaPhone className="text-sm md:text-base" />
+                <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center border border-black/5 text-slate-900">
+                  <FaPhone className="text-xs" />
+                </span>
+                <span className="text-sm font-semibold whitespace-nowrap">Call Support</span>
               </a>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* WhatsApp Button (Premium Ripple Animation) */}
-        <motion.a
-          href="https://wa.me/917415152600?text=Hello%20Sterling%20Research,%20I%20am%20interested%20in%20your%20services.%20Please%20guide%20me."
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ x: 100, opacity: 0 }} 
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 100, damping: 20, delay: 0.5 }}
-          whileHover={{ scale: 1.1 }}
-          className="relative w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center bg-[#25D366] text-white shadow-[0_4px_14px_rgba(37,211,102,0.5)] border-2 border-white mb-3 hover:bg-[#20bd5a] transition-all z-50"
-          title="Chat on WhatsApp"
-        >
-          {/* Continuous Ripple/Ping Animation */}
-          <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping duration-[2000ms]"></span>
-          
-          <FaWhatsapp className="relative z-10 text-2xl md:text-3xl drop-shadow-sm" />
-        </motion.a>
-
-        {/* Accessibility Button (Always Visible) */}
-        <button
-          onClick={() => setIsAccessibilityOpen(true)}
-          className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 mb-2`}
-          title="Accessibility Options"
-          aria-label="Open Accessibility Menu"
-        >
-          <FaUniversalAccess className="text-lg md:text-xl" />
-        </button>
-
-        {/* Main Toggle Button (Plus / Close) */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`${buttonClass} ${isOpen ? 'bg-gray-700 rotate-45' : 'bg-blue-600 hover:bg-blue-700 animate-pulse hover:animate-none'} text-white focus:ring-gray-500`}
-          aria-label={isOpen ? "Close Menu" : "Open Actions Menu"}
-        >
-          <FaPlus className="text-lg md:text-xl" />
-        </button>
-      </div>
+      </motion.div>
 
       {/* Visibility Toggle Button (Chevron) */}
       <div className="pointer-events-auto mt-1 flex justify-center w-full">
         <button
             onClick={() => setIsVisible(!isVisible)}
-            className="w-8 h-8 bg-gray-800/80 backdrop-blur text-white rounded-full flex items-center justify-center hover:bg-gray-900 transition-all shadow-md"
+            className="w-8 h-8 bg-slate-800/85 backdrop-blur text-white rounded-full flex items-center justify-center hover:bg-slate-900 transition-all shadow-md"
             title={isVisible ? "Hide Widgets" : "Show Widgets"}
         >
             {isVisible ? <FaChevronDown size={12} /> : <FaChevronUp size={12} />}

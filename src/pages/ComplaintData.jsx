@@ -11,7 +11,7 @@ const itemVariants = {
 
 const ComplaintData = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto space-y-16">
         <ComplaintTable />
         <MonthlyDisposalTable />
@@ -141,7 +141,7 @@ const MonthlyDisposalTable = () => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left border-collapse">
                         <thead>
-                            <tr className="bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white">
+                            <tr className="bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white">
                                 <th className="p-3 border border-gray-100 dark:border-gray-700 text-center">Sr. No.</th>
                                 <th className="p-3 border border-gray-100 dark:border-gray-700">Month</th>
                                 <th className="p-3 border border-gray-100 dark:border-gray-700 text-center">Carried Forward</th>
@@ -152,7 +152,7 @@ const MonthlyDisposalTable = () => {
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                              {tableData.map((row, idx) => (
-                                <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors text-gray-700 dark:text-gray-300">
+                                <tr key={idx} className="hover:bg-white dark:hover:bg-gray-700/30 transition-colors text-gray-700 dark:text-gray-300">
                                     <td className="p-3 border border-gray-100 dark:border-gray-700 text-center">{row.srNo}</td>
                                     <td className="p-3 border border-gray-100 dark:border-gray-700 font-medium">{row.month}</td>
                                     <td className="p-3 border border-gray-100 dark:border-gray-700 text-center">{row.carried}</td>
@@ -195,7 +195,7 @@ const AnnualDisposalTable = () => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left border-collapse">
                         <thead>
-                            <tr className="bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white">
+                            <tr className="bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white">
                                 <th className="p-3 border border-gray-100 dark:border-gray-700 text-center">Sr. No.</th>
                                 <th className="p-3 border border-gray-100 dark:border-gray-700">Year</th>
                                 <th className="p-3 border border-gray-100 dark:border-gray-700 text-center">Carried Forward</th>
@@ -206,7 +206,7 @@ const AnnualDisposalTable = () => {
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
                              {tableData.map((row, idx) => (
-                                <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors text-gray-700 dark:text-gray-300">
+                                <tr key={idx} className="hover:bg-white dark:hover:bg-gray-700/30 transition-colors text-gray-700 dark:text-gray-300">
                                     <td className="p-3 border border-gray-100 dark:border-gray-700 text-center">{row.srNo}</td>
                                     <td className="p-3 border border-gray-100 dark:border-gray-700 font-medium">{row.year}</td>
                                     <td className="p-3 border border-gray-100 dark:border-gray-700 text-center">{row.carried}</td>

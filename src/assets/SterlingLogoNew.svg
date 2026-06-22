@@ -1,0 +1,36 @@
+<svg width="185" height="58" viewBox="0 0 185 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Golden accent dot above S (like i-dot in Invesia) -->
+  <circle cx="16" cy="6" r="6.5" fill="#f0a500"/>
+
+  <!-- Large stylized S letter - dark forest green, serif bold -->
+  <text x="2" y="46"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="44"
+    font-weight="900"
+    fill="#1e5631">S</text>
+
+  <!-- Small donut/pie chart (green + amber) - upper right of S -->
+  <!-- Green sector: 270 degrees (3/4 of circle) -->
+  <path d="M42,13 L42,3 A10,10,0,1,1,32,13 Z" fill="#2e7d32"/>
+  <!-- Amber sector: 90 degrees (1/4 of circle) -->
+  <path d="M42,13 L32,13 A10,10,0,0,1,42,3 Z" fill="#f0a500"/>
+  <!-- White donut hole -->
+  <circle cx="42" cy="13" r="4.5" fill="white"/>
+
+  <!-- "terling" text - bold dark green, same baseline as S -->
+  <text x="55" y="43"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="28"
+    font-weight="700"
+    fill="#1e5631">terling</text>
+
+  <!-- "RESEARCH" text below - wide tracking, dark olive -->
+  <text x="4" y="56"
+    font-family="Arial, 'Helvetica Neue', sans-serif"
+    font-size="10.5"
+    font-weight="600"
+    fill="#2d4a1e"
+    letter-spacing="3">RESEARCH</text>
+
+</svg>

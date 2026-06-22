@@ -4,6 +4,7 @@ import { Lock, User, Eye, EyeOff, ShieldCheck, AlertCircle, ArrowRight, CheckCir
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from 'react-router-dom';
+import LampToggle from '../components/common/LampToggle';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -104,47 +105,19 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#0f172a] relative overflow-hidden font-sans selection:bg-blue-500/30 transition-colors duration-300">
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0f172a] relative overflow-hidden font-sans selection:bg-blue-500/30 transition-colors duration-300">
+      <div className="absolute top-4 right-4 z-20">
+        <LampToggle />
+      </div>
       
-      {/* Animated Background Particles */}
+      {/* Static Background Elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {particles.map((p) => (
-          <motion.div
-            key={p.id}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: [0.2, 0.5, 0.2], 
-              y: [0, -100], 
-              x: Math.sin(p.id) * 20 
-            }}
-            transition={{ 
-              duration: p.duration, 
-              repeat: Infinity, 
-              ease: "linear" 
-            }}
-            style={{
-              position: 'absolute',
-              left: `${p.x}%`,
-              top: `${p.y}%`,
-              width: p.size,
-              height: p.size,
-              borderRadius: '50%',
-              backgroundColor: p.id % 2 === 0 ? '#3b82f6' : '#6366f1',
-              filter: 'blur(1px)' // Soft glow
-            }}
-          />
-        ))}
-        
-        {/* Large Gradient Orbs */}
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1], rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-40 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px]"
+        {/* Large Gradient Orbs (Static) */}
+        <div 
+          className="absolute -top-40 -left-40 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"
         />
-        <motion.div 
-          animate={{ scale: [1, 1.1, 1], rotate: -360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px]"
+        <div 
+          className="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"
         />
       </div>
 
@@ -203,7 +176,7 @@ const AdminLogin = () => {
                   name="email"
                   required
                   placeholder="admin@sterling.com"
-                  className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-black/40 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
+                  className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-black/40 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
                   onChange={handleChange}
                   value={formData.email}
                 />
@@ -222,7 +195,7 @@ const AdminLogin = () => {
                   name="password"
                   required
                   placeholder="••••••••••••"
-                  className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl py-3 pl-12 pr-12 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-black/40 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600 tracking-widest"
+                  className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl py-3 pl-12 pr-12 outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-black/40 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600 tracking-widest"
                   onChange={handleChange}
                   value={formData.password}
                 />

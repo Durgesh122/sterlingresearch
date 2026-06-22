@@ -4,7 +4,7 @@ import { AlertTriangle, FileText, ShieldOff, TrendingDown, WifiOff, Link as Link
 
 const Disclaimer = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-5xl mx-auto">
         
         {/* Header */}
@@ -85,7 +85,7 @@ const Disclaimer = () => {
             
             {/* 4. Electronic Risks */}
             <RevealOnScroll delay={0.5}>
-                 <div className="bg-gray-50 dark:bg-gray-700/30 p-8 rounded-xl border border-dashed border-gray-300 dark:border-gray-600">
+                 <div className="bg-white dark:bg-gray-700/30 p-8 rounded-xl border border-dashed border-gray-300 dark:border-gray-600">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                         <WifiOff className="text-gray-500" /> 4. Electronic & Technical Risks
                     </h2>

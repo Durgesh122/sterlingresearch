@@ -21,3 +21,18 @@ export const contactDetails = {
     email: "Durgeshrathor05@gmail.com"
   }
 };
+
+
+export const complianceDetails = {
+  registeredName: "Satish Manavare Proprietor of Sterling Research",
+  principalOfficer: "Mr. Satish Manavare",
+  complianceOfficer: "Mr. Satish Manavare",
+  gstNo: "-",
+  registrationType: "Individual",
+  sebiRegistrationNo: "INH000027751",
+  bseEnlistmentNo: "-",
+  validity: "02-June-2026 to Perpetual",
+  registeredAddress: "House No. 432, Dhar Road, Nandan Nagar, INDORE, MADHYA PRADESH, 452002",
+  sebiOfficeDetails: "Securities and Exchange Board of India, SEBI Bhavan, Plot No. C4-A, G Block, Bandra-Kurla Complex, Bandra (E), Mumbai - 400051",
+  sebiTollFree: "1800 22 7575",
+};

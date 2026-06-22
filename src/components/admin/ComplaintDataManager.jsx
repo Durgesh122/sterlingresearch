@@ -117,7 +117,7 @@ const EditModal = ({ isOpen, onClose, rowData, onSave, isDeletable, onDelete }) 
             initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
             className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-lg border border-gray-100 dark:border-gray-700 overflow-hidden"
           >
-            <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+            <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-white/50 dark:bg-gray-800/50">
               <h3 className="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
                 <FiEdit className="text-indigo-500" />
                 Edit Data
@@ -149,14 +149,14 @@ const EditModal = ({ isOpen, onClose, rowData, onSave, isDeletable, onDelete }) 
                       value={editedRow[key] || ''}
                       onChange={(e) => setEditedRow({ ...editedRow, [key]: e.target.value })}
                       disabled={key === 'source' && rowData?.srNo === 'Grand Total'}
-                      className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+                      className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
                     />
                   </div>
                 )
               ))}
             </div>
 
-            <div className="p-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
+            <div className="p-4 bg-white dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
               <button 
                 onClick={onClose}
                 className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -389,7 +389,7 @@ const ComplaintDataManager = () => {
             <SectionHeader title="Current Month Data" color="indigo" icon={FiActivity} />
             <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50/50 dark:bg-gray-900/50 border-b border-gray-100 dark:border-gray-700">
+                    <thead className="bg-white/50 dark:bg-gray-900/50 border-b border-gray-100 dark:border-gray-700">
                         <tr>
                             {['Sr No', 'Received From', 'Pending Last Month', 'Received', 'Resolved', 'Pending', 'Pending > 3M', 'Avg Time', 'Action'].map(h => (
                                 <th key={h} className="px-6 py-4 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider whitespace-nowrap">
@@ -400,7 +400,7 @@ const ComplaintDataManager = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                         {tableData.map((row) => (
-                            <tr key={row.srNo} className={`group hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${row.srNo === 'Grand Total' ? 'bg-indigo-50/60 dark:bg-indigo-900/20 font-bold' : ''}`}>
+                            <tr key={row.srNo} className={`group hover:bg-white dark:hover:bg-gray-700/50 transition-colors ${row.srNo === 'Grand Total' ? 'bg-indigo-50/60 dark:bg-indigo-900/20 font-bold' : ''}`}>
                                 <td className="px-6 py-4">{row.srNo}</td>
                                 <td className="px-6 py-4">{row.source}</td>
                                 <td className="px-6 py-4 text-center text-gray-500">{row.pendingLastMonth}</td>
@@ -430,7 +430,7 @@ const ComplaintDataManager = () => {
         
         {/* Monthly Disposal */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/30">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-white/30">
                  <SectionHeader title="Monthly Trend" color="purple" icon={FiTrendingUp} />
                  <button onClick={() => addNewRow('MONTHLY')} className="text-xs bg-purple-100 text-purple-700 px-3 py-1.5 rounded-full font-bold hover:bg-purple-200 transition-colors flex items-center gap-1">
                     <FiPlusCircle /> Add Month
@@ -438,7 +438,7 @@ const ComplaintDataManager = () => {
             </div>
             <div className="overflow-x-auto flex-1">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50 dark:bg-gray-900/50">
+                    <thead className="bg-white dark:bg-gray-900/50">
                         <tr>
                             {['Month', 'Carried', 'Received', 'Resolved', 'Pending', 'Action'].map(h => (
                                 <th key={h} className="px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase whitespace-nowrap">{h}</th>
@@ -447,7 +447,7 @@ const ComplaintDataManager = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                         {monthlyData.map((row, i) => (
-                             <tr key={i} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 ${row.srNo === 'Grand Total' ? 'font-bold bg-purple-50/50' : ''}`}>
+                             <tr key={i} className={`hover:bg-white dark:hover:bg-gray-700/50 ${row.srNo === 'Grand Total' ? 'font-bold bg-purple-50/50' : ''}`}>
                                 <td className="px-4 py-3 whitespace-nowrap">{row.month}</td>
                                 <td className="px-4 py-3 text-center text-gray-500">{row.carried}</td>
                                 <td className="px-4 py-3 text-center text-blue-600">{row.received}</td>
@@ -467,7 +467,7 @@ const ComplaintDataManager = () => {
 
         {/* Annual Disposal */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/30">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-white/30">
                  <SectionHeader title="Annual Trend" color="green" icon={FiTrendingUp} />
                  <button onClick={() => addNewRow('ANNUAL')} className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full font-bold hover:bg-green-200 transition-colors flex items-center gap-1">
                     <FiPlusCircle /> Add Year
@@ -475,7 +475,7 @@ const ComplaintDataManager = () => {
             </div>
             <div className="overflow-x-auto flex-1">
                 <table className="w-full text-sm text-left">
-                    <thead className="bg-gray-50 dark:bg-gray-900/50">
+                    <thead className="bg-white dark:bg-gray-900/50">
                         <tr>
                             {['Year', 'Carried', 'Received', 'Resolved', 'Pending', 'Action'].map(h => (
                                 <th key={h} className="px-4 py-3 font-semibold text-gray-500 dark:text-gray-400 text-xs uppercase whitespace-nowrap">{h}</th>
@@ -484,7 +484,7 @@ const ComplaintDataManager = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                         {annualData.map((row, i) => (
-                             <tr key={i} className={`hover:bg-gray-50 dark:hover:bg-gray-700/50 ${row.srNo === 'Grand Total' ? 'font-bold bg-green-50/50' : ''}`}>
+                             <tr key={i} className={`hover:bg-white dark:hover:bg-gray-700/50 ${row.srNo === 'Grand Total' ? 'font-bold bg-green-50/50' : ''}`}>
                                 <td className="px-4 py-3 whitespace-nowrap">{row.year}</td>
                                 <td className="px-4 py-3 text-center text-gray-500">{row.carried}</td>
                                 <td className="px-4 py-3 text-center text-blue-600">{row.received}</td>

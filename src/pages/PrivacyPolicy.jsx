@@ -4,7 +4,7 @@ import { Shield, Eye, Database, Mail, Bell, FileText, Lock } from "lucide-react"
 
 const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-5xl mx-auto">
         <RevealOnScroll>
           <div className="text-center mb-12">
@@ -25,8 +25,8 @@ const PrivacyPolicy = () => {
                     </div>
                     <div>
                         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Our Commitment</h2>
-                         <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg">
-                            This Privacy Policy explains how we collect, use, and protect your information when you visit our website: <a href="https://www.sterlingresearch.co.in/" className="text-blue-600 hover:underline">https://www.sterlingresearch.co.in/</a>.
+                                 <p className="text-slate-800 dark:text-slate-100 leading-relaxed text-lg">
+                                     This Privacy Policy explains how we collect, use, and protect your information when you visit our website: <a href="https://www.sterlingresearch.co.in/" className="text-[#1e5631] dark:text-[#f8d27b] font-semibold underline">https://www.sterlingresearch.co.in/</a>.
                         </p>
                     </div>
                 </div>
@@ -42,7 +42,7 @@ const PrivacyPolicy = () => {
                     </h3>
                     <div className="space-y-2 text-gray-600 dark:text-gray-300">
                         <p>From time to time, we may request your feedback to evaluate and improve the services provided by Sterling Research. You may be invited to participate in surveys or polls posted on our website or shared with you directly.</p>
-                        <p className="font-medium text-gray-800 dark:text-gray-200">Participation in any survey or poll is entirely voluntary.</p>
+                        <p className="font-semibold text-slate-900 dark:text-white">Participation in any survey or poll is entirely voluntary.</p>
                     </div>
                 </div>
             </RevealOnScroll>
@@ -69,7 +69,7 @@ const PrivacyPolicy = () => {
                         <p>In certain areas of our website, we may request personal information to enhance your experience or to follow up with you after your visit. Providing this information is completely optional.</p>
                         
                         <div className="grid md:grid-cols-2 gap-6">
-                            <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
+                            <div className="bg-white dark:bg-gray-700/50 p-4 rounded-lg">
                                 <h4 className="font-semibold text-gray-800 dark:text-white mb-2">We may collect info when you:</h4>
                                 <ul className="list-disc pl-5 space-y-1 text-sm">
                                     <li>Register on <span className="text-blue-500">sterlingresearch.co.in</span></li>
@@ -77,7 +77,7 @@ const PrivacyPolicy = () => {
                                     <li>Subscribe to services or offers</li>
                                 </ul>
                             </div>
-                            <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
+                            <div className="bg-white dark:bg-gray-700/50 p-4 rounded-lg">
                                 <h4 className="font-semibold text-gray-800 dark:text-white mb-2">Information requested may include:</h4>
                                 <ul className="list-disc pl-5 space-y-1 text-sm">
                                     <li>Name</li>
@@ -108,7 +108,7 @@ const PrivacyPolicy = () => {
                                 <li>Inform you about special offers, upgrades, or additional services that may be of interest to you</li>
                             </ul>
                         </div>
-                         <p className="font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/10 p-2 rounded">
+                         <p className="font-semibold text-red-800 dark:text-red-200 bg-red-50 dark:bg-red-900/20 p-2 rounded">
                             We do not sell or rent your personal information to third parties.
                         </p>
                     </div>

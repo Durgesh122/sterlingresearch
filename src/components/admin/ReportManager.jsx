@@ -205,7 +205,7 @@ const ReportManager = () => {
                           <select 
                             value={newReport.day}
                             onChange={(e) => setNewReport({...newReport, day: e.target.value})}
-                            className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-none ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border-none ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-indigo-500 outline-none transition-all cursor-pointer"
                           >
                               {WEEK_DAYS.map(day => <option key={day} value={day}>{day}</option>)}
                           </select>
@@ -219,7 +219,7 @@ const ReportManager = () => {
                             placeholder="e.g. Nifty 50 Mid-Day Analysis"
                             value={newReport.title}
                             onChange={(e) => setNewReport({...newReport, title: e.target.value})}
-                            className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-none ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border-none ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                           />
                       </div>
 
@@ -258,7 +258,7 @@ const ReportManager = () => {
                               <div className={`w-full p-4 rounded-xl border-2 border-dashed flex flex-col items-center justify-center text-center transition-all ${
                                   newReport.file 
                                   ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
-                                  : 'border-gray-300 dark:border-gray-600 hover:border-indigo-400 bg-gray-50 dark:bg-gray-900/50'
+                                  : 'border-gray-300 dark:border-gray-600 hover:border-indigo-400 bg-white dark:bg-gray-900/50'
                               }`}>
                                   {newReport.file ? (
                                       <>
@@ -284,7 +284,7 @@ const ReportManager = () => {
                             placeholder="Brief summary..."
                             value={newReport.description}
                             onChange={(e) => setNewReport({...newReport, description: e.target.value})}
-                            className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-none ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-indigo-500 outline-none transition-all resize-none"
+                            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border-none ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-indigo-500 outline-none transition-all resize-none"
                           />
                       </div>
 
@@ -337,7 +337,7 @@ const ReportManager = () => {
                                     flex items-center gap-2 px-6 py-3 rounded-xl whitespace-nowrap transition-all font-medium text-sm
                                     ${isActive 
                                       ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300' 
-                                      : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}
+                                      : 'text-gray-500 dark:text-gray-400 hover:bg-white dark:hover:bg-gray-800'}
                                 `}
                               >
                                   {day}
@@ -365,7 +365,7 @@ const ReportManager = () => {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 hover:bg-white dark:hover:bg-gray-800 rounded-xl border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-md transition-all gap-4"
+                                    className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white dark:bg-gray-900/50 hover:bg-white dark:hover:bg-gray-800 rounded-xl border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-md transition-all gap-4"
                                   >
                                       <div className="flex items-start gap-4 overflow-hidden">
                                           <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
@@ -440,7 +440,7 @@ const ReportManager = () => {
                       <div className="flex gap-3">
                           <button 
                             onClick={() => setDeleteData({ open: false, id: null, title: '' })}
-                            className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                            className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold hover:bg-white dark:hover:bg-gray-700 transition-colors"
                           >
                               Cancel
                           </button>

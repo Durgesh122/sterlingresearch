@@ -21,9 +21,9 @@ const UnderConstruction = ({ title }) => {
         <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg">
           This page is currently under development. check back soon for updates!
         </p>
-        <Link 
-          to="/" 
-          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30"
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
         >
           Back to Home
         </Link>

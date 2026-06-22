@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../firebase'; 
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Search, Eye, FileText, Download, X, Lock, CheckCircle, 
-  ChevronRight, Calendar, Filter, ShieldCheck 
+  Search, FileText, Download, X, Lock, CheckCircle,
+  ChevronRight, Calendar, ShieldCheck, Sparkles, BarChart3
 } from 'lucide-react';
 
 // Constants
@@ -37,10 +37,10 @@ const LoadingSpinner = () => (
     animate={{ opacity: 1 }}
   >
     <div className="relative w-16 h-16">
-        <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-200 dark:border-indigo-900 rounded-full"></div>
-        <div className="absolute top-0 left-0 w-full h-full border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        <div className="absolute top-0 left-0 w-full h-full border-4 border-[#eadfc8] rounded-full"></div>
+        <div className="absolute top-0 left-0 w-full h-full border-4 border-[#8f1038] border-t-transparent rounded-full animate-spin"></div>
     </div>
-    <p className="mt-4 text-indigo-600 dark:text-indigo-400 font-medium animate-pulse">Loading Insights...</p>
+    <p className="mt-4 text-[#8f1038] font-semibold tracking-wide animate-pulse">Loading Premium Insights...</p>
   </motion.div>
 );
 
@@ -94,23 +94,23 @@ const ReportPreviewModal = ({ isOpen, onClose, report = null, onDownload = null 
     <AnimatePresence>
       {isOpen && report && (
         <motion.div
-          className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden relative border border-gray-700"
+            className="bg-[#fffdf8] dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden relative border border-[#eadfc8]"
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+            <div className="flex justify-between items-center px-6 py-4 border-b border-[#eadfc8] bg-white/90 dark:bg-gray-800">
               <div className="flex items-center gap-3 overflow-hidden">
-                 <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+                 <div className="p-2 bg-[#fff3d8] rounded-lg text-[#8f1038]">
                     <FileText size={20} />
                  </div>
                  <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate" title={report.title}>{report.title}</h3>
@@ -124,7 +124,7 @@ const ReportPreviewModal = ({ isOpen, onClose, report = null, onDownload = null 
             </div>
             
             {/* PDF Viewer Area */}
-            <div className="flex-1 bg-gray-100 dark:bg-gray-950 relative">
+            <div className="flex-1 bg-[#faf5ea] dark:bg-gray-950 relative">
               {previewUrl ? (
                 isMobile ? (
                   <iframe
@@ -142,7 +142,7 @@ const ReportPreviewModal = ({ isOpen, onClose, report = null, onDownload = null 
                             href={previewUrl} 
                             target="_blank" 
                             rel="noreferrer"
-                            className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-lg hover:bg-indigo-700 transition-all"
+                          className="px-6 py-3 bg-[#8f1038] text-white rounded-xl font-medium shadow-lg hover:bg-[#7a122f] transition-all"
                         >
                             Open PDF in new tab
                         </a>
@@ -158,21 +158,21 @@ const ReportPreviewModal = ({ isOpen, onClose, report = null, onDownload = null 
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex justify-between items-center">
+            <div className="p-4 border-t border-[#eadfc8] bg-white dark:bg-gray-800 flex justify-between items-center">
               <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline-block">
                  Secure Preview • Sterling Research
               </span>
               <div className="flex gap-3 w-full sm:w-auto justify-end">
                   <button
                     onClick={onClose}
-                    className="px-5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                    className="px-5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-700 transition-colors"
                   >
                     Close
                   </button>
                   {onDownload && (
                     <button
                       onClick={() => onDownload(report)}
-                      className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white rounded-xl font-medium shadow-lg shadow-indigo-500/30 transition-all flex items-center gap-2"
+                      className="px-5 py-2.5 bg-gradient-to-r from-[#8f1038] to-[#d8a136] hover:from-[#7a122f] hover:to-[#c9932c] text-white rounded-xl font-medium shadow-lg shadow-[#8f1038]/30 transition-all flex items-center gap-2"
                     >
                       <Download size={18} /> <span className="hidden sm:inline">Download</span>
                     </button>
@@ -201,14 +201,14 @@ const DaySelector = ({ activeDay, setActiveDay }) => (
           onClick={() => setActiveDay(day)}
           className={`relative px-4 md:px-6 py-2.5 rounded-full text-sm md:text-base font-semibold transition-all duration-300 overflow-hidden group ${
             activeDay === day
-              ? 'text-white shadow-lg shadow-indigo-500/40 transform scale-105'
-              : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+              ? 'text-white shadow-lg shadow-[#8f1038]/30 transform scale-105'
+              : 'bg-[#fffdf8] text-gray-700 hover:bg-white border border-[#eadfc8]'
           }`}
         >
           {activeDay === day && (
              <motion.div 
                layoutId="activeDayBg"
-               className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600"
+               className="absolute inset-0 bg-gradient-to-r from-[#8f1038] to-[#b31b49]"
                initial={false}
                transition={{ type: "spring", stiffness: 500, damping: 30 }}
              />
@@ -226,7 +226,7 @@ const DaySelector = ({ activeDay, setActiveDay }) => (
 // Search and filter component
 const SearchFilter = ({ searchTerm, setSearchTerm, selectedCategory, setSelectedCategory }) => (
   <motion.div
-    className="mb-8 flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 items-center max-w-4xl mx-auto"
+    className="mb-8 flex flex-col md:flex-row gap-4 bg-[#fffdf8] p-4 rounded-2xl shadow-sm border border-[#eadfc8] items-center max-w-5xl mx-auto"
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.2 }}
@@ -236,7 +236,7 @@ const SearchFilter = ({ searchTerm, setSearchTerm, selectedCategory, setSelected
       <input
         type="text"
         placeholder="Search report title..."
-        className="w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border-none ring-1 ring-gray-200 dark:ring-gray-700 focus:ring-2 focus:ring-indigo-500 text-gray-900 dark:text-white placeholder-gray-400 outline-none transition-all"
+        className="w-full pl-12 pr-4 py-3 rounded-xl bg-white border-none ring-1 ring-[#eadfc8] focus:ring-2 focus:ring-[#8f1038] text-gray-900 placeholder-gray-400 outline-none transition-all"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
@@ -245,7 +245,7 @@ const SearchFilter = ({ searchTerm, setSearchTerm, selectedCategory, setSelected
     <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0 no-scrollbar">
        <button 
          onClick={() => setSelectedCategory('All')}
-         className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${selectedCategory === 'All' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300' : 'bg-gray-50 text-gray-600 dark:bg-gray-900 dark:text-gray-400 hover:bg-gray-100'}`}
+         className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${selectedCategory === 'All' ? 'bg-[#8f1038] text-white' : 'bg-white text-gray-600 border border-[#eadfc8] hover:bg-[#fff3d8]'}`}
        >
          All
        </button>
@@ -253,7 +253,7 @@ const SearchFilter = ({ searchTerm, setSearchTerm, selectedCategory, setSelected
          <button 
            key={cat}
            onClick={() => setSelectedCategory(cat)}
-           className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors ${selectedCategory === cat ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300' : 'bg-gray-50 text-gray-600 dark:bg-gray-900 dark:text-gray-400 hover:bg-gray-100'}`}
+           className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors ${selectedCategory === cat ? 'bg-[#8f1038] text-white' : 'bg-white text-gray-600 border border-[#eadfc8] hover:bg-[#fff3d8]'}`}
          >
            {cat}
          </button>
@@ -368,13 +368,13 @@ const ResearchReports = () => {
     };
 
     return (
-        <section className="min-h-screen bg-gray-50 dark:bg-[#0B1120] pt-28 pb-20 relative overflow-hidden font-sans transition-colors duration-300">
-            <ToastContainer position="bottom-right" theme="colored" />
-            
+        <section className="min-h-screen bg-[#fffcf7] dark:bg-[#0B1120] pt-28 pb-20 relative overflow-hidden transition-colors duration-300">
             {/* Background Decorations */}
-            <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-indigo-50/50 to-transparent dark:from-indigo-950/20 dark:to-transparent pointer-events-none" />
-            <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute top-40 left-0 w-[300px] h-[300px] bg-purple-400/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute inset-0 pointer-events-none" style={{
+            backgroundImage: 'radial-gradient(circle at 12% 12%, rgba(216,161,54,0.16) 0, transparent 35%), radial-gradient(circle at 85% 22%, rgba(143,16,56,0.14) 0, transparent 32%), linear-gradient(180deg, #fffdf8 0%, #fff9ef 55%, #fffdf8 100%)'
+          }} />
+          <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-[#d8a136]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-40 left-0 w-[300px] h-[300px] bg-[#8f1038]/10 rounded-full blur-3xl pointer-events-none" />
 
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
                 
@@ -385,16 +385,45 @@ const ResearchReports = () => {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-10"
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wider uppercase mb-4">
-                        <ShieldCheck size={14} /> Premium Access
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#fff3d8] text-[#8f1038] text-xs font-bold tracking-wider uppercase mb-4 border border-[#eadfc8]">
+                      <ShieldCheck size={14} /> Sterling Intelligence Desk
                     </div>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
-                        Research <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">Reports</span>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">
+                      Research <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8f1038] to-[#d8a136]">Reports</span>
                     </h1>
                     <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
                         Stay ahead of the market with our daily proprietary analysis. Securely access in-depth technical and fundamental reports.
                     </p>
                 </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.12 }}
+                    className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-7"
+                  >
+                    <div className="rounded-2xl border border-[#eadfc8] bg-white/90 px-4 py-3 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#fff3d8] text-[#8f1038] flex items-center justify-center"><Sparkles size={18} /></div>
+                      <div>
+                        <p className="text-xs text-gray-500">Access Model</p>
+                        <p className="text-sm font-bold text-gray-800">OTP Protected</p>
+                      </div>
+                    </div>
+                    <div className="rounded-2xl border border-[#eadfc8] bg-white/90 px-4 py-3 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#fff3d8] text-[#8f1038] flex items-center justify-center"><BarChart3 size={18} /></div>
+                      <div>
+                        <p className="text-xs text-gray-500">Coverage</p>
+                        <p className="text-sm font-bold text-gray-800">Weekday Market Packs</p>
+                      </div>
+                    </div>
+                    <div className="rounded-2xl border border-[#eadfc8] bg-white/90 px-4 py-3 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#fff3d8] text-[#8f1038] flex items-center justify-center"><ShieldCheck size={18} /></div>
+                      <div>
+                        <p className="text-xs text-gray-500">Security</p>
+                        <p className="text-sm font-bold text-gray-800">Secure PDF Preview</p>
+                      </div>
+                    </div>
+                  </motion.div>
 
                 {/* Main Content Card */}
                 <div className="flex flex-col items-center">
@@ -423,23 +452,23 @@ const ResearchReports = () => {
                                     <motion.div
                                         key={report.id}
                                         variants={itemVariants}
-                                        className="group relative bg-white dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                                      className="group relative bg-white/95 dark:bg-gray-800/80 backdrop-blur-sm rounded-3xl border border-[#eadfc8] dark:border-gray-700 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
                                     >
                                         {/* Status / Category Tag */}
                                         <div className="flex justify-between items-start mb-4">
-                                            <span className="px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-700/50 text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wide">
+                                        <span className="px-3 py-1 rounded-lg bg-[#fff3d8] text-xs font-bold text-[#8f1038] uppercase tracking-wide border border-[#eadfc8]">
                                                 {report.category}
                                             </span>
-                                            <div className="p-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-lg">
+                                        <div className="p-2 bg-[#fff3d8] text-[#8f1038] rounded-lg">
                                                 <Lock size={16} strokeWidth={2.5} />
                                             </div>
                                         </div>
 
                                         {/* Content */}
                                         <div className="flex-1">
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 leading-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 leading-tight group-hover:text-[#8f1038] transition-colors">
                                                 {report.title}
-                                            </h3>
+                                          </h2>
                                             <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 mb-6">
                                                 {report.description || 'Comprehensive market analysis report focusing on key sector movements and technical indicators.'}
                                             </p>
@@ -453,14 +482,14 @@ const ResearchReports = () => {
                                             </div>
                                             <button
                                                 onClick={() => handlePreviewClick(report)}
-                                                className="flex items-center gap-2 pl-4 pr-3 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-bold text-sm hover:bg-indigo-600 dark:hover:bg-indigo-400 dark:hover:text-white transition-all group/btn"
+                                              className="flex items-center gap-2 pl-4 pr-3 py-2 bg-gradient-to-r from-[#8f1038] to-[#b31b49] text-white rounded-full font-bold text-sm hover:from-[#7a122f] hover:to-[#8f1038] transition-all group/btn shadow-md shadow-[#8f1038]/20"
                                             >
                                                 Unlock <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
                                             </button>
                                         </div>
 
                                         {/* Decorative Gradient Border on Hover */}
-                                        <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-indigo-500/10 pointer-events-none transition-colors" />
+                                          <div className="absolute inset-0 rounded-3xl border-2 border-transparent group-hover:border-[#8f1038]/15 pointer-events-none transition-colors" />
                                     </motion.div>
                                 ))}
                             </motion.div>
@@ -473,7 +502,7 @@ const ResearchReports = () => {
                                 <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
                                     <Search size={32} className="text-gray-400 dark:text-gray-500" />
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">No reports found</h3>
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1">No reports found</h2>
                                 <p className="text-gray-500 dark:text-gray-400">
                                     Check back later for {activeDay}'s updates.
                                 </p>
@@ -487,26 +516,26 @@ const ResearchReports = () => {
             <AnimatePresence>
                 {isOtpOpen && (
                     <motion.div
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
+                      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                     >
                         <motion.div 
-                            className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-sm p-8 shadow-2xl relative overflow-hidden"
+                        className="bg-[#fffdf8] dark:bg-gray-900 rounded-3xl w-full max-w-sm p-8 shadow-2xl relative overflow-hidden border border-[#eadfc8]"
                             initial={{ scale: 0.9, y: 30 }}
                             animate={{ scale: 1, y: 0 }}
                             exit={{ scale: 0.9, y: 30 }}
                         >
                              {/* Decorative Background inside Modal */}
-                             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-blue-500"></div>
+                         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#8f1038] to-[#d8a136]"></div>
 
                             <div className="flex flex-col items-center text-center relative z-10">
-                                <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center mb-6 ring-4 ring-indigo-50 dark:ring-indigo-900/10">
+                          <div className="w-16 h-16 bg-[#fff3d8] text-[#8f1038] rounded-2xl flex items-center justify-center mb-6 ring-4 ring-[#fff3d8]">
                                     <Lock size={32} />
                                 </div>
                                 
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Restricted Access</h3>
+                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Restricted Access</h2>
                                 <p className="text-gray-500 dark:text-gray-400 text-xs px-4 mb-8">
                                     This is a premium document. Please enter the 6-digit access code provided to you.
                                 </p>
@@ -522,10 +551,10 @@ const ResearchReports = () => {
                                         }}
                                         onKeyDown={(e) => e.key === 'Enter' && verifyOtpAndOpen()}
                                         placeholder="• • • • • •"
-                                        className={`w-full text-center text-3xl tracking-[0.4em] font-mono font-bold py-4 rounded-xl border-2 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-4 transition-all placeholder-gray-300 dark:placeholder-gray-700
+                                        className={`w-full text-center text-3xl tracking-[0.4em] font-mono font-bold py-4 rounded-xl border-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-4 transition-all placeholder-gray-300 dark:placeholder-gray-700
                                             ${authError 
                                                 ? 'border-red-500 focus:border-red-500 focus:ring-red-500/10' 
-                                                : 'border-gray-200 dark:border-gray-700 focus:border-indigo-500 focus:ring-indigo-500/10'
+                                            : 'border-[#eadfc8] dark:border-gray-700 focus:border-[#8f1038] focus:ring-[#8f1038]/10'
                                             }
                                         `}
                                         autoFocus
@@ -554,7 +583,7 @@ const ResearchReports = () => {
                                     <button
                                         onClick={verifyOtpAndOpen}
                                         disabled={otpInput.length !== 6}
-                                        className="py-3 px-4 rounded-xl font-bold text-sm text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-600/30 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                                      className="py-3 px-4 rounded-xl font-bold text-sm text-white bg-[#8f1038] hover:bg-[#7a122f] shadow-lg shadow-[#8f1038]/30 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
                                     >
                                         Unlock Document
                                     </button>

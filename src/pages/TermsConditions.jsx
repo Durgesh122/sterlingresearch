@@ -4,7 +4,7 @@ import { FileText, Shield, AlertTriangle, CreditCard, Scale, Lock, UserCheck, He
 
 const TermsConditions = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-5xl mx-auto">
         
         <RevealOnScroll>
@@ -42,7 +42,7 @@ const TermsConditions = () => {
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                         <FileText className="w-5 h-5 text-blue-500" /> 1. Nature of Services
                     </h3>
-                    <ul className="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-300">
+                    <ul className="list-disc pl-5 space-y-2 text-slate-800 dark:text-slate-100">
                         <li>All trading recommendations are provided with proper stop loss levels.</li>
                         <li>It is mandatory for clients to maintain the provided stop loss in every trade.</li>
                         <li>Sterling Research (Research Analyst) shall not be liable for any losses resulting from failure to maintain prescribed stop loss levels.</li>
@@ -58,9 +58,9 @@ const TermsConditions = () => {
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                         <AlertTriangle className="w-5 h-5 text-purple-500" /> 2. Communication & Technical Delays
                     </h3>
-                    <div className="text-gray-600 dark:text-gray-300 space-y-2">
+                    <div className="text-slate-800 dark:text-slate-100 space-y-2">
                          <p>Sterling Research (Research Analyst) shall not be held responsible for delays in communication due to third-party technical failures, including telecom or internet disruptions.</p>
-                        <p>For assistance, contact: <a href="mailto:support@sterlingresearch.co.in" className="text-blue-600 dark:text-blue-400 hover:underline">support@sterlingresearch.co.in</a></p>
+                        <p>For assistance, contact: <a href="mailto:support@sterlingresearch.co.in" className="text-[#1e5631] dark:text-[#f8d27b] font-semibold underline">support@sterlingresearch.co.in</a></p>
                     </div>
                 </div>
              </RevealOnScroll>
@@ -84,7 +84,7 @@ const TermsConditions = () => {
                             </ul>
                         </li>
                     </ul>
-                    <p className="mt-3 text-gray-600 dark:text-gray-300 font-medium">All trading and investment decisions are undertaken at the client’s own risk.</p>
+                    <p className="mt-3 text-slate-900 dark:text-white font-semibold">All trading and investment decisions are undertaken at the client’s own risk.</p>
                 </div>
             </RevealOnScroll>
 
@@ -117,7 +117,7 @@ const TermsConditions = () => {
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                              <Lock className="w-5 h-5 text-red-500" /> 5. Account & Security
                         </h3>
-                        <ul className="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-300">
+                        <ul className="list-disc pl-5 space-y-2 text-slate-800 dark:text-slate-100">
                             <li>Do not share your Demat login ID or password with anyone, including company employees.</li>
                             <li>Sterling Research (Research Analyst) is not responsible for losses due to credential sharing.</li>
                             <li>Clients must ensure no unauthorized person uses their payment instruments.</li>
@@ -138,7 +138,7 @@ const TermsConditions = () => {
                             <li>Downloaded or modified website content</li>
                             <li>Suspension or modification of services</li>
                         </ul>
-                        <p className="mt-2 text-sm italic text-gray-500">Sterling Research reserves the right to modify or discontinue services at any time.</p>
+                        <p className="mt-2 text-sm italic text-slate-700 dark:text-slate-200">Sterling Research reserves the right to modify or discontinue services at any time.</p>
                     </div>
                 </RevealOnScroll>
              </div>
@@ -168,7 +168,7 @@ const TermsConditions = () => {
 
         {/* Most Important Section */}
         <RevealOnScroll delay={0.4}>
-          <div className="mt-12 bg-gray-50 dark:bg-gray-800/50 p-6 md:p-8 rounded-2xl border-2 border-red-100 dark:border-red-900/30">
+          <div className="mt-12 bg-white dark:bg-gray-800/50 p-6 md:p-8 rounded-2xl border-2 border-red-100 dark:border-red-900/30">
             <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-6 flex items-center gap-3">
                 <Scale className="w-8 h-8" />
                 Most Important Terms and Conditions
@@ -197,16 +197,16 @@ const TermsConditions = () => {
                         <div className="mt-2 grid md:grid-cols-3 gap-4 text-sm">
                             <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
                                 <strong>Step 1:</strong> Contact RA<br/>
-                                <a href="mailto:support@sterlingresearch.co.in" className="text-blue-600 hover:underline">support@sterlingresearch.co.in</a><br/>
+                                <a href="mailto:support@sterlingresearch.co.in" className="text-[#1e5631] dark:text-[#f8d27b] font-semibold underline">support@sterlingresearch.co.in</a><br/>
                                 Mobile: 917415152600
                             </div>
                             <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
                                 <strong>Step 2:</strong> SEBI SCORES<br/>
-                                <a href="http://www.scores.sebi.gov.in" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">www.scores.sebi.gov.in</a>
+                                <a href="http://www.scores.sebi.gov.in" target="_blank" rel="noopener noreferrer" className="text-[#1e5631] dark:text-[#f8d27b] font-semibold underline">www.scores.sebi.gov.in</a>
                             </div>
                             <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
                                 <strong>Step 3:</strong> Smart ODR<br/>
-                                <a href="https://smartodr.in" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://smartodr.in</a>
+                                <a href="https://smartodr.in" target="_blank" rel="noopener noreferrer" className="text-[#1e5631] dark:text-[#f8d27b] font-semibold underline">https://smartodr.in</a>
                             </div>
                         </div>
                     </li>
@@ -214,7 +214,7 @@ const TermsConditions = () => {
                     <li>The RA shall never ask for the client’s login credentials and OTPs for the client’s Trading Account Demat Account and Bank Account. Never share such information with anyone including RA.</li>
                 </ol>
              </div>
-             <p className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-8 text-center text-sm text-gray-500">
+             <p className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-8 text-center text-sm text-slate-700 dark:text-slate-200">
                 &copy; {new Date().getFullYear()} Sterling Research. All Rights Reserved.
              </p>
           </div>

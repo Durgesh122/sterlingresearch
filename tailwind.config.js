@@ -8,10 +8,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#0f172a', // Dark blue (Professional/Finance)
-        secondary: '#0ea5e9', // Sky blue (Highlight)
+        primary: '#002147', // Deep Trust Blue
+        secondary: '#f39c12', // Growth Gold/Yellow
         accent: '#22c55e', // Profit Green
-        surface: '#1e293b', // Card/Table background
+        surface: '#001a36', // Card/Table background for dark mode matching primary
       }
     },
   },

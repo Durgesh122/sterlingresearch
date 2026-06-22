@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Minus, X, Bot, AlertCircle } from 'lucide-react';
+import { Send, Minus, AlertCircle, Lightbulb, LightbulbOff } from 'lucide-react';
 import { ref, push } from 'firebase/database';
 import { database } from '../../firebase';
+import { useTheme } from '../../context/ThemeContext';
+import botImg from '../../assets/AIChat.png';
 
 const FloatingChatBot = ({ isMobileNav = false }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +33,12 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
     const [isTyping, setIsTyping] = useState(false);
     const [error, setError] = useState("");
     const messagesEndRef = useRef(null);
+    const chatWindowRef = useRef(null);
+
+    const { theme, toggleTheme } = useTheme();
+    const complianceNote = language === 'en'
+        ? 'SEBI RA guidance only. No guaranteed returns.'
+        : 'केवल SEBI RA मार्गदर्शन। रिटर्न की कोई गारंटी नहीं।';
 
     const generateId = () => `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -42,6 +49,26 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
     useEffect(() => {
         scrollToBottom();
     }, [messages, isTyping, error]); // Scroll on error too
+
+    useEffect(() => {
+        if (!isOpen) {
+            return undefined;
+        }
+
+        const handleOutsideInteraction = (event) => {
+            if (chatWindowRef.current && !chatWindowRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideInteraction);
+        document.addEventListener('touchstart', handleOutsideInteraction);
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideInteraction);
+            document.removeEventListener('touchstart', handleOutsideInteraction);
+        };
+    }, [isOpen]);
 
     // --- Helper for adding bot messages with delay ---
     const addBotMessage = (text, options = null, delay = 800) => {
@@ -235,105 +262,100 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
         processStep(currentInput);
     };
 
-    const chatWindowMarkup = (
-    <motion.div
-      key="chat-window"
-      initial={isMobileNav ? { opacity: 0, scale: 0.9, y: 20 } : { opacity: 0, y: 100, scale: 0.8, x: 0 }}
-      animate={isMobileNav ? { opacity: 1, scale: 1, y: 0 } : { opacity: 1, y: 0, scale: 1, x: 0 }}
-      exit={isMobileNav ? { opacity: 0, scale: 0.9, y: 20 } : { opacity: 0, y: 100, scale: 0.8, x: 0, transition: { duration: 0.3 } }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      
-      className={`bg-white shadow-2xl overflow-hidden border border-gray-200 flex flex-col pointer-events-auto
+        const chatWindowMarkup = (
+                                <div
+            ref={chatWindowRef}
+            className={`floating-chatbot-root bg-white shadow-2xl overflow-hidden border-2 border-[#1a7f55] flex flex-col pointer-events-auto
         ${isMobileNav 
-            ? 'fixed bottom-[15%] left-0 right-0 mx-auto z-[10000] w-[90vw] sm:w-[380px] rounded-xl shadow-[0_0_9999px_rgba(0,0,0,0.5)]' 
-            : 'fixed bottom-24 left-6 z-[10000] w-[340px] sm:w-[380px] max-w-[95vw] mb-4 rounded-xl'}`}
+            ? 'fixed bottom-[15%] left-0 right-0 mx-auto z-[10000] w-[90vw] sm:w-[420px] rounded-lg shadow-[0_0_9999px_rgba(0,0,0,0.5)]' 
+                        : 'fixed bottom-20 left-1/2 -translate-x-1/2 sm:bottom-24 sm:left-6 sm:translate-x-0 z-[10000] w-[92vw] sm:w-[450px] max-w-[450px] mb-4 rounded-lg'}`}
       style={{ 
-          height: isMobileNav ? '500px' : '520px', 
-          maxHeight: '65vh', 
+                    height: isMobileNav ? 'min(550px, 78vh)' : 'min(620px, 80vh)', 
+          maxHeight: '75vh', 
           transformOrigin: 'bottom'
       }}
     >
       {/* Header - PNB Red */}
-      <div className="bg-[#A20A3C] p-3 flex items-center justify-between shrink-0 shadow-md relative overflow-hidden">
-        {/* Decorative Pattern in Header */}
-        <div className="absolute top-0 right-0 w-20 h-20 bg-white opacity-5 rounded-full -mr-10 -mt-10"></div>
+    <div className="bg-gradient-to-r from-[#8f1038] via-[#A20A3C] to-[#8f1038] p-2 sm:p-2.5 flex items-center justify-between shrink-0 shadow-md relative overflow-hidden border-b border-[#d8a136]/40">
+        <div className="absolute top-0 right-0 w-20 h-20 bg-white opacity-5 -mr-10 -mt-10 pointer-events-none"></div>
         
-        <div className="flex items-center gap-3 relative z-10">
-            <div className="bg-white p-1 rounded-full border-2 border-[#FABE2C]">
+        <div className="flex items-center gap-2 sm:gap-2.5 relative z-10 min-w-0">
+            <div className="shrink-0">
                 <img 
-                    src="https://pnbcdn.talkk.ai/media/pihuGif.svg" 
+                    src={botImg} 
                     alt="Bot" 
-                    className="w-10 h-10 object-contain"
+                    className="w-9 h-9 sm:w-11 sm:h-11 object-contain animate-bounce [animation-duration:2.8s] [animation-timing-function:ease-in-out]"
                     onError={(e) => {e.target.onerror = null; e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712038.png"}} 
                 />
             </div>
-            <div>
-                <h3 className="text-white font-bold text-lg leading-tight">Sterling Assistant</h3>
-                <p className="text-[#FABE2C] text-xs font-medium">Virtual Help Desk</p>
+            <div className="min-w-0">
+                <h3 className="text-white font-bold text-sm sm:text-base leading-tight truncate tracking-wide">Sterling Assistant</h3>
+                <p className="text-[#f4cf77] text-[11px] sm:text-xs font-medium truncate">Research Help Desk</p>
             </div>
         </div>
         <div className="flex gap-2 text-white">
-            <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded transition-colors">
+            <button onClick={toggleTheme} aria-label="Toggle theme" className="hover:bg-white/20 p-1.5 rounded-md transition-colors shrink-0">
+                {theme === 'dark' ? <LightbulbOff size={18} /> : <Lightbulb size={18} />}
+            </button>
+            <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1.5 rounded-md transition-colors shrink-0">
                 <Minus size={20} />
             </button>
         </div>
       </div>
 
               {/* Messages Body */}
-              <div className="flex-1 overflow-y-auto p-4 bg-[#f4f4f4] space-y-4" 
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 bg-[#f8f5ee] dark:bg-gray-800 space-y-4" 
                    style={{ 
-                       backgroundImage: 'radial-gradient(#ddd 1px, transparent 1px)', 
-                       backgroundSize: '20px 20px' 
+                       backgroundImage: 'radial-gradient(rgba(143,16,56,0.1) 1px, transparent 1px)', 
+                       backgroundSize: '18px 18px' 
                    }}>
                  
                  {/* Timestamp / Date separator */}
                  <div className="flex justify-center">
-                     <span className="text-[10px] text-gray-400 bg-gray-200 px-2 py-0.5 rounded-full">Secure & SEBI Compliant</span>
+                     <span className="text-[10px] text-[#7a122f] dark:text-[#f4cf77] bg-[#f7e8c2] dark:bg-gray-700 px-2 py-0.5 rounded-full border border-[#d8a136]/50">{complianceNote}</span>
                  </div>
 
                  {messages.map((msg) => (
-                    <motion.div 
+                    <div
                         key={msg.id}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
                         className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                     >
                         {msg.sender === 'bot' && (
                              <div className="flex items-center gap-2 mb-1">
-                                 <span className="text-[10px] text-[#A20A3C] font-bold">Assistant</span>
+                                 <span className="text-[10px] text-[#8f1038] dark:text-[#f4cf77] font-bold tracking-wide">Assistant</span>
                              </div>
                         )}
 
                         {/* Special Language Selector Message Type */}
                         {msg.type === 'language-selector' ? (
-                            <div className="bg-white p-4 rounded-xl rounded-tl-none shadow-sm border border-gray-200 max-w-[85%]">
-                                <p className="text-gray-800 text-sm mb-3 font-medium">{msg.text}</p>
+                            <div className="bg-white p-4 shadow-sm border border-[#e6d8b6] max-w-[88%] rounded-md">
+                                <p className="text-gray-800 text-sm mb-3 font-medium leading-relaxed">{msg.text}</p>
                                 <div className="grid grid-cols-2 gap-2">
                                     <button 
                                         onClick={() => handleLanguageSelect('en')} 
-                                        className="py-1.5 px-3 bg-red-50 hover:bg-red-100 text-[#A20A3C] border border-[#A20A3C]/30 rounded text-sm font-semibold transition-colors"
+                                        className="py-1.5 px-3 bg-[#fff7e7] hover:bg-[#fceac3] text-[#8f1038] border border-[#d8a136]/60 text-sm font-semibold transition-colors rounded-md"
                                     >
                                         English
                                     </button>
                                     <button 
                                         onClick={() => handleLanguageSelect('hi')} 
-                                        className="py-1.5 px-3 bg-red-50 hover:bg-red-100 text-[#A20A3C] border border-[#A20A3C]/30 rounded text-sm font-semibold transition-colors font-hindi"
+                                        className="py-1.5 px-3 bg-[#fff7e7] hover:bg-[#fceac3] text-[#8f1038] border border-[#d8a136]/60 text-sm font-semibold transition-colors font-hindi rounded-md"
                                     >
                                         हिंदी
                                     </button>
                                 </div>
                             </div>
                         ) : (
-                            <div className={`max-w-[85%] p-3 text-sm shadow-sm whitespace-pre-wrap leading-relaxed ${
+                            <div className={`max-w-[88%] p-3 text-sm shadow-sm whitespace-pre-wrap leading-relaxed rounded-md ${
                                 msg.sender === 'user' 
-                                ? 'bg-[#A20A3C] text-white rounded-2xl rounded-tr-none' 
-                                : 'bg-white text-gray-800 border border-gray-200 rounded-2xl rounded-tl-none'
+                                ? 'bg-gradient-to-r from-[#8f1038] to-[#A20A3C] text-white border border-[#7a122f]'
+                                : 'bg-white text-gray-800 border border-[#e6d8b6] dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600'
                             }`}>
                                 {msg.text}
                             </div>
                         )}
 
-                    </motion.div>
+                          </div>
                  ))}
 
                  {/* Options Chips */}
@@ -343,7 +365,7 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
                             <button
                                 key={idx}
                                 onClick={() => handleOptionSelect(opt)}
-                                className="text-xs bg-white text-[#A20A3C] border border-[#A20A3C] hover:bg-[#A20A3C] hover:text-white px-3 py-1.5 rounded-full transition-all shadow-sm font-medium"
+                                className="text-xs bg-white text-[#8f1038] border border-[#d8a136] hover:bg-[#8f1038] hover:text-white px-3 py-1.5 transition-all shadow-sm font-medium rounded-md"
                             >
                                 {opt}
                             </button>
@@ -354,15 +376,15 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
                  {isTyping && (
                      <div className="flex justify-start items-end gap-2">
                          <img 
-                            src="https://pnbcdn.talkk.ai/media/pihuGif.svg" 
-                            className="w-6 h-6 rounded-full border border-gray-200 bg-white p-0.5" 
+                            src={botImg} 
+                            className="w-7 h-7 sm:w-8 sm:h-8 object-contain border border-[#e6d8b6] bg-white p-0.5 rounded-sm" 
                             onError={(e) => {e.target.onerror = null; e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712038.png"}}
                             alt="Typing..."
                          />
-                         <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-none p-3 shadow-sm flex gap-1 items-center">
-                             <div className="w-1.5 h-1.5 bg-[#A20A3C] rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-                             <div className="w-1.5 h-1.5 bg-[#A20A3C] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                             <div className="w-1.5 h-1.5 bg-[#A20A3C] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                         <div className="bg-white border border-[#e6d8b6] p-3 shadow-sm flex gap-1 items-center dark:bg-gray-700 dark:border-gray-600 rounded-md">
+                             <div className="w-1.5 h-1.5 bg-[#8f1038] rounded-full"></div>
+                             <div className="w-1.5 h-1.5 bg-[#8f1038] rounded-full"></div>
+                             <div className="w-1.5 h-1.5 bg-[#8f1038] rounded-full"></div>
                          </div>
                      </div>
                  )}
@@ -370,23 +392,16 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
               </div>
 
               {/* Error Toast in Chat */}
-              <AnimatePresence>
-                  {error && (
-                        <motion.div 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="bg-red-100 text-red-600 text-xs px-4 py-2 flex items-center gap-2 border-t border-red-200"
-                        >
-                            <AlertCircle size={14} />
-                            {error}
-                        </motion.div>
-                  )}
-              </AnimatePresence>
+              {error && (
+                    <div className="bg-red-100 text-red-600 text-xs px-4 py-2 flex items-center gap-2 border-t border-red-200">
+                        <AlertCircle size={14} />
+                        {error}
+                    </div>
+              )}
 
               {/* Input Area */}
               {step !== 'language' && !messages[messages.length-1].options && step !== 'end' && (
-              <form onSubmit={handleSend} className="p-3 bg-white border-t border-gray-200 shrink-0 flex gap-2 items-center">
+              <form onSubmit={handleSend} className="p-2.5 sm:p-3 bg-white border-t border-[#eadfc8] shrink-0 flex gap-2 items-center">
                   <div className="flex-1 relative">
                        <input
                         type={step === 'mobile' ? "tel" : "text"}
@@ -395,16 +410,16 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
                         placeholder={
                             step === 'mobile' 
                             ? (language === 'en' ? "Enter 10-digit mobile..." : "10-अंकीय मोबाइल नंबर...")
-                            : (language === 'en' ? "Typing..." : "टाइप करें...")
+                            : (language === 'en' ? "Type your message..." : "टाइप करें...")
                         }
-                        maxLength={step === 'mobile' ? 10 : 50}
-                        className="w-full bg-gray-100 text-gray-800 text-sm rounded-lg pl-4 pr-10 py-3 outline-none focus:ring-1 focus:ring-[#A20A3C] border border-transparent focus:border-[#A20A3C] transition-all"
+                                             maxLength={step === 'mobile' ? 10 : 50}
+                                                className="w-full bg-[#fbf8f2] dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm pl-4 pr-10 py-3 outline-none focus:ring-1 focus:ring-[#8f1038] border border-[#eadfc8] focus:border-[#8f1038] transition-all rounded-md"
                       />
                   </div>
                   <button 
                     type="submit"
                     disabled={!inputText.trim()}
-                    className="bg-[#A20A3C] hover:bg-[#800830] disabled:opacity-50 disabled:cursor-not-allowed text-white p-3 rounded-lg shadow-md transition-all flex items-center justify-center"
+                    className="bg-gradient-to-r from-[#8f1038] to-[#A20A3C] hover:from-[#7a122f] hover:to-[#8f1038] disabled:opacity-50 disabled:cursor-not-allowed text-white p-3 shadow-md transition-all flex items-center justify-center rounded-md"
                   >
                       <Send size={18} />
                   </button>
@@ -412,75 +427,52 @@ const FloatingChatBot = ({ isMobileNav = false }) => {
               )}
 
               {/* Branding */}
-              <div className="bg-[#fcfcfc] text-[9px] text-center text-gray-400 py-1 border-t border-gray-100 flex justify-center items-center gap-1">
-                  Powered by <span className="font-bold text-[#A20A3C]">Sterling AI</span>
+              <div className="bg-[#fffaf0] dark:bg-gray-900 text-[9px] text-center text-[#6b5d47] dark:text-gray-300 py-1 border-t border-[#eadfc8] dark:border-gray-700 flex justify-center items-center gap-1 px-2">
+                  <span>SEBI Reg. RA Support Desk</span>
+                  <span className="text-[#8f1038]">|</span>
+                  <span className="font-semibold text-[#8f1038]">No Guaranteed Returns</span>
               </div>
-            </motion.div>
+                        </div>
     );
 
   return (
     <>
-      <div className={`z-[9000] flex flex-col font-sans pointer-events-none items-center 
-        ${isMobileNav 
-            ? 'pointer-events-auto relative' 
-            : 'fixed bottom-4 left-1/2 -translate-x-1/2 md:bottom-6 md:left-6 md:translate-x-0 md:items-start'
-        }`}
-      >
-        
-        <div className="pointer-events-auto">
-        <AnimatePresence mode="wait">
-        {!isOpen && (
-            <motion.div
-                key="mascot-button"
-                whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0], transition: { duration: 0.3 } }}
-                className="relative cursor-pointer group flex justify-center items-center"
-                onClick={() => setIsOpen(true)}
-            >
-                {/* Mascot Image */}
-                <div className={`${isMobileNav ? 'w-16 h-16 -mt-2' : 'w-24 h-24 md:w-32 md:h-32'} flex items-end justify-center relative z-50`}>
-                    <img 
-                        src="https://pnbcdn.talkk.ai/media/pihuGif.svg" 
-                        alt="Chat Bot" 
-                        className="w-full h-full object-contain filter drop-shadow-xl cursor-pointer"
+      {/* Portal for Chat Window - Always mounted and visible */}
+      {createPortal(
+        <>
+            {/* Backdrop Overlay for Mobile - Adds focus and dimming effect */}
+            {isOpen && isMobileNav && (
+                <div
+                    onClick={() => setIsOpen(false)}
+                    className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[9995]"
+                    style={{ touchAction: 'none' }}
+                />
+            )}
+
+            {isOpen ? (
+                chatWindowMarkup
+            ) : (
+                <button
+                    type="button"
+                    onClick={() => setIsOpen(true)}
+                    aria-label="Open chat"
+                    className={`floating-chatbot-root fixed z-[10000] bg-transparent p-0 border-0 shadow-none
+                        ${isMobileNav
+                            ? 'bottom-4 right-3 sm:bottom-6 sm:right-4'
+                            : 'bottom-4 left-3 sm:bottom-6 sm:left-6'}`}
+                >
+                    <img
+                        src={botImg}
+                        alt="Open Sterling Assistant"
+                        className="w-[clamp(56px,18vw,120px)] h-[clamp(56px,18vw,120px)] object-contain animate-bounce [animation-duration:2.4s] [animation-timing-function:ease-in-out]"
                         onError={(e) => {
-                            e.target.onerror = null; 
-                            e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712038.png"
+                            e.target.onerror = null;
+                            e.target.src = "https://cdn-icons-png.flaticon.com/512/4712/4712038.png";
                         }}
                     />
-                     {/* Attention Dot for Mobile */}
-                     {isMobileNav && (
-                        <span className="absolute top-1 right-1 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                        </span>
-                     )}
-                </div>
-            </motion.div>
-        )}
-        </AnimatePresence>
-        </div>
-      </div>
-
-       {/* Portal for Chat Window - Always mounted, AnimatePresence inside handles visibility */}
-       {createPortal(
-        <AnimatePresence mode="wait">
-            {isOpen && (
-                <>
-                    {/* Backdrop Overlay for Mobile - Adds focus and dimming effect */}
-                    {isMobileNav && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setIsOpen(false)}
-                            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[9995]"
-                            style={{ touchAction: 'none' }} // Prevent scrolling background
-                        />
-                    )}
-                    {chatWindowMarkup}
-                </>
+                </button>
             )}
-        </AnimatePresence>, 
+        </>, 
         document.body
        )}
     </>

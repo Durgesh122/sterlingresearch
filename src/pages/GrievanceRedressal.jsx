@@ -1,10 +1,11 @@
 import React from 'react';
 import RevealOnScroll from '../components/common/RevealOnScroll';
 import { Shield, Headphones, UserCheck, Clock, Mail, Phone, MapPin, AlertCircle, Gavel, FileText, CheckCircle } from "lucide-react";
+import { contactDetails, complianceDetails } from "../utils/data";
 
 const GrievanceRedressal = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         
         {/* Header */}
@@ -73,7 +74,7 @@ const GrievanceRedressal = () => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-gray-50 dark:bg-gray-900 text-gray-600 dark:text-gray-300 text-sm uppercase tracking-wider">
+                            <tr className="bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 text-sm uppercase tracking-wider">
                                 <th className="p-4 border-b dark:border-gray-700 font-semibold">Designation</th>
                                 <th className="p-4 border-b dark:border-gray-700 font-semibold">Contact Person</th>
                                 <th className="p-4 border-b dark:border-gray-700 font-semibold">Address</th>
@@ -85,47 +86,32 @@ const GrievanceRedressal = () => {
                             <TableRow 
                                 role="Customer Care" 
                                 person="Support Team" 
-                                address="Indore" 
-                                contact="+91 74151 52600"
-                                email="support@sterlingresearch.co.in"
+                                address={complianceDetails.registeredAddress} 
+                                contact={contactDetails.phone}
+                                email={contactDetails.email}
                                 hours="Mon-Fri 09:30 AM – 05:00 PM"
                             />
                             <TableRow 
                                 role="Head of Customer Care" 
                                 person="Support Head" 
-                                address="Indore" 
-                                contact="+91 74151 52600"
-                                email="support@sterlingresearch.co.in"
+                                address={complianceDetails.registeredAddress} 
+                                contact={contactDetails.phone}
+                                email={contactDetails.email}
                                 hours="Mon-Fri 09:30 AM – 05:00 PM"
                             />                            <TableRow 
                                 role="Compliance Officer" 
-                                person="Compliance Team" 
-                                address="Indore" 
-                                contact="+91 74151 52600"
-                                email="compliance@sterlingresearch.co.in"
+                                person={complianceDetails.complianceOfficer} 
+                                address={complianceDetails.registeredAddress} 
+                                contact={contactDetails.phone}
+                                email={contactDetails.complianceEmail}
                                 hours="Mon-Fri 11:00 AM – 05:00 PM"
                             />
                             <TableRow 
                                 role="CEO / Principal Officer" 
-                                person="Management" 
-                                address="Indore" 
-                                contact="+91 74151 52600"
-                                email="compliance@sterlingresearch.co.in"
-                                hours="Mon-Fri 11:00 AM – 05:00 PM"
-                            />                            <TableRow 
-                                role="Compliance Officer" 
-                                person="Compliance Team" 
-                                address="Indore" 
-                                contact="+91 74151 52600"
-                                email="compliance@sterlingresearch.co.in"
-                                hours="Mon-Fri 11:00 AM – 05:00 PM"
-                            />
-                             <TableRow 
-                                role="CEO / Principal Officer" 
-                                person="Management" 
-                                address="Indore" 
-                                contact="+91 74151 52600"
-                                email="compliance@sterlingresearch.co.in"
+                                person={complianceDetails.principalOfficer} 
+                                address={complianceDetails.registeredAddress} 
+                                contact={contactDetails.phone}
+                                email={contactDetails.complianceEmail}
                                 hours="Mon-Fri 11:00 AM – 05:00 PM"
                             />
                         </tbody>
@@ -145,8 +131,8 @@ const GrievanceRedressal = () => {
                     level="01"
                     title="Initial Query or Complaint"
                     description="You can seek clarification or lodge a complaint in writing, orally, telephonically, or by filling out the complaint box available on our website."
-                    contact="+91 74151 52600"
-                    email="support@sterlingresearch.co.in"
+                    contact={contactDetails.phone}
+                    email={contactDetails.email}
                     time="Within 7 business days"
                     color="blue"
                 />
@@ -155,8 +141,8 @@ const GrievanceRedressal = () => {
                     level="02"
                     title="Escalation to Head of Customer Care"
                     description="If you do not receive a response within 7 business days, you may escalate the issue to the Head of Customer Care."
-                    contact="+91 74151 52600"
-                    email="support@sterlingresearch.co.in"
+                    contact={contactDetails.phone}
+                    email={contactDetails.email}
                     time="Within 7 business days"
                     color="indigo"
                 />
@@ -165,8 +151,8 @@ const GrievanceRedressal = () => {
                     level="03"
                     title="Escalation to Compliance Officer"
                     description="If unresolved after 14 business days, escalate the matter to the Compliance Officer/ Principal Officer."
-                    contact="+91 74151 52600"
-                    email="compliance@sterlingresearch.co.in"
+                    contact={contactDetails.phone}
+                    email={contactDetails.complianceEmail}
                     time="Within 7 business days"
                     color="purple"
                 />
@@ -177,7 +163,7 @@ const GrievanceRedressal = () => {
         <RevealOnScroll delay={0.4}>
              <div className="grid md:grid-cols-2 gap-6">
                 <a href="https://www.scores.sebi.gov.in" target="_blank" rel="noopener noreferrer" className="group block">
-                    <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all text-center h-full flex flex-col items-center justify-center">
+                    <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all text-center h-full flex flex-col items-center justify-center">
                         <div className="bg-blue-100 dark:bg-blue-900/30 p-4 rounded-full text-blue-600 mb-4 group-hover:scale-110 transition-transform">
                             <Gavel size={32} />
                         </div>
@@ -187,7 +173,7 @@ const GrievanceRedressal = () => {
                 </a>
 
                 <a href="https://smartodr.in" target="_blank" rel="noopener noreferrer" className="group block">
-                     <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-green-500 dark:hover:border-green-400 transition-all text-center h-full flex flex-col items-center justify-center">
+                     <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-green-500 dark:hover:border-green-400 transition-all text-center h-full flex flex-col items-center justify-center">
                         <div className="bg-green-100 dark:bg-green-900/30 p-4 rounded-full text-green-600 mb-4 group-hover:scale-110 transition-transform">
                             <AlertCircle size={32} />
                         </div>
@@ -205,7 +191,7 @@ const GrievanceRedressal = () => {
 
 // Helper Components
 const TableRow = ({ role, person, address, contact, email, hours }) => (
-    <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-gray-600 dark:text-gray-300 border-b border-gray-100 dark:border-gray-700 last:border-0">
+    <tr className="bg-white dark:bg-gray-800 hover:bg-white dark:hover:bg-gray-700/50 transition-colors text-gray-600 dark:text-gray-300 border-b border-gray-100 dark:border-gray-700 last:border-0">
         <td className="p-4 font-medium text-gray-900 dark:text-white">{role}</td>
         <td className="p-4">{person}</td>
         <td className="p-4">{address}</td>

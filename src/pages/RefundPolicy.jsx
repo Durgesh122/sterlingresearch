@@ -4,7 +4,7 @@ import { CreditCard, AlertOctagon, RefreshCw, Mail, CheckCircle, HelpCircle, Shi
 
 const RefundPolicy = () => {
     return (
-        <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
             <div className="max-w-5xl mx-auto">
                 <RevealOnScroll>
                     <div className="text-center mb-12">

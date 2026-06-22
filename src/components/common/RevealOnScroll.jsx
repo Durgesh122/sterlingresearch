@@ -40,7 +40,7 @@ const RevealOnScroll = ({ children, width = "100%", delay = 0.25 }) => { // Defa
     <div ref={ref} style={{ position: "relative", width, overflow: "visible" }}> {/* overflow visible to not clip children animations */}
       <motion.div
         variants={{
-          hidden: { opacity: 0, y: 50 },
+          hidden: { opacity: 1, y: 50 },
           visible: { opacity: 1, y: 0 },
         }}
         initial="hidden"

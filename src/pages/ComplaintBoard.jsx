@@ -88,7 +88,7 @@ const ComplaintBoard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300 font-sans pt-24 pb-16 px-4 py-8">
+    <div className="compliance-theme min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 font-sans pt-24 pb-16 px-4 py-8">
       
       {/* Header Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
@@ -209,7 +209,7 @@ const ComplaintBoard = () => {
                                                 value={formData.name}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
+                                                className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
                                                 placeholder="Enter your full name"
                                             />
                                           </div>
@@ -224,7 +224,7 @@ const ComplaintBoard = () => {
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
                                                 placeholder="john@example.com"
                                             />
                                         </div>
@@ -236,7 +236,7 @@ const ComplaintBoard = () => {
                                                 value={formData.mobile}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
                                                 placeholder="+91 74151 52600"
                                             />
                                         </div>
@@ -274,7 +274,7 @@ const ComplaintBoard = () => {
                                             value={formData.complaintType}
                                             onChange={handleChange}
                                             required
-                                            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none cursor-pointer"
+                                            className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all appearance-none cursor-pointer"
                                         >
                                             <option value="">Select complaint type</option>
                                             {complaintTypes.map((type) => (
@@ -292,7 +292,7 @@ const ComplaintBoard = () => {
                                           onChange={handleChange}
                                           required
                                           rows={5}
-                                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all resize-none placeholder-gray-400 dark:placeholder-gray-600"
+                                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all resize-none placeholder-gray-400 dark:placeholder-gray-600"
                                           placeholder="Please describe the issue, including dates and any relevant transaction IDs..."
                                       />
                                   </div>
@@ -304,7 +304,7 @@ const ComplaintBoard = () => {
                                           name="resolution"
                                           value={formData.resolution}
                                           onChange={handleChange}
-                                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
+                                          className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600"
                                           placeholder="How would you like this to be resolved?"
                                       />
                                   </div>
@@ -337,7 +337,7 @@ const ComplaintBoard = () => {
                                 exit={{ opacity: 0, x: -20 }}
                                 className="space-y-6"
                               >
-                                  <div className="bg-gray-50 dark:bg-gray-900/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 space-y-4">
+                                  <div className="bg-white dark:bg-gray-900/50 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 space-y-4">
                                       <h3 className="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3 mb-4 flex items-center gap-2">
                                           Summary
                                       </h3>

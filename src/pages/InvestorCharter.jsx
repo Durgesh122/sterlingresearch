@@ -4,7 +4,7 @@ import { Eye, Target, Briefcase, ListCheck, AlertCircle, ThumbsUp, ThumbsDown, S
 
 const InvestorCharter = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}
@@ -213,7 +213,7 @@ const ListItem = ({ text, icon }) => (
 );
 
 const RightCard = ({ title }) => (
-    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center font-medium text-gray-700 dark:text-gray-200 text-sm shadow-sm transition-transform hover:scale-105">
+    <div className="bg-white dark:bg-gray-700 p-4 rounded-lg text-center font-medium text-gray-700 dark:text-gray-200 text-sm shadow-sm transition-transform hover:scale-105">
         {title}
     </div>
 );

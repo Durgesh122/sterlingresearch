@@ -1,10 +1,11 @@
 import React from 'react';
 import RevealOnScroll from '../components/common/RevealOnScroll';
 import { FileText, Info, Scale, ShieldAlert, CheckCircle, MessageSquare, Briefcase, Zap, UserCheck } from "lucide-react";
+import { complianceDetails } from "../utils/data";
 
 const Disclosure = () => {
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-4xl mx-auto">
         
         {/* Header */}
@@ -46,6 +47,28 @@ const Disclosure = () => {
                 </RevealOnScroll>
             </div>
 
+
+
+            <RevealOnScroll delay={0.25}>
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-5 flex items-center gap-2">
+                        <CheckCircle className="text-green-500" /> Registration Details
+                    </h2>
+                    <div className="grid md:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-300">
+                        <p><strong>Registered Name:</strong> {complianceDetails.registeredName}</p>
+                        <p><strong>Principal Officer / Compliance Officer:</strong> {complianceDetails.principalOfficer}</p>
+                        <p><strong>GST No:</strong> {complianceDetails.gstNo}</p>
+                        <p><strong>Type of Registration:</strong> {complianceDetails.registrationType}</p>
+                        <p><strong>SEBI Registration No:</strong> {complianceDetails.sebiRegistrationNo}</p>
+                        <p><strong>BSE Enlistment No:</strong> {complianceDetails.bseEnlistmentNo}</p>
+                        <p><strong>Validity:</strong> {complianceDetails.validity}</p>
+                        <p><strong>Toll Free:</strong> {complianceDetails.sebiTollFree}</p>
+                        <p className="md:col-span-2"><strong>Registered Address:</strong> {complianceDetails.registeredAddress}</p>
+                        <p className="md:col-span-2"><strong>SEBI Office Details:</strong> {complianceDetails.sebiOfficeDetails}</p>
+                    </div>
+                </div>
+            </RevealOnScroll>
+
             {/* 3. Terms and Conditions */}
             <RevealOnScroll delay={0.3}>
                 <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
@@ -74,7 +97,7 @@ const Disclosure = () => {
                             desc="Sterling Research does not guarantee any returns or profits. The stock market is inherently subject to risk."
                          />
                     </div>
-                    <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                    <div className="mt-6 p-4 bg-white dark:bg-gray-700/50 rounded-xl">
                         <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Limitation of Liability & Modification</h3>
                         <ul className="list-disc pl-5 text-sm text-gray-600 dark:text-gray-300 space-y-1">
                             <li>Company not liable for financial loss, health/wealth loss, or connectivity failures.</li>
@@ -129,7 +152,7 @@ const Disclosure = () => {
 
 // Helper Components
 const TermCard = ({ title, icon, desc }) => (
-    <div className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-xl">
+    <div className="bg-white dark:bg-gray-700/30 p-4 rounded-xl">
         <div className="flex items-center gap-2 font-bold text-gray-900 dark:text-white mb-2">
             <span className="text-indigo-500">{icon}</span> {title}
         </div>

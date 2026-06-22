@@ -6,7 +6,7 @@ import AML2 from '../assets/aml2.png';
 
 const AntiMoneyLaundering = () => {
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="compliance-theme min-h-screen pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}
@@ -141,7 +141,7 @@ const AntiMoneyLaundering = () => {
 const ProcessCard = ({ step, title, desc, icon }) => (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md text-center border border-gray-100 dark:border-gray-700 relative overflow-hidden group hover:-translate-y-2 transition-transform duration-300">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700 to-transparent group-hover:via-blue-500 transition-colors"></div>
-        <div className="w-16 h-16 mx-auto bg-gray-50 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform duration-300">
+        <div className="w-16 h-16 mx-auto bg-white dark:bg-gray-700 rounded-full flex items-center justify-center mb-4 text-2xl group-hover:scale-110 transition-transform duration-300">
             {icon}
         </div>
         <div className="text-4xl font-black text-gray-100 dark:text-gray-700 absolute top-4 right-4 -z-0 select-none">

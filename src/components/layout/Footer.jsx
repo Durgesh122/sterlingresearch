@@ -1,240 +1,156 @@
-import React from 'react';
-import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, ArrowRight, Heart } from "lucide-react";
-import { motion } from "framer-motion";
+import React from "react";
 import { Link } from "react-router-dom";
-import SterlingLogo from "../../assets/Starlinglogo4.png";
-import { contactDetails } from "../../utils/data";
+import { Mail, Phone, MapPin, ShieldCheck, FileText, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import FooterLogo from "../../assets/SterlingLogoNew.svg";
+import { contactDetails, complianceDetails } from "../../utils/data";
 
+const quick = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+  { name: "Services", path: "/services" },
+  { name: "Research Reports", path: "/research-reports" },
+  { name: "Contact", path: "/contact-us" },
+];
+
+const legal = [
+  { name: "Disclosure", path: "/disclosure" },
+  { name: "Disclaimer", path: "/disclaimer" },
+  { name: "Privacy Policy", path: "/privacy-policy" },
+  { name: "Terms & Conditions", path: "/terms-conditions" },
+  { name: "Refund Policy", path: "/refund-policy" },
+  { name: "Investor Charter", path: "/investor-charter" },
+];
+
+const regulatoryRows = [
+  { label: "Registered Name", value: complianceDetails.registeredName, icon: FileText },
+  { label: "Principal Officer / Compliance Officer", value: complianceDetails.principalOfficer, icon: ShieldCheck },
+  { label: "GST No", value: complianceDetails.gstNo, icon: FileText },
+  { label: "Type of Registration", value: complianceDetails.registrationType, icon: ShieldCheck },
+  { label: "SEBI Registration No", value: complianceDetails.sebiRegistrationNo, icon: ShieldCheck },
+  { label: "BSE Enlistment No", value: complianceDetails.bseEnlistmentNo, icon: FileText },
+  { label: "Validity", value: complianceDetails.validity, icon: FileText },
+  { label: "Toll Free", value: complianceDetails.sebiTollFree, icon: Phone },
+  { label: "Registered Address", value: complianceDetails.registeredAddress, icon: MapPin, wide: true },
+  { label: "SEBI Office Details", value: complianceDetails.sebiOfficeDetails, icon: MapPin, wide: true },
+];
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white pt-12 md:pt-20 pb-10 overflow-hidden font-sans">
-      
-      {/* Animated Background Shapes */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1], 
-            rotate: [0, 90, 0] 
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600 rounded-full blur-[128px]" 
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.5, 1],
-            opacity: [0.05, 0.1, 0.05],
-            x: [0, 100, 0]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 -left-20 w-72 h-72 bg-purple-600 rounded-full blur-[96px]" 
-        />
+    <footer className="relative bg-gradient-to-b from-[#fffdf6] via-[#fff8ea] to-[#f8fbf4] text-slate-800 border-t border-[#f0a500]/25 mt-12 overflow-hidden">
+      <div className="absolute inset-0 opacity-50"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(240,165,0,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(240,165,0,0.10) 1px, transparent 1px)",
+          backgroundSize: "42px 42px",
+        }}
+      />
+      <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#f0a500]/15 rounded-full blur-3xl" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <img src={FooterLogo} alt="Sterling Research" className="h-14 w-auto object-contain mb-4 rounded-xl bg-white px-3 py-2 shadow-sm ring-1 ring-slate-200" />
+            <p className="text-slate-600 text-sm leading-relaxed mb-5">
+              Sterling Research is a SEBI Registered Research Analyst firm providing equity, derivatives and commodity market research.
+            </p>
+            <div className="space-y-2 text-sm text-slate-600">
+              <a href={`tel:${contactDetails.phone.replace(/\s+/g, "")}`} className="inline-flex items-center gap-2 hover:text-[#1e5631]">
+                <Phone className="w-4 h-4 text-[#f0b429]" /> {contactDetails.phone}
+              </a>
+              <a href={`mailto:${contactDetails.email}`} className="block inline-flex items-center gap-2 hover:text-[#1e5631]">
+                <Mail className="w-4 h-4 text-[#f0b429]" /> {contactDetails.email}
+              </a>
+              <div className="inline-flex items-center gap-2 text-slate-600">
+                <MapPin className="w-4 h-4 text-[#f0b429]" /> {contactDetails.address}
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.05 }}>
+            <h2 className="text-lg font-bold mb-4 text-slate-900">Quick Links</h2>
+            <div className="space-y-2">
+              {quick.map((item) => (
+                <Link key={item.path} to={item.path} className="block text-slate-600 hover:text-[#1e5631] text-sm transition-colors">
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+            <h2 className="text-lg font-bold mb-4 text-slate-900">Compliance</h2>
+            <div className="space-y-2">
+              {legal.map((item) => (
+                <Link key={item.path} to={item.path} className="block text-slate-600 hover:text-[#1e5631] text-sm transition-colors">
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }}>
+            <h2 className="text-lg font-bold mb-4 text-slate-900">Start With Us</h2>
+            <p className="text-slate-600 text-sm mb-5">Get expert market guidance from our research team through official communication channels.</p>
+            <Link to="/contact-us" className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#1e5631] hover:bg-[#184628] text-white font-semibold text-sm transition-colors">
+              Contact Team <ArrowRight className="w-4 h-4" />
+            </Link>
+            <div className="mt-6 space-y-2 text-xs text-slate-500">
+              <div className="inline-flex items-center gap-2 text-slate-600">
+                <ShieldCheck className="w-4 h-4 text-[#f0b429]" /> SEBI Registered Research Analyst
+              </div>
+              <div className="inline-flex items-center gap-2 text-slate-600">
+                <FileText className="w-4 h-4 text-[#f0b429]" /> Investments are subject to market risks
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
         <motion.div
-           animate={{
-             y: [0, -20, 0],
-             opacity: [0.05, 0.1, 0.05]
-           }}
-           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-           className="absolute bottom-0 right-1/3 w-64 h-64 bg-teal-600 rounded-full blur-[100px]"
-        />
+          className="mt-10 pt-8 border-t border-[#e7dfcb]"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+        >
+          <h2 className="text-lg font-bold mb-2 text-slate-900">Regulatory Information</h2>
+          <p className="text-sm text-slate-600 mb-5">Official details as per SEBI and BSE records</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+            {regulatoryRows.map(({ label, value, icon: Icon, wide }) => (
+              <div
+                key={label}
+                className={`py-2 border-b border-[#ece4d2] ${wide ? "md:col-span-2" : ""}`}
+              >
+                <p className="text-slate-500 text-xs uppercase tracking-wide font-semibold inline-flex items-center gap-2">
+                  <Icon className="w-3.5 h-3.5 text-[#f0b429]" />
+                  {label}
+                </p>
+                <p className="mt-1 text-sm text-slate-700 leading-relaxed">{value}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          
-          {/* Brand Column */}
-          <div className="space-y-6">
-            <Link to="/" className="block relative max-w-max group">
-              {/* Magical Glow Effect */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-pulse"></div>
-              
-              {/* Logo Container */}
-              <div className="relative bg-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl shadow-2xl flex items-center justify-center">
-                <motion.img 
-                  src={SterlingLogo} 
-                  alt="Sterling Research Logo" 
-                  className="h-20 md:h-36 w-auto object-contain"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                />
+      <div className="relative z-10 border-t border-[#e7dfcb] bg-gradient-to-r from-[#1b4f2d] via-[#205f36] to-[#1a4a2b] text-[#e8f3ea]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div className="text-xs sm:text-sm font-semibold tracking-wide">
+            <span>© {new Date().getFullYear()} Sterling Research. All rights reserved.</span>
+            <p className="mt-1 text-[11px] sm:text-xs text-[#d3e5d6]">SEBI Registered RA | Transparent Fee | No Profit Sharing</p>
+          </div>
+
+          <div className="text-xs sm:text-sm text-[#f5f9f6]">
+            <span tabIndex={0} className="group relative inline-flex flex-col items-start outline-none md:items-end">
+              <span className="font-semibold cursor-default md:cursor-pointer">Developed by Durgesh</span>
+              <div className="pointer-events-none absolute bottom-full left-0 mb-2 w-max max-w-[18rem] translate-y-1 rounded-lg border border-[#d0e5d4]/35 bg-[#123a24]/95 px-3 py-2 text-[11px] text-[#d6ead9] opacity-0 shadow-[0_12px_28px_rgba(0,0,0,0.25)] transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100 md:left-auto md:right-0 sm:text-xs">
+                <a href="tel:+917879946775" className="block hover:text-white transition-colors">Mobile: +91 7879946775</a>
+                <a href="mailto:durgeshrathor05@gmail.com" className="mt-1 block hover:text-white transition-colors">Email: durgeshrathor05@gmail.com</a>
               </div>
-            </Link>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Empowering your financial journey with expert insights, precise market analysis, and cutting-edge research strategies.
-            </p>
-            <div className="flex gap-4 pt-2">
-              {[
-                { Icon: Facebook, href: "#", color: "hover:bg-blue-600" },
-                { Icon: Twitter, href: "#", color: "hover:bg-sky-500" },
-                { Icon: Linkedin, href: "#", color: "hover:bg-blue-700" },
-                { Icon: Instagram, href: "#", color: "hover:bg-pink-600" }
-              ].map(({ Icon, href, color }, index) => (
-                <motion.a 
-                  key={index}
-                  href={href}
-                  whileHover={{ y: -5, scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`p-2.5 bg-gray-800/50 backdrop-blur-sm rounded-lg text-gray-400 hover:text-white transition-all duration-300 ${color} shadow-lg shadow-black/20`}
-                >
-                  <Icon size={18} />
-                </motion.a>
-              ))}
-            </div>
+            </span>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-bold text-white mb-6 relative inline-block">
-              Quick Links
-              <motion.span 
-                 className="absolute -bottom-2 left-0 w-12 h-1 bg-blue-500 rounded-full"
-                 initial={{ width: 0 }}
-                 whileInView={{ width: 48 }}
-                 viewport={{ once: true }}
-              />
-            </h3>
-            <ul className="space-y-4 text-sm font-medium text-gray-400">
-              {["Home", "About Us", "Services", "Market News", "Contact Us"].map((item) => (
-                <li key={item}>
-                  <Link 
-                    to={item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
-                    className="flex items-center gap-2 hover:text-blue-400 transition-colors group"
-                  >
-                    <ArrowRight size={14} className="opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-blue-500" />
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">{item}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h3 className="text-lg font-bold text-white mb-6 relative inline-block">
-              Our Services
-              <motion.span 
-                 className="absolute -bottom-2 left-0 w-12 h-1 bg-purple-500 rounded-full"
-                 initial={{ width: 0 }}
-                 whileInView={{ width: 48 }}
-                 viewport={{ once: true }}
-              />
-            </h3>
-            <ul className="space-y-4 text-sm font-medium text-gray-400">
-              {["Stock Advisory", "Mutual Funds", "Portfolio Management", "Market Analysis", "Research Reports"].map((item) => (
-                <li key={item}>
-                  <Link 
-                    to="/services"
-                    className="flex items-center gap-2 hover:text-purple-400 transition-colors group"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-purple-400 transition-colors" />
-                    <span className="group-hover:translate-x-1 transition-transform duration-300">{item}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-             <h3 className="text-lg font-bold text-white mb-6 relative inline-block">
-              Get In Touch
-              <motion.span 
-                 className="absolute -bottom-2 left-0 w-12 h-1 bg-teal-500 rounded-full"
-                 initial={{ width: 0 }}
-                 whileInView={{ width: 48 }}
-                 viewport={{ once: true }}
-              />
-            </h3>
-            <div className="space-y-6">
-               <div className="flex items-start gap-4 text-gray-400 group">
-                 <div className="p-2.5 bg-gray-800/50 rounded-lg group-hover:bg-blue-500/20 group-hover:text-blue-400 transition-colors shadow-inner">
-                   <MapPin size={20} />
-                 </div>
-                 <div className="text-sm">
-                   <p className="font-semibold text-white mb-1">Head Office</p>
-                   {contactDetails.address}
-                 </div>
-               </div>
-
-               <div className="flex items-start gap-4 text-gray-400 group">
-                 <div className="p-2.5 bg-gray-800/50 rounded-lg group-hover:bg-green-500/20 group-hover:text-green-400 transition-colors shadow-inner">
-                   <Phone size={20} />
-                 </div>
-                 <div className="text-sm">
-                   <p className="font-semibold text-white mb-1">Phone</p>
-                   <a href={`tel:${contactDetails.phone.replace(/\s+/g, '')}`} className="hover:text-green-400 transition-colors">{contactDetails.phone}</a>
-                 </div>
-               </div>
-
-               <div className="flex items-start gap-4 text-gray-400 group">
-                 <div className="p-2.5 bg-gray-800/50 rounded-lg group-hover:bg-purple-500/20 group-hover:text-purple-400 transition-colors shadow-inner">
-                   <Mail size={20} />
-                 </div>
-                 <div className="text-sm">
-                   <p className="font-semibold text-white mb-1">Email</p>
-                   <a href={`mailto:${contactDetails.email}`} className="hover:text-purple-400 transition-colors">{contactDetails.email}</a>
-                 </div>
-               </div>
-            </div>
-          </div>
-
         </div>
-
-        {/* Footer Bottom */}
-        <div className="border-t border-gray-800/50 pt-8 mt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-gray-500 text-center md:text-left">
-                &copy; {new Date().getFullYear()} <span className="text-gray-300 font-semibold">Sterling Research</span>. All rights reserved.
-              </p>
-              
-              <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
-                <Link to="/privacy-policy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link>
-                <Link to="/terms-conditions" className="hover:text-blue-400 transition-colors">Terms & Conditions</Link>
-                <Link to="/disclaimer" className="hover:text-blue-400 transition-colors">Disclaimer</Link>
-                <Link to="/disclosure" className="hover:text-blue-400 transition-colors">Disclosure</Link>
-              </div>
-            </div>
-            
-            <div className="mt-8 text-center relative z-10 pb-8">
-               <div className="inline-block p-[1px] rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 relative group cursor-pointer">
-                 <div className="bg-gray-900 rounded-full px-4 py-1.5 back relative z-10">
-                    <p className="text-xs text-gray-400 flex items-center gap-2">
-                      Designed & Developed by 
-                      <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 group-hover:from-blue-300 group-hover:via-purple-300 group-hover:to-pink-300 transition-all duration-300 tracking-wider">
-                        DURGESH RATHOR
-                      </span>
-                    </p>
-                 </div>
-                 
-                 {/* Popup Developer Card */}
-                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-gray-900/95 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-2xl opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-300 transform group-hover:-translate-y-2 pointer-events-none z-50">
-                    <div className="text-center">
-                       <h4 className="text-lg font-bold text-white mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Durgesh Rathor</h4>
-                       <div className="space-y-2 text-xs text-gray-300">
-                          <div className="flex items-center justify-center gap-2 p-1.5 bg-gray-800 rounded-lg">
-                             <Phone size={12} className="text-blue-400" />
-                             <span>{contactDetails.developer.phones[0]}</span>
-                          </div>
-                          <div className="flex items-center justify-center gap-2 p-1.5 bg-gray-800 rounded-lg">
-                             <Phone size={12} className="text-purple-400" />
-                             <span>{contactDetails.developer.phones[1]}</span>
-                          </div>
-                          <div className="flex items-center justify-center gap-2 p-1.5 bg-gray-800 rounded-lg">
-                             <Mail size={12} className="text-pink-400" />
-                             <span className="truncate">{contactDetails.developer.email}</span>
-                          </div>
-                       </div>
-                    </div>
-                    {/* Arrow */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-8 border-transparent border-t-gray-900/95"></div>
-                 </div>
-               </div>
-            </div>
-        </div>
-
       </div>
     </footer>
   );

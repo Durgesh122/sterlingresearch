@@ -1,503 +1,386 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { 
-  Menu, X, ChevronDown, Lightbulb, LightbulbOff, 
-  Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Youtube 
-} from "lucide-react";
+import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  FaHome, FaServicestack, FaBuilding, FaBriefcase, FaChartLine, 
-  FaUniversalAccess, FaTachometerAlt, FaCreditCard, FaCommentDots, 
-  FaFileAlt, FaFileSignature, FaEnvelope, FaQuestionCircle, FaUserLock,
-  FaLightbulb
-} from "react-icons/fa";
-import SterlingLogo from '../../assets/Starlinglogo4.png';
-import { contactDetails } from "../../utils/data";
-import FloatingChatBot from "../common/FloatingChatBot";
+import SterlingLogo from "../../assets/SterlingLogoNew.svg";
 
+const directLinks = [
+  { name: "Home", path: "/" },
+  { name: "About Us", path: "/about" },
+  { name: "Pricing", path: "/pricing" },
+  { name: "Payment", path: "/payment" },
+  { name: "Contact", path: "/contact-us" },
+];
 
-const LampToggle = ({ theme, toggleTheme }) => {
+const servicesMenu = [
+  { name: "SUPER CASH PACK", path: "/services/super-cash-pack" },
+  { name: "SUPER INDEX OPTION PACK", path: "/services/super-index-option-pack" },
+  { name: "SUPER FUTURE PACK", path: "/services/super-future-pack" },
+  { name: "SUPER MCX PACK", path: "/services/super-mcx-pack" },
+  { name: "SUPER OPTION PACK", path: "/services/super-option-pack" },
+  { name: "SUPREME POWER PACK", path: "/services/supreme-power-pack" },
+];
+
+const pricingMenu = [
+  { name: "SUPER CASH PACK", path: "/services/super-cash-pack", monthly: "12499/-", quarterly: "34999/-", tagline: "Pure intraday NSE cash calls" },
+  { name: "SUPER INDEX OPTION PACK", path: "/services/super-index-option-pack", monthly: "12499/-", quarterly: "34999/-", tagline: "Nifty, Bank Nifty, Sensex options" },
+  { name: "SUPER FUTURE PACK", path: "/services/super-future-pack", monthly: "12499/-", quarterly: "34999/-", tagline: "Intraday and positional futures" },
+  { name: "SUPER MCX PACK", path: "/services/super-mcx-pack", monthly: "12499/-", quarterly: "34999/-", tagline: "Commodity F&O opportunities" },
+  { name: "SUPER OPTION PACK", path: "/services/super-option-pack", monthly: "12499/-", quarterly: "34999/-", tagline: "Stock option setups" },
+  { name: "SUPREME POWER PACK", path: "/services/supreme-power-pack", monthly: "-", quarterly: "149999/-", tagline: "Premium F&O high-conviction desk" },
+];
+
+const moreMenu = [
+  { name: "Accessibility Feedback", path: "/accessibility-feedback" },
+  { name: "Accessibility Media", path: "/accessibility-media" },
+  { name: "Accessibility Statement", path: "/accessibility-statement" },
+];
+
+const complianceMenu = [
+  { name: "Research Reports", path: "/research-reports" },
+  { name: "Disclosure", path: "/disclosure" },
+  { name: "Disclaimer", path: "/disclaimer" },
+  { name: "Privacy Policy", path: "/privacy-policy" },
+  { name: "Term & Conditions", path: "/terms-conditions" },
+  { name: "Refund Policy", path: "/refund-policy" },
+  { name: "Investor Charter", path: "/investor-charter" },
+  { name: "Grievance Redressal", path: "/grievance-redressal" },
+  { name: "Complaint Board", path: "/complaint-board" },
+  { name: "Complaint Status", path: "/complaint-data" },
+  { name: "Anti-Money Laundering", path: "/anti-money-laundering" },
+  { name: "Acceptance Form", path: "/esign-consent" },
+];
+
+/* ---------- Desktop Dropdown ---------- */
+const Dropdown = ({ title, items, activePath, widthClass = "w-64", showPricing = false, align = "center" }) => {
+  const active = items.some((i) => !i.external && i.path === activePath);
+  const dropdownPositionClass =
+    align === "right" ? "right-0 top-full pt-4" : "left-1/2 -translate-x-1/2 top-full pt-4";
+
   return (
-    <div className="relative flex flex-col items-center -mt-4 mr-2 group z-50">
-      {/* The Cord */}
-      <motion.div
-        className="flex flex-col items-center cursor-pointer"
-        onClick={toggleTheme}
-        whileTap={{ y: 20 }}
-        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+    <div className="relative group">
+      <button
+        className={`inline-flex items-center gap-1 text-sm font-semibold transition-colors ${
+          active ? "text-[#d4920a]" : "text-slate-800 hover:text-[#d4920a]"
+        }`}
       >
-        {/* Wire */}
-        <div className="w-0.5 h-8 bg-gray-800 dark:bg-gray-400" />
-        
-        {/* Lamp Shade/Holder */}
-        <div className={`w-8 h-8 rounded-t-full rounded-b-lg border-2 border-gray-800 dark:border-gray-400 relative z-10 flex items-center justify-center transition-colors duration-300 ${theme === 'dark' ? 'bg-yellow-100' : 'bg-gray-200'}`}>
-           <div className={`w-2 h-2 rounded-full ${theme === 'dark' ? 'bg-yellow-400 shadow-[0_0_15px_rgba(250,204,21,1)]' : 'bg-gray-400'}`} />
-        </div>
-        
-        {/* Pull String */}
-        <div className="flex flex-col items-center -mt-1">
-           <div className="w-0.5 h-6 bg-gray-400" />
-           <div className={`w-2 h-2 rounded-full border border-gray-400 ${theme === 'dark' ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-        </div>
-
-        {/* Shine/Glow Effect (Only when Dark Mode/Light ON) */}
-        <AnimatePresence>
-          {theme === "dark" && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1.5 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              className="absolute top-8 w-24 h-24 bg-yellow-400/20 blur-xl rounded-full pointer-events-none -z-10"
-            />
+        {title}
+        <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform" />
+      </button>
+      <div className={`absolute ${dropdownPositionClass} hidden group-hover:block z-50`}>
+        <div className={`${widthClass} rounded-xl border border-slate-200 bg-white shadow-xl p-2`}>
+          {items.map((item) =>
+            item.external ? (
+              <a
+                key={item.name}
+                href={item.path}
+                target="_blank"
+                rel="noreferrer"
+                className="block px-3 py-2.5 rounded-lg text-sm leading-snug whitespace-normal text-slate-700 hover:bg-slate-50 hover:text-[#b45309]"
+              >
+                {item.name}
+              </a>
+            ) : (
+              <Link
+                key={`${item.path}-${item.name}`}
+                to={item.path}
+                className={`block px-3 py-2.5 rounded-lg text-sm leading-snug whitespace-normal transition-colors ${
+                  activePath === item.path
+                    ? "bg-amber-50 text-[#b45309]"
+                    : "text-slate-700 hover:bg-slate-50 hover:text-[#b45309]"
+                }`}
+              >
+                {showPricing ? (
+                  <div>
+                    <p className="font-semibold text-[13px]">{item.name}</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">{item.tagline}</p>
+                    <div className="mt-1.5 inline-flex items-center gap-1.5 text-[10px] font-bold">
+                      <span className="rounded-full bg-emerald-50 text-emerald-700 px-2 py-0.5">M: {item.monthly}</span>
+                      <span className="rounded-full bg-amber-50 text-amber-700 px-2 py-0.5">Q: {item.quarterly}</span>
+                    </div>
+                  </div>
+                ) : (
+                  item.name
+                )}
+              </Link>
+            )
           )}
-        </AnimatePresence>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 };
 
+/* ---------- Mobile Accordion Group ---------- */
+const MobileGroup = ({ title, items, current, onClose, defaultOpen = false, showPricing = false }) => {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="rounded-xl border border-slate-100 bg-white/70">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50"
+      >
+        <span className="inline-flex items-center gap-2">
+          {title}
+          <span className="inline-flex items-center justify-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-500">
+            {items.length}
+          </span>
+        </span>
+        <motion.span animate={{ rotate: open ? 90 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronRight className="w-4 h-4 text-slate-400" />
+        </motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="px-3 pb-2 space-y-1">
+              {items.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.name}
+                    href={item.path}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block px-3 py-2.5 rounded-lg text-sm leading-snug whitespace-normal text-slate-600 hover:bg-slate-50 hover:text-[#b45309]"
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={`${item.path}-${item.name}`}
+                    to={item.path}
+                    onClick={onClose}
+                    className={`block px-3 py-2.5 rounded-lg text-sm leading-snug whitespace-normal transition-colors ${
+                      current === item.path
+                        ? "bg-amber-50 text-[#b45309] font-semibold"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-[#b45309]"
+                    }`}
+                  >
+                    {showPricing ? (
+                      <div>
+                        <p className="font-semibold text-[13px]">{item.name}</p>
+                        <p className="text-[11px] text-slate-500 mt-0.5">{item.tagline}</p>
+                        <div className="mt-1.5 inline-flex items-center gap-1.5 text-[10px] font-bold">
+                          <span className="rounded-full bg-emerald-50 text-emerald-700 px-2 py-0.5">M: {item.monthly}</span>
+                          <span className="rounded-full bg-amber-50 text-amber-700 px-2 py-0.5">Q: {item.quarterly}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      item.name
+                    )}
+                  </Link>
+                )
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
+/* ---------- Main Navbar ---------- */
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const [showMore, setShowMore] = useState(false);
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isCompact, setIsCompact] = useState(false);
+
+  const current = location.pathname === "/contact" ? "/contact-us" : location.pathname;
 
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
+    const onScroll = () => setIsAtTop(window.scrollY < 30);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const update = () => { setIsCompact(mq.matches); if (!mq.matches) setIsOpen(false); };
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => { setIsOpen(false); }, [location.pathname]);
+
+  // Lock body scroll when drawer open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("mobile-nav-open");
     } else {
-      document.documentElement.classList.remove("dark");
+      document.body.style.overflow = "";
+      document.body.classList.remove("mobile-nav-open");
     }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    return () => {
+      document.body.style.overflow = "";
+      document.body.classList.remove("mobile-nav-open");
+    };
+  }, [isOpen]);
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  const floating = isAtTop && !isCompact;
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-
-  // NavLink constant declaration was removed, reusing existing array
-
-  const navLinks = [
-    { name: "Home", path: "/", icon: <FaHome /> },
-    { name: "Services", path: "/services", icon: <FaServicestack /> },
-    { 
-      name: "Company", 
-      path: "#", 
-      icon: <FaBuilding />,
-      submenu: [
-        { name: "About Us", path: "/about" },
-        { name: "Vision & Mission", path: "/vision-mission" },
-        { name: "Refund Policy", path: "/refund-policy" },
-        { name: "Privacy Policy", path: "/privacy-policy" },
-        { name: "Disclaimer", path: "/disclaimer" },
-        { name: "Terms & Conditions", path: "/terms-conditions" },
-        { name: "Disclosure", path: "/disclosure" },
-      ]
-    },
-    { name: "Job", path: "/job", icon: <FaBriefcase /> },
-    { 
-      name: "Insights", 
-      path: "#", 
-      icon: <FaChartLine />,
-      submenu: [
-        { name: "Blogs", path: "/blogs" },
-        { name: "Market News", path: "/market-news" },
-        { name: "Complaint Data", path: "/complaint-data" },
-        { name: "Grievance Redressal", path: "/grievance-redressal" },
-      ]
-    },
-    { 
-      name: "Accessibility", 
-      path: "#", 
-      icon: <FaUniversalAccess /> ,
-      submenu: [
-        { name: "Accessibility Statement", path: "/accessibility-statement" },
-        { name: "Accessibility Feedback", path: "/accessibility-feedback" },
-        { name: "Accessibility Media", path: "/accessibility-media" },
-      ]
-    },
-    { 
-      name: "Dashboard", 
-      path: "/dashboard", 
-      icon: <FaTachometerAlt />,
-      submenu: [
-        { name: "Investor Charter", path: "/investor-charter" },
-        { name: "Anti-Money Laundering", path: "/anti-money-laundering" },
-      ]
-    },
-    { name: "Payment", path: "/payment", icon: <FaCreditCard /> },
-    { name: "Complaint Box", path: "/complaint-board", icon: <FaCommentDots /> },
-    { name: "Research Reports", path: "/research-reports", icon: <FaFileAlt /> },
-    { name: "E-Sign Consent", path: "/esign-consent", icon: <FaFileSignature /> },
-    { name: "Contact Us", path: "/contact-us", icon: <FaEnvelope /> },
-    { name: "FAQ's", path: "/faqs", icon: <FaQuestionCircle /> },
-  ];
+  const warningMessage = "We are SEBI Registered Research Analyst (SEBI No. - INH000027751) | Investment in securities market is subject to market risks. Read all related documents carefully before investing.";
 
   return (
     <>
-    <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300 flex flex-col">
-      {/* Top Contact Bar */}
-      <div className="bg-gray-900 text-gray-300 text-xs py-2 px-4 border-b border-gray-800 hidden md:block w-full">
-         <div className="max-w-screen-2xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
-            {/* Contact Info */}
-            <div className="flex items-center gap-6">
-               <a href={`tel:${contactDetails.phone.replace(/\s+/g, '')}`} className="flex items-center gap-2 hover:text-white transition-colors group">
-                  <div className="p-1 bg-gray-800 rounded-full group-hover:bg-green-600 transition-colors">
-                    <Phone size={12} className="text-green-400 group-hover:text-white" />
-                  </div>
-                  <span className="font-medium tracking-wide">{contactDetails.phone}</span>
-               </a>
-               <a href={`mailto:${contactDetails.email}`} className="flex items-center gap-2 hover:text-white transition-colors group">
-                  <div className="p-1 bg-gray-800 rounded-full group-hover:bg-blue-600 transition-colors">
-                    <Mail size={12} className="text-blue-400 group-hover:text-white" /> 
-                  </div>
-                  <span className="font-medium tracking-wide">{contactDetails.email}</span>
-               </a>
-            </div>
-            
-            {/* Social Links & Info */}
-             <div className="flex items-center gap-6">
-               <div className="hidden lg:flex items-center gap-4 text-gray-400 border-r border-gray-700 pr-6 mr-2">
-                  <Link to="/market-news" className="flex items-center gap-1 hover:text-blue-400 cursor-pointer transition-colors text-[11px] font-medium tracking-wide">
-                    MARKET NEWS
-                  </Link>
-                  <Link to="/job" className="flex items-center gap-1 hover:text-blue-400 cursor-pointer transition-colors text-[11px] font-medium tracking-wide">
-                    CAREERS
-                  </Link>
-                  <Link to="/contact-us" className="flex items-center gap-1 hover:text-blue-400 cursor-pointer transition-colors text-[11px] font-medium tracking-wide">
-                    CONTACT
-                  </Link>
-               </div>
-               <div className="flex items-center gap-3">
-                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#1877F2] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Facebook size={14} /></a>
-                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#1DA1F2] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Twitter size={14} /></a>
-                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#0A66C2] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Linkedin size={14} /></a>
-                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#E4405F] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Instagram size={14} /></a>
-                 <a href="#" className="p-1.5 bg-gray-800 rounded-full hover:bg-[#FF0000] hover:text-white text-gray-400 transition-all duration-300 transform hover:-translate-y-0.5"><Youtube size={14} /></a>
-               </div>
-             </div>
-         </div>
+      <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+      {/* Running Warning Bar */}
+      <div className="pointer-events-auto bg-[#1e5631] text-white overflow-hidden h-8 flex items-center" aria-label="Risk disclaimer ticker">
+        <motion.div
+          className="flex w-max items-center whitespace-nowrap text-xs sm:text-sm font-bold"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 26 }}
+        >
+          {[0, 1].map((idx) => (
+            <span key={idx} className="px-6">
+              {warningMessage}
+            </span>
+          ))}
+        </motion.div>
       </div>
 
-    <nav className="bg-white/95 backdrop-blur-md shadow-md border-b border-gray-100 dark:bg-gray-900/95 dark:border-gray-800 w-full relative">
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          
-          {/* Logo Section */}
-          <div className="flex-shrink-0 flex items-center gap-4">
-            <Link to="/" className="flex items-center group">
-              <img 
-                src={SterlingLogo} 
-                alt="Sterling Research Logo" 
-                className="h-[6rem] md:h-[8rem] w-auto origin-left transition-transform duration-300 group-hover:scale-105 object-contain" 
-              />
+        <motion.nav
+          initial={false}
+          animate={{
+            width: floating ? "min(1240px, calc(100% - 1.25rem))" : "100%",
+            marginTop: floating ? 12 : 0,
+            borderRadius: floating ? 999 : 0,
+            boxShadow: floating ? "0 18px 45px rgba(2,6,23,0.20)" : "0 4px 14px rgba(2,6,23,0.08)",
+          }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
+          className="pointer-events-auto mx-auto bg-white/95 backdrop-blur-md border border-slate-200"
+        >
+          <div className="px-3 sm:px-5 lg:px-8 h-16 sm:h-[72px] lg:h-20 flex items-center justify-between gap-2">
+            <Link to="/" className="flex items-center shrink-0">
+              <img src={SterlingLogo} alt="Sterling Research" className="h-10 sm:h-12 lg:h-[46px] w-auto object-contain" />
             </Link>
-          </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden xl:flex flex-1 items-center justify-center px-4 overflow-visible z-50">
-             <div className="flex items-center space-x-1 overflow-visible py-2 px-2">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.path || (link.submenu && link.submenu.some(sub => sub.path === location.pathname));
-                
-                if (link.submenu) {
-                  return (
-                    <div key={link.name} className="relative group">
-                      <button
-                        className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 whitespace-nowrap gap-1 focus:outline-none focus:ring-0 cursor-default
-                          ${isActive 
-                            ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 shadow-sm transform scale-105' 
-                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 hover:text-blue-600 dark:hover:bg-gray-800 dark:hover:text-blue-400'
-                          }`}
-                      >
-                        <span className={`text-xl mb-0.5 transition-all duration-300 group-hover:-translate-y-0.5 ${isActive ? 'scale-110' : ''} relative ${theme === 'dark' ? 'text-yellow-300 drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]' : ''}`}>
-                          {link.icon}
-                        </span>
-                        <span className={`flex items-center gap-1 relative transition-all duration-300 ${theme === 'dark' ? 'text-yellow-100 drop-shadow-[0_0_10px_rgba(253,224,71,0.3)]' : ''}`}>
-                          {link.name}
-                          <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform duration-300" />
-                        </span>
-                        {isActive && (
-                          <motion.div
-                            layoutId="activeTab"
-                            className="absolute bottom-0 w-1/2 h-0.5 bg-blue-600 rounded-full"
-                          />
-                        )}
-                      </button>
+            <div className="hidden lg:flex items-center justify-center gap-4 xl:gap-5 min-w-0 flex-1 px-2">
+              {directLinks.map((link) => (
+                <Link key={link.path} to={link.path}
+                  className={`text-sm font-semibold transition-colors whitespace-nowrap ${
+                    current === link.path ? "text-[#d4920a]" : "text-slate-800 hover:text-[#d4920a]"
+                  }`}>
+                  {link.name}
+                </Link>
+              ))}
+              <Dropdown title="Services" items={servicesMenu} activePath={current} widthClass="w-80" />
+              <Dropdown title="Compliance" items={complianceMenu} activePath={current} widthClass="w-72" />
+              <Dropdown title="Accessibility" items={moreMenu} activePath={current} align="right" />
+            </div>
 
-                      {/* Dropdown Menu */}
-                      <div className="absolute left-1/2 transform -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 min-w-[200px]">
-                        <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
-                          {link.submenu.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              to={subItem.path}
-                              className="block px-4 py-3 text-sm text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border-b border-gray-50 dark:border-gray-800 last:border-none"
-                            >
-                              {subItem.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  );
+            <div className="hidden xl:flex items-center gap-2.5 shrink-0 xl:ml-4">
+              <Link to="/esign-consent"
+                className="inline-flex items-center px-4 2xl:px-5 py-2 2xl:py-2.5 rounded-lg bg-[#1e5631] text-white text-xs 2xl:text-sm font-semibold hover:bg-[#1a6635] transition-colors whitespace-nowrap">
+                Acceptance Form
+              </Link>
+              <Link to="/payment"
+                className="inline-flex items-center px-4 2xl:px-5 py-2 2xl:py-2.5 rounded-lg bg-gradient-to-r from-[#f0a500] to-[#d4920a] text-white text-xs 2xl:text-sm font-bold hover:from-[#f0b429] hover:to-[#f0a500] transition-colors whitespace-nowrap">
+                Pay Now
+              </Link>
+            </div>
+
+            <button onClick={() => setIsOpen((v) => !v)}
+              className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 pointer-events-auto z-10"
+              aria-label="Toggle menu">
+              <AnimatePresence mode="wait" initial={false}>
+                {isOpen
+                  ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
+                      <X className="w-6 h-6" />
+                    </motion.span>
+                  : <motion.span key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }}>
+                      <Menu className="w-6 h-6" />
+                    </motion.span>
                 }
-
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 group whitespace-nowrap gap-1 focus:outline-none focus:ring-0
-                      ${isActive 
-                        ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 shadow-sm transform scale-105' 
-                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 hover:text-blue-600 dark:hover:bg-gray-800 dark:hover:text-blue-400'
-                      }`}
-                  >
-                    <span className={`text-xl mb-0.5 transition-all duration-300 group-hover:-translate-y-0.5 ${isActive ? 'scale-110' : ''} relative ${theme === 'dark' ? 'text-yellow-300 drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]' : ''}`}>
-                      {link.icon}
-                    </span>
-                    <span className={`relative transition-all duration-300 ${theme === 'dark' ? 'text-yellow-100 drop-shadow-[0_0_10px_rgba(253,224,71,0.3)]' : ''}`}>
-                      {link.name}
-                    </span>
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeTab"
-                        className="absolute bottom-0 w-1/2 h-0.5 bg-blue-600 rounded-full"
-                      />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
+              </AnimatePresence>
+            </button>
           </div>
+        </motion.nav>
+      </header>
 
-          {/* Right Actions: Theme Toggle & Mobile Menu Button */}
-          <div className="flex items-center gap-4">
-             {/* Mobile Chat Bot */}
-             <div className="lg:hidden relative mr-2">
-                <FloatingChatBot isMobileNav={true} />
-             </div>
-
-             {/* Custom Hanging Lamp Toggle */}
-             <div className="relative z-50 -mt-2">
-               <motion.button
-                 onClick={toggleTheme}
-                 whileTap={{ y: 10 }}
-                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                 className="flex flex-col items-center focus:outline-none group relative"
-                 aria-label="Pull to toggle theme"
-               >
-                 {/* The Wire */}
-                 <div className="w-0.5 h-4 bg-gray-400 dark:bg-gray-600 mb-0" />
-                 
-                 {/* The Lamp Shade */}
-                 <div className={`w-8 h-8 rounded-t-full relative z-10 flex items-center justify-center transition-colors duration-300 shadow-md
-                   ${theme === 'dark' ? 'bg-amber-100 border-2 border-amber-300' : 'bg-gray-200 border-2 border-gray-300'}`}
-                 >
-                    {/* The Bulb (Glows in Dark Mode) */}
-                    <div className={`w-4 h-4 rounded-full transition-all duration-300 ${theme === 'dark' ? 'bg-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.8)]' : 'bg-gray-400'}`} />
-                 </div>
-
-                   {/* The Pull Cord */}
-                   <div className="flex flex-col items-center -mt-1 relative z-0">
-                      <motion.div 
-                        className="w-0.5 h-6 bg-gray-300 dark:bg-gray-600 origin-top"
-                        animate={{ height: [24, 32, 24] }} 
-                      />
-                      <div className={`w-2.5 h-2.5 rounded-full border border-gray-400 ${theme === 'dark' ? 'bg-yellow-500' : 'bg-gray-300'}`} />
-                   </div>
-  
-                   {/* Ambient Light Cone (Visible in Dark Mode) */}
-                   <AnimatePresence>
-                     {theme === 'dark' && (
-                       <motion.div
-                         initial={{ opacity: 0, scale: 0.8 }}
-                         animate={{ opacity: 1, scale: 1.2 }}
-                         exit={{ opacity: 0, scale: 0.8 }}
-                         className="absolute top-8 pointer-events-none"
-                       >
-                         <div className="w-20 h-20 bg-yellow-400/20 blur-xl rounded-full" />
-                       </motion.div>
-                     )}
-                   </AnimatePresence>
-                 </motion.button>
-               </div>
-  
-               {/* Login Button */}
-               <div className="hidden lg:block">
-                  <Link
-                    to="/admin/login"
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg hover:shadow-blue-500/30 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2"
-                  >
-                    <span>Login</span>
-                    <FaUserLock className="text-white" />
-                  </Link>
-               </div>
-  
-              {/* Mobile Menu Toggle */}
-            <div className="xl:hidden">
-              <button
-                onClick={toggleMenu}
-                className="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-800 transition-colors"
-              >
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-    </header>
-      {/* Mobile Menu Overlay (Full Screen / Side Drawer) - Moved Outside Nav */}
+      {/* ---------- Mobile Full-Screen Drawer ---------- */}
       <AnimatePresence>
         {isOpen && (
           <>
             {/* Backdrop */}
             <motion.div
+              key="backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={toggleMenu}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] xl:hidden"
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-40 bg-slate-900/55 backdrop-blur-[3px]"
+              onClick={() => setIsOpen(false)}
             />
-            
-            {/* Drawer */}
+
+            {/* Drawer panel - slides in from right */}
             <motion.div
+              key="drawer"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed right-0 top-0 h-full w-[80%] max-w-sm bg-white dark:bg-gray-900 shadow-2xl z-[70] overflow-y-auto border-l border-gray-200 dark:border-gray-800"
+              transition={{ type: "spring", damping: 28, stiffness: 260 }}
+              className="fixed top-0 right-0 z-50 h-full w-[94vw] max-w-[390px] bg-gradient-to-b from-[#fffdf8] via-white to-[#fffaf0] shadow-2xl flex flex-col border-l border-amber-100"
             >
-              <div className="flex flex-col h-full">
-                {/* Drawer Header */}
-                <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-800">
-                  <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                    Menu
-                  </span>
-                  <button
-                    onClick={toggleMenu}
-                    className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400"
-                  >
-                    <X className="w-6 h-6" />
+              {/* Drawer Header */}
+              <div className="shrink-0 px-5 pt-5 pb-4 border-b border-amber-100 bg-white/80 backdrop-blur-sm">
+                <div className="flex items-center justify-between">
+                  <img src={SterlingLogo} alt="Sterling Research" className="h-9 w-auto object-contain" style={{ maxWidth: "185px" }} />
+                  <button onClick={() => setIsOpen(false)}
+                    className="p-2 rounded-lg text-slate-500 hover:bg-slate-100">
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
+                <div className="mt-3 rounded-xl border border-[#eadfc8] bg-[#fff7e7] px-3 py-2">
+                  <p className="text-[11px] font-semibold tracking-wide text-[#8f1038] uppercase">Mobile Navigation</p>
+                  <p className="text-xs text-slate-600 mt-0.5">Fast access to services, compliance and key actions.</p>
+                </div>
+              </div>
 
-                {/* Drawer Links */}
-                <div className="flex-1 overflow-y-auto py-4 px-3">
-                  <div className="space-y-1">
-                    {navLinks.map((link, index) => {
-                      const isActive = location.pathname === link.path || (link.submenu && link.submenu.some(sub => sub.path === location.pathname));
-                      
-                      if (link.submenu) {
-                        return (
-                          <div key={link.name}>
-                            <motion.div
-                              initial={{ opacity: 0, x: 20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: index * 0.05 }}
-                              className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 ${
-                                isActive
-                                  ? "bg-blue-50 dark:bg-blue-900/20 shadow-sm"
-                                  : "hover:bg-gray-50 dark:hover:bg-gray-800"
-                              }`}
-                            >
-                              <span className={`text-xl ${isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-400"}`}>
-                                {link.icon}
-                              </span>
-                              <span className={`text-base font-semibold ${isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-700 dark:text-gray-200"}`}>
-                                {link.name}
-                              </span>
-                            </motion.div>
-                            
-                            {/* Submenu Items */}
-                            <div className="pl-12 pr-2 space-y-1 mt-1 border-l-2 border-gray-100 dark:border-gray-800 ml-6">
-                              {link.submenu.map((subItem) => (
-                                <Link
-                                  key={subItem.name}
-                                  to={subItem.path}
-                                  onClick={toggleMenu}
-                                  className={`block py-2 px-3 rounded-lg text-sm transition-colors ${
-                                    location.pathname === subItem.path
-                                      ? "text-blue-600 dark:text-blue-400 font-medium bg-blue-50/50 dark:bg-blue-900/10"
-                                      : "text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-300"
-                                  }`}
-                                >
-                                  {subItem.name}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      }
-
-                      return (
-                        <motion.div
-                          key={link.name}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                        >
-                          <Link
-                            to={link.path}
-                            onClick={toggleMenu}
-                            className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 focus:outline-none focus:ring-0 ${
-                              isActive
-                                ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 font-semibold shadow-sm"
-                                : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:translate-x-1"
-                            }`}
-                          >
-                            <span className={`text-xl ${isActive ? "text-blue-500" : "text-gray-400 group-hover:text-blue-500"}`}>
-                              {link.icon}
-                            </span>
-                            <span className="text-base">{link.name}</span>
-                            {isActive && (
-                               <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-500" />
-                            )}
-                          </Link>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
+              {/* Scrollable Menu */}
+              <div className="flex-1 overflow-y-auto py-3 px-3.5">
+                {/* Direct links */}
+                <div className="space-y-1.5 mb-4">
+                  {directLinks.map((link) => (
+                    <Link key={link.path} to={link.path} onClick={() => setIsOpen(false)}
+                      className={`flex items-center justify-between gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold leading-snug whitespace-normal transition-all ${
+                        current === link.path
+                          ? "bg-amber-50 text-[#b45309] border border-amber-200"
+                          : "text-slate-700 border border-transparent hover:bg-slate-50 hover:border-slate-200"
+                      }`}>
+                      <span>{link.name}</span>
+                      <ChevronRight className={`w-4 h-4 ${current === link.path ? "text-amber-600" : "text-slate-400"}`} />
+                    </Link>
+                  ))}
                 </div>
 
-                {/* Drawer Footer */}
-                <div className="p-5 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 space-y-4">
-                  
-                  {/* Mobile Contact Quick Actions */}
-                  <div className="grid grid-cols-2 gap-3">
-                     <a href={`tel:${contactDetails.phone.replace(/\s+/g, '')}`} className="flex items-center justify-center gap-2 py-2.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 rounded-xl font-semibold text-sm hover:bg-green-100 transition-colors">
-                        <Phone size={16} /> Call
-                     </a>
-                     <a href={`mailto:${contactDetails.email}`} className="flex items-center justify-center gap-2 py-2.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold text-sm hover:bg-blue-100 transition-colors">
-                        <Mail size={16} /> Email
-                     </a>
-                  </div>
+                <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent my-4" />
 
-                  {/* Mobile Social Links */}
-                  <div className="flex justify-center gap-4 py-2">
-                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-blue-600 hover:scale-110 transition-transform"><Facebook size={20} /></a>
-                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sky-500 hover:scale-110 transition-transform"><Twitter size={20} /></a>
-                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-blue-700 hover:scale-110 transition-transform"><Linkedin size={20} /></a>
-                     <a href="#" className="p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm text-pink-600 hover:scale-110 transition-transform"><Instagram size={20} /></a>
-                  </div>
+                {/* Accordion groups */}
+                <MobileGroup title="Services" items={servicesMenu} current={current} onClose={() => setIsOpen(false)} defaultOpen />
+                <MobileGroup title="Compliance" items={complianceMenu} current={current} onClose={() => setIsOpen(false)} />
+                <MobileGroup title="Accessibility" items={moreMenu} current={current} onClose={() => setIsOpen(false)} />
+              </div>
 
-                  <Link
-                    to="/admin/login"
-                    onClick={toggleMenu}
-                    className="flex items-center justify-center w-full bg-slate-900 dark:bg-blue-600 text-white px-4 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-slate-500/30 dark:hover:shadow-blue-500/30 active:scale-95 gap-2"
-                  >
-                    <FaUserLock />
-                    <span>Admin Login</span>
-                  </Link>
-                  
-                  <p className="text-center text-xs text-gray-400 dark:text-gray-500">
-                    © 2026 Sterling Research
-                  </p>
-                </div>
+              {/* Drawer Footer CTAs */}
+              <div className="shrink-0 px-4 py-4 border-t border-amber-100 bg-white/90 backdrop-blur-sm space-y-3">
+                <Link to="/esign-consent" onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-center w-full py-3 rounded-xl bg-[#1e5631] text-white font-semibold text-sm hover:bg-[#1a6635] transition-colors shadow-[0_8px_24px_rgba(30,86,49,0.28)]">
+                  Acceptance Form
+                </Link>
+                <Link to="/payment" onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-center w-full py-3 rounded-xl bg-gradient-to-r from-[#f0a500] to-[#d4920a] text-white font-bold text-sm hover:from-[#f0b429] hover:to-[#f0a500] transition-colors shadow-[0_8px_24px_rgba(240,165,0,0.32)]">
+                  Pay Now
+                </Link>
               </div>
             </motion.div>
           </>
